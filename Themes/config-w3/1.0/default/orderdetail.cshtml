@@ -7,7 +7,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
 
 @{
     var info = new SimplisityInfo();
@@ -37,8 +37,8 @@
         <div class="w3-dropdown-hover">
             <div class="w3-button" style="border-top: 6px solid #fff !important;">@ResourceKey("DNNrocket.more")...</div>
             <div class="w3-dropdown-content w3-bar-block w3-card" style="width:340px;">
-                <a class="w3-bar-item w3-button" target="_blank" href="/DesktopModules/DNNrocketModules/RocketECommerce/htmlpages/PrintOrder.html?orderid=@(info.ItemID)">@ButtonText(ButtonTypes.print)</a>
-                <a class="w3-bar-item w3-button" target="_blank" href="/DesktopModules/DNNrocketModules/RocketECommerce/htmlpages/PrintShipLabel.html?orderid=@(info.ItemID)">@ButtonIcon(ButtonTypes.print)&nbsp;@ResourceKey("RE.printlabel")</a>
+                <a class="w3-bar-item w3-button" target="_blank" href="/DesktopModules/DNNrocketModules/RocketEcommerceAPI/htmlpages/PrintOrder.html?orderid=@(info.ItemID)">@ButtonText(ButtonTypes.print)</a>
+                <a class="w3-bar-item w3-button" target="_blank" href="/DesktopModules/DNNrocketModules/RocketEcommerceAPI/htmlpages/PrintShipLabel.html?orderid=@(info.ItemID)">@ButtonIcon(ButtonTypes.print)&nbsp;@ResourceKey("RE.printlabel")</a>
                 <div class="w3-bar-item w3-button" onclick="document.getElementById('orderhistorymodal').style.display = 'block';">@ButtonText(ButtonTypes.history)</div>
                 <div class="w3-bar-item w3-button" onclick="document.getElementById('ordernotesmodal').style.display = 'block';">@ButtonText(ButtonTypes.notes)</div>
             </div>

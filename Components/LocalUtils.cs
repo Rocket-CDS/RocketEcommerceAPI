@@ -11,8 +11,8 @@ namespace RocketEcommerceAPI.Components
 {
     public static class LocalUtils
     {
-        public const string ControlPath = "/DesktopModules/DNNrocketModules/RocketECommerce";
-        public const string ResourcePath = "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources";
+        public const string ControlPath = "/DesktopModules/DNNrocketModules/RocketEcommerceAPI";
+        public const string ResourcePath = "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources";
 
         /// <summary>
         /// Get a resouerce string from a resx file in "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources" 

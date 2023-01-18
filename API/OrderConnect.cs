@@ -23,8 +23,8 @@ namespace RocketEcommerceAPI.API
                 {
                     if (orderData.SendEmail())
                     {
-                        var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/", "Help.emailsent");
-                        var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/", "Help.emailsent", "Msg");
+                        var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent");
+                        var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent", "Msg");
                         messageText = messageText.Replace("{email}", orderData.Email);
                         var messageData = new MessageLimpet(_portalShop, messageTitle, messageText);
                         messageData.FadeModel = true;
@@ -32,8 +32,8 @@ namespace RocketEcommerceAPI.API
                     }
                     else
                     {
-                        var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/", "Help.emailfail");
-                        var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/", "Help.emailfail", "Msg");
+                        var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailfail");
+                        var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailfail", "Msg");
                         messageText = messageText.Replace("{email}", orderData.Email);
                         var messageData = new MessageLimpet(_portalShop, messageTitle, messageText);
                         return messageData.GetDisplayError();

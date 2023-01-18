@@ -36,7 +36,7 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("portaldata", new PortalLimpet(portalid));
             SetDataObject("systemdata", systemData);
             SetDataObject("appthemeprojects", new AppThemeProjectLimpet());
-            SetDataObject("modulesettings", new ModuleContentLimpet(portalid, moduleRef));
+            SetDataObject("modulesettings", new ModuleEcommerceLimpet(portalid, moduleRef));
             SetDataObject("defaultdata", new DefaultsLimpet());
             SetDataObject("globalsettings", new SystemGlobalData());
             SetDataObject("appthemedefault", new AppThemeLimpet(portalid, systemData, "Default", "1.0"));

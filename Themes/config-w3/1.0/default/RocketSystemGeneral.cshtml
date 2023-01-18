@@ -3,6 +3,7 @@
 @using RocketEcommerceAPI.Components;
 @using Simplisity;
 @using DNNrocketAPI.Components;
+@using Rocket.AppThemes.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketAppTheme/App_LocalResources/")
@@ -12,7 +13,16 @@
 @{
     var portalShop = (PortalShopLimpet)Model.List.First();
     var info = portalShop.Info;
-    var systemData = new SystemLimpet("rocketecommerceapi");
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var appThemeList = new AppThemeDataList(portalShop.ProjectName, systemData.SystemKey);
+
+    var projectData = new AppThemeProjectLimpet();
+    var selectedProject = portalShop.ProjectName;
+    if (selectedProject == "" && projectData.ActiveList().Count > 0)
+    {
+        selectedProject = projectData.DefaultProjectName();
+    }
+
 }
 <style>
     .checkboxlist input {
@@ -51,6 +61,20 @@
                         <label class="">@ResourceKey("RE.checkouttype")</label>
                         @DropDownList(info, "genxml/checkouttype", "0,1,2,3", ResourceKey("RE.checkouttypetext").ToString(), "class='w3-input w3-border '", "standard")
                         @TextBox(info, "genxml/checkouttemplate", "class='w3-input w3-border' disabled", "0_CartDetails.cshtml")
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col m5 w3-padding">
+                            <div class="">AppTheme Project</div>
+                            @DropDownList(info, "genxml/select/selectedprojectname", projectData.ActiveList(), " name='selectedprojectnameadmin' class='w3-input w3-border simplisity_change' s-dropdownlist='#appthemeadmin' s-cmd='rocketapptheme_appthemejson' s-fields='{\"selectedsystemkey\":\"" + portalShop.SystemKey + "\",\"addempty\":\"true\"}' s-after='projectdropdownreturn'", selectedProject)
+                        </div>
+                        <div class="w3-col m5 w3-padding">
+                            <div class="">AppTheme</div>
+                            @DropDownList(info, "genxml/select/apptheme", appThemeList.NameListDict(), " name='selectedappthemeadmin' class='w3-input w3-border  simplisity_change' s-dropdownlist='#appthemeadminversion' s-cmd='rocketapptheme_versionjson' s-fields='{\"selectedsystemkey\":\"" + portalShop.SystemKey + "\"}'", "")
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <div class="">@ResourceKey("DNNrocket.version")</div>
+                            @DropDownList(info, "genxml/select/appthemeadminversion", "1.0","1.0", " name='selectedversionadmin' class='w3-input w3-border'", "1.0")
+                        </div>
                     </div>
                     <div class="w3-row w3-padding">
                         @CheckBox(info,"genxml/checkbox/manualcategoryorderby","&nbsp;" + ResourceKey("RE.manualcategoryorderby").ToString()," class='w3-check' ", true)

@@ -608,8 +608,8 @@ namespace RocketEcommerceAPI.Components
         public string ProductDetailURL { get { if (Record.GetXmlProperty("genxml/textbox/productdetailurl") == "") return ProductListPageUrl; else return Record.GetXmlProperty("genxml/textbox/productdetailurl"); } }
         public int ImageResize { get { if (Record.GetXmlPropertyInt("genxml/imageresize") > 0) return Record.GetXmlPropertyInt("genxml/imageresize"); else return 640; } }
         public string ProjectName { get { return Record.GetXmlProperty("genxml/select/selectedproject"); } set { Record.SetXmlProperty("genxml/select/selectedproject", value); } }
-        public string AppThemeAdminFolder { get { return Record.GetXmlProperty("genxml/select/appthemeadmin"); } }
-        public string AppThemeAdminVersion { get { return Record.GetXmlProperty("genxml/select/appthemeversion"); } }
+        public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/select/apptheme"); } }
+        public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/select/appthemeversion"); } }
         public int CartLimit { get { return 50; } }
         public int CartDays { get { return 7; } }
         public bool ManualCategoryOrderby { get { return Info.GetXmlPropertyBool("genxml/checkbox/manualcategoryorderby"); } }

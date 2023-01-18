@@ -1,0 +1,62 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using System.Globalization;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/rocketecommerceapi/HtmlClickAndCollect/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+}
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+
+<div class="w3-row w3-margin-top w3-margin-bottom">
+    <div class="w3-button w3-border w3-left simplisity_click" s-post="#datasection" s-cmd="rocketecommerceapi_savecart" s-return='.ecommerce-container' s-fields='{"template":"cartlist.cshtml","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonText(ButtonTypes.previous, sessionParams.CultureCode)</div>
+    <span class="w3-button w3-border w3-left w3-margin-left w3-light-grey w3-hide-small" onclick="location.reload();return false;"><span class="material-icons">home</span>&nbsp;@ResourceKey("RE.continueshopping", sessionParams.CultureCode)</span>
+    <span class="w3-button w3-border w3-left w3-margin-left w3-hide-small simplisity_click " s-cmd="rocketecommerceapi_cartship" s-return='.ecommerce-container' s-fields='{"template":"@(portalShop.Record.GetXmlProperty("genxml/checkouttemplate"))","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonIcon(ButtonTypes.refresh, sessionParams.CultureCode)</span>
+    <span class="w3-button w3-border w3-right w3-margin-left a-dovalidate simplisity_click" s-post="#datasection" s-cmd="rocketecommerceapi_savecart" s-before="validateCart" s-return='.ecommerce-container' s-fields='{"template":"cartsummary.cshtml","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonText(ButtonTypes.next, sessionParams.CultureCode)</span>
+</div>
+
+<script>
+
+    function validateCart() {
+        var form = $("#Form");
+        form.validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                },
+            },
+            errorPlacement: function() {
+                return false;  // suppresses error message text
+            },
+            invalidHandler: function(e, validator) {
+                $('input').removeClass('w3-pale-red');
+                $('input').removeClass('w3-border-red');
+                for (var i in validator.errorMap) {
+                    $('#' + i).addClass('w3-pale-red');
+                    $('#' + i).addClass('w3-border-red')
+                }
+            },
+            amount: {
+                required: true,
+                digits: true
+            },
+        });
+        if (!form.valid()) {
+            $('.a-dovalidate').attr('s-stop', 'stop')
+        }
+    }
+
+
+</script>

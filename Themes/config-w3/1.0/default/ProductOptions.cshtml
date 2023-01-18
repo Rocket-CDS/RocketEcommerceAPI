@@ -1,0 +1,145 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var productData = (ProductLimpet)Model.List.First();
+    var modLP = 0;
+
+    var optionList = productData.GetOptions();
+    var globalSettings = new SystemGlobalData();
+    var listname = "optionlist";
+    var sessionParams = Model.SessionParamsData;
+}
+
+<div id="optionsfieldreturn"></div>
+
+<div class="w3-row optionlistdatasection">
+
+    <div class="w3-container">
+        @if (productData.GetOptionList().Count < productData.PortalShop.ProductOptionLimit)
+        {
+            <div class="w3-button w3-theme w3-padding-8 simplisity_click" s-before="saveRichText" s-post="#datasection" s-list=".modellist,.optionlist,.imagelist,.documentlist,.linklist" s-cmd="productadmin_addoption" s-fields='{"productid":"@productData.ProductId"}'>@ButtonIcon(ButtonTypes.add)</div>
+        }
+        else
+        {
+            <div class="w3-button w3-theme w3-padding-8" onclick="$('#productoptionlimitmsg').show();">@ButtonIcon(ButtonTypes.add)</div>
+
+            <div id="productoptionlimitmsg" class="w3-modal">
+                <div class="w3-modal-content" style="width:40%;">
+                    <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
+                        <span onclick="$('#productoptionlimitmsg').hide();" class="w3-button w3-display-topright">&times;</span>
+                    </header>
+                    <div class="" style="">
+                        <br />
+                        <div class="w3-container">
+                            <img src="/DesktopModules/DNNrocket/api/images/avatar3.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+                            <h2>@ResourceKey("RE.productoptionlimit")</h2>
+                            <p>@ResourceKey("RE.productoptionlimit", "", "Msg")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="w3-button w3-padding-8 simplisity_itemundo" s-recylebin="optionlistbin" s-return="#optionlistdata" s-removelist=".optionlist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <div id="optionlistcontainer" class="w3-container">
+
+        <ul id="optionlistdata" class="w3-ul">
+            @{
+                var lp3 = 0;
+            }
+            @foreach (var productOption in optionList)
+            {
+
+                lp3 += 1;
+                var lp3listname = listname + lp3;
+
+
+                <li class="optionlist w3-display-container w3-padding w3-border-0">
+                    @SortableListIndex(productOption.Info, modLP)
+
+                    <input id="optionkey" type="hidden" value="@productOption.OptionKey" />
+
+                    <div class="w3-row w3-display-container w3-card">
+
+                        <div class="w3-col m1 w3-padding" style="width:160px;">
+                            <label class="">@ResourceKey("RE.ref")</label>
+                            @TextBox(productOption.Info, "genxml/textbox/ref", " class='w3-input w3-border' autocomplete='off' ", "", false, modLP)
+                        </div>
+                        <div class="w3-col m6 w3-padding">
+                            <label class="">@ResourceKey("RE.name")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(productOption.Info, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ", "", true, modLP)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("RE.controltype")</label>
+                            @DropDownList(productOption.Info, "genxml/dropdown/controltype", "checkbox,dropdown,radiobutton,textbox", "CheckBox,DropDown,RadioButton,TextBox", "class='w3-input w3-border controltype ' row='" + lp3listname + "' ", "checkbox", false, modLP)
+                        </div>
+                        <div class="w3-col m2 w3-padding pricecell">
+                            <label class="">@ResourceKey("RE.price")</label>
+                            @TextBoxMoney(productData.PortalId, productData.CultureCode, productOption.Info, "genxml/textbox/optionprice", "  class='w3-input w3-border w3-right-align ' autocomplete='off' ", "0", false, modLP)
+                        </div>
+
+                        <div class="w3-display-right ">
+                            <button id="dictionarydisplay@(lp3listname)" class="w3-button simplisity_click" s-cmd="productadmin_getoptionsfield" s-return="#optionsfieldreturn" s-fields='{"productid":"@productData.ProductId","optionkey":"@productOption.OptionKey"}'>@ButtonIcon(ButtonTypes.edit)</button>
+                            <button class="w3-button  w3-padding simplisity_removelistitem" s-removelist=".optionlist" s-recylebin="optionlistbin">@ButtonIcon(ButtonTypes.remove)</button>
+                        </div>
+
+                    </div>
+
+
+
+                </li>
+                modLP += 1;
+            }
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+
+            $(':checkbox').addClass('w3-check');
+
+            $("#optionlistdata").sortable();
+            $("#optionlistdata").disableSelection();
+
+            $('.controltype').unbind("change");
+            $('.controltype').change(function () {
+                var row = $(this).attr('row');
+                ActionControlType($(this).val(), row);
+            });
+
+            $('.controltype').each(function (index) {
+                var row = $(this).attr('row');
+                ActionControlType($(this).val(), row);
+            });
+
+        });
+
+        function ActionControlType(ctype, row) {
+            if (ctype === 'checkbox') {
+                $('#dictionarydisplay' + row).hide();
+            }
+            if (ctype === 'dropdown') {
+                $('#dictionarydisplay' + row).show();
+            }
+            if (ctype === 'radiobutton') {
+                $('#dictionarydisplay' + row).show();
+            }
+            if (ctype === 'textbox') {
+                $('#dictionarydisplay' + row).hide();
+            }
+        }
+
+    </script>

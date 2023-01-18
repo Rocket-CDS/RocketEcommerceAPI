@@ -1,0 +1,164 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+
+@{
+    var paymentData = (PaymentLimpet)Model.List.First();
+    var info = new SimplisityInfo(paymentData.Record);
+    var companyData = (CompanyLimpet)Model.GetDataObject("companyData");
+    var portalShop = new PortalShopLimpet(paymentData.PortalId, paymentData.PreferedCultureCode);
+    var notificationData = new NotificationLimpet(paymentData.PortalId, paymentData.PreferedCultureCode);
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Email Design</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin: 0; padding: 0;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td style="padding: 10px 0 30px 0;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
+                    <tr>
+                        <td align="center" bgcolor="lightgrey" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+
+                            <header class="">
+                                <h1 class="">@companyData.CompanyName</h1>
+                            </header>
+                            <p>
+                                <a style="color:black;" href="@(companyData.WebsiteUrl)" target="_blank">@companyData.WebsiteUrl</a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                        <b>
+                                            @ResourceKey("RE.paymentrequest", paymentData.PreferedCultureCode)
+                                        </b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif;">
+                                        <br />
+                                        <table>
+                                            @if (paymentData.AmountDue > 0)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @ResourceKey("RE.amountdue", paymentData.PreferedCultureCode) :
+                                                    </td>
+                                                    <td>
+                                                        <span>@(paymentData.AmountDueDisplay)</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @if (paymentData.Email != "")
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @ResourceKey("RE.email", paymentData.PreferedCultureCode) :
+                                                    </td>
+                                                    <td>
+                                                        <span>@(paymentData.Email)</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @if (paymentData.Company != "")
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @ResourceKey("RE.company", paymentData.PreferedCultureCode) :
+                                                    </td>
+                                                    <td>
+                                                        <span>@(paymentData.Company)</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @if (paymentData.Name != "")
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @ResourceKey("RE.name", paymentData.PreferedCultureCode) :
+                                                    </td>
+                                                    <td>
+                                                        <span>@(paymentData.Name)</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @if (paymentData.InvoiceRef != "")
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @ResourceKey("RE.invoiceref", paymentData.PreferedCultureCode) :
+                                                    </td>
+                                                    <td>
+                                                        <span>@(paymentData.InvoiceRef)</span>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </table>
+                                        <br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif;">
+                                        <br />
+                                        <b>
+                                            @BreakOf(notificationData.Message_PaymentFormEmail)
+                                        </b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                                        <b>
+                                            @BreakOf(paymentData.EmailMessage)
+                                        </b>
+                                    </td>
+                                </tr>
+                                @if (!paymentData.IsPaymentCompleted && portalShop.PaymentPageUrl != "")
+                                {
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <a href="@(portalShop.PaymentPageUrl + "?key=" + paymentData.GUIDKey)" target="_blank" style="text-decoration:none;">
+                                                <div style="background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 24px; font-family: Arial, sans-serif;">
+                                                    <b style="color: #153643;">@ResourceKey("RE.pay", paymentData.PreferedCultureCode)</b>
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="grey" style="padding: 30px 30px 30px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;">
+                                        &reg; @companyData.CompanyName<br />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

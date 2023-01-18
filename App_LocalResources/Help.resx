@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="actionprovider.Help" xml:space="preserve">
+    <value>Action providers can be executed from here.  An action provider is designed to do a single action on the store, usually to update records or fix problems.
+&lt;br/&gt;
+The assembly that will be executed should be installed into the bin folder and then the correct assembly, namespace, class and extra data can be added into the fields below. &lt;br/&gt;The action provider assembly should inherit the "ActionProvider" class.</value>
+  </data>
+  <data name="actionprovider.Text" xml:space="preserve">
+    <value>Action Provider</value>
+  </data>
+  <data name="assembly.Text" xml:space="preserve">
+    <value>Assembly Name</value>
+  </data>
+  <data name="completed.Text" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="emailfail.Msg" xml:space="preserve">
+    <value>Your email has failed to be sent to {email}.  Please try again.  If the problem continues ask your webmaster to check your SMTP and portal config.</value>
+  </data>
+  <data name="emailfail.Text" xml:space="preserve">
+    <value>Email Failure.</value>
+  </data>
+  <data name="emailsent.Msg" xml:space="preserve">
+    <value>Your email has been sent to {email}</value>
+  </data>
+  <data name="emailsent.Text" xml:space="preserve">
+    <value>Email Sent.</value>
+  </data>
+  <data name="error.Text" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="example.Text" xml:space="preserve">
+    <value>Example</value>
+  </data>
+  <data name="exportconfig.Help" xml:space="preserve">
+    <value>Exporting this shop will set it as the default for all new portal shops created on this install.  A "default_portalshop.xml" file is created in the RocketEcommerceAPI folder.  When a new portal shop is created this xml data will be used to create the new portal.</value>
+  </data>
+  <data name="importopenstore3config.Help" xml:space="preserve">
+    <value>To import the data from OpenStore v3 or v4, rename the exported XML file to "\Portals\{portalid}\DNNrocketTemp\openstore3_export.xml" and place in the root of the portal. Images go in "\Portals\{portalid}\DNNrocket\RocketEcommerceAPI\images" to have them imported.</value>
+  </data>
+  <data name="importopenstore3config.Text" xml:space="preserve">
+    <value>Import OpenStore</value>
+  </data>
+  <data name="message_bankinstructions.Default" xml:space="preserve">
+    <value>You have opted to NOT pay online.  
+
+Please make your bank payment as soon as possible to our account.  Insert the order number in the reference field and include your name as well if it is different from the acccount name.</value>
+  </data>
+  <data name="message_bankinstructions.Help" xml:space="preserve">
+    <value>Message displayed on the order email, when the order has not been paid via the on-line interface.</value>
+  </data>
+  <data name="message_bankinstructions.Text" xml:space="preserve">
+    <value>Banking Instructions</value>
+  </data>
+  <data name="message_bankpayment.Default" xml:space="preserve">
+    <value>Payment can be made on-line through our secure link to the bank.  Your order will be processed immediately.</value>
+  </data>
+  <data name="message_bankpayment.Help" xml:space="preserve">
+    <value>This message appears on the front office next to the online bank payment option.</value>
+  </data>
+  <data name="message_bankpayment.Text" xml:space="preserve">
+    <value>Online Bank Payment Button Message</value>
+  </data>
+  <data name="message_checkoutfail.Default" xml:space="preserve">
+    <value>The order was cancelled or the payment failed. Contact your bank if you need assistance with your credit card, or contact us if you believe there is a problem with the checkout.</value>
+  </data>
+  <data name="message_checkoutfail.Help" xml:space="preserve">
+    <value>This text is displayed on the website, to the client, after a failed order.</value>
+  </data>
+  <data name="message_checkoutfail.Text" xml:space="preserve">
+    <value>Checkout Fail message</value>
+  </data>
+  <data name="message_checkoutok.Default" xml:space="preserve">
+    <value>Thank you for your order. You will receive an emailed confirmation containing all order details. Please check your junk email folders if you don't receive it within 30 minutes. Take note of the number below if you wish to contact us about this order.</value>
+  </data>
+  <data name="message_checkoutok.Help" xml:space="preserve">
+    <value>This text is displayed on the website, to the client, after a successful order.</value>
+  </data>
+  <data name="message_checkoutok.Text" xml:space="preserve">
+    <value>Checkout OK message</value>
+  </data>
+  <data name="message_emailorder.Default" xml:space="preserve">
+    <value>Thank you for your order. We're here to help! Call us during office hours Monday to Friday, or visit us in-store if you have any questions about your order.</value>
+  </data>
+  <data name="message_emailorder.Help" xml:space="preserve">
+    <value>Text that is displayed on the successful order email, which is sent to the client.</value>
+  </data>
+  <data name="message_emailorder.Text" xml:space="preserve">
+    <value>Email Order Message</value>
+  </data>
+  <data name="message_emailordersubject.Text" xml:space="preserve">
+    <value>Email Order Subject</value>
+  </data>
+  <data name="message_emailpaymentsubject.Text" xml:space="preserve">
+    <value>Email Payment Subject</value>
+  </data>
+  <data name="message_manualpay.Default" xml:space="preserve">
+    <value>Payment can be made by Cheque or Bank Transfer.  Your order may be delayed until payment is received.</value>
+  </data>
+  <data name="message_manualpay.Help" xml:space="preserve">
+    <value>This message appears on the front office next to the manual payment option.</value>
+  </data>
+  <data name="message_manualpay.Text" xml:space="preserve">
+    <value>Manual Payment Button Message</value>
+  </data>
+  <data name="message_paymentform.Default" xml:space="preserve">
+    <value>This form allows you to pay us.  Please enter your details and click "Pay".  
+You will be redirected to the bank for secure payment.</value>
+  </data>
+  <data name="message_paymentform.Help" xml:space="preserve">
+    <value>This message is displayed on the single payment form.</value>
+  </data>
+  <data name="message_paymentform.Text" xml:space="preserve">
+    <value>Payment Form Message</value>
+  </data>
+  <data name="message_paymentformemail.Default" xml:space="preserve">
+    <value>Easy payment can be made on our secure payment website.
+  
+Click the "Pay" button below to open our payment form.</value>
+  </data>
+  <data name="message_paymentformemail.Help" xml:space="preserve">
+    <value>When an email is sent for a payment, the email will contain this message. </value>
+  </data>
+  <data name="message_paymentformemail.Text" xml:space="preserve">
+    <value>Payment Form Email Message</value>
+  </data>
+  <data name="message_paymentformfail.Default" xml:space="preserve">
+    <value>Your payment has been refused or cancelled, please try again.</value>
+  </data>
+  <data name="message_paymentformfail.Help" xml:space="preserve">
+    <value>Message that is displayed to the client when they return from the bank with a FAILED payment status.</value>
+  </data>
+  <data name="message_paymentformfail.Text" xml:space="preserve">
+    <value>Payment Form Fail Message</value>
+  </data>
+  <data name="message_paymentformok.Default" xml:space="preserve">
+    <value>Your Payment has been successfully completed.</value>
+  </data>
+  <data name="message_paymentformok.Help" xml:space="preserve">
+    <value>Message that is displayed to the client when they return from the bank with a SUCCESSFUL payment status.</value>
+  </data>
+  <data name="message_paymentformok.Text" xml:space="preserve">
+    <value>Payment Form OK message</value>
+  </data>
+  <data name="message_paymentreceived.Default" xml:space="preserve">
+    <value>Thank you for your payment.</value>
+  </data>
+  <data name="message_paymentreceived.Help" xml:space="preserve">
+    <value>The text that will displayed on the "Payment OK" email sent to the client</value>
+  </data>
+  <data name="message_paymentreceived.Text" xml:space="preserve">
+    <value>Payment Received</value>
+  </data>
+  <data name="message_storepickup.Default" xml:space="preserve">
+    <value>You are welcome to pick your order up from us in store during opening hours. Please ring us if you want to ensure it is ready for pickup.</value>
+  </data>
+  <data name="message_storepickup.Help" xml:space="preserve">
+    <value>If you have a pickup option for shipping, this message is displayed on the website during shipping selection.</value>
+  </data>
+  <data name="message_storepickup.Text" xml:space="preserve">
+    <value>Store Pickup</value>
+  </data>
+  <data name="message_waitingforpayment.Default" xml:space="preserve">
+    <value>You have opted to NOT pay online.  
+
+An email with instructions has been send to your email address.</value>
+  </data>
+  <data name="message_waitingforpayment.Help" xml:space="preserve">
+    <value>When "manual payment" is used, the payment is NOT paid online and must be sent to the merchant via other methods (cheque, money, transfer, etc.).  This message is displayed on the bank return after clicking pay on the "manual payment" option.</value>
+  </data>
+  <data name="message_waitingforpayment.Text" xml:space="preserve">
+    <value>Waiting For Payment</value>
+  </data>
+  <data name="namespaceclass.Text" xml:space="preserve">
+    <value>Namespace.Class</value>
+  </data>
+  <data name="nosubcategories.Text" xml:space="preserve">
+    <value>There are no sub-categories in this category.</value>
+  </data>
+  <data name="notificationreset.Msg" xml:space="preserve">
+    <value>This action will reset ALL notification messages back to the default.  Current notifications, for the ALL languages, will be lost.  You must also save the messages after a reset.
+Are you Sure ?</value>
+  </data>
+  <data name="notificationreset.Text" xml:space="preserve">
+    <value>Notification Reset</value>
+  </data>
+  <data name="pageslinks_paymentpageurl.Help" xml:space="preserve">
+    <value>The Payment Page URL is the full URL where payment can be made.  This creates a button in the payment admin and can also be used to create a link.</value>
+  </data>
+  <data name="pageslinks_paymentpageurl.Text" xml:space="preserve">
+    <value>Payment Page URL</value>
+  </data>
+  <data name="pageslinks_productdetail.Help" xml:space="preserve">
+    <value>Product detail URL is used to create SEO urls on the website.  It uses product tokens to build a relative URL for the product detail page.</value>
+  </data>
+  <data name="pageslinks_productdetail.Text" xml:space="preserve">
+    <value>Product detail URL</value>
+  </data>
+  <data name="pageslinks_productdetailurl.Help" xml:space="preserve">
+    <value>The Product Detail URL is the full URL where the products as displayed.  This is used to create a links back to the product list.</value>
+  </data>
+  <data name="pageslinks_productdetailurl.Text" xml:space="preserve">
+    <value>Product Detail URL</value>
+  </data>
+  <data name="pageslinks_productlist.Help" xml:space="preserve">
+    <value>Product list URL is used to create SEO urls on the website.  It uses product and category tokens to build a relative URL for the product list page.</value>
+  </data>
+  <data name="pageslinks_productlist.Text" xml:space="preserve">
+    <value>Product list URL</value>
+  </data>
+  <data name="pageslinks_productlistpaging.Help" xml:space="preserve">
+    <value>Used to create a URL for the product list which contains the page ("p") and pagesize ("ps") params.  The "catid" will also be included if categories are required.</value>
+  </data>
+  <data name="pageslinks_productlistpaging.Text" xml:space="preserve">
+    <value>Product List Paging URL</value>
+  </data>
+  <data name="pageslinks_producturl.Help" xml:space="preserve">
+    <value>The Product List URL is the full URL where the products as displayed.  This is used to create a links back to the product list.</value>
+  </data>
+  <data name="pageslinks_producturl.Text" xml:space="preserve">
+    <value>Product List URL</value>
+  </data>
+  <data name="resetportalshop.Help" xml:space="preserve">
+    <value>Reseting the shop will restore all shop settings back to the default for the system.  (Usually created by the Export PortalShop)</value>
+  </data>
+  <data name="resetportalshop.Text" xml:space="preserve">
+    <value>Reset Shop</value>
+  </data>
+  <data name="schedulerrunhours.Help" xml:space="preserve">
+    <value>The amount of hours that need to have passed from the last scheduler run before the scheduler will run again.  This is also controlled in DNN, but is usually setup for every hour.  Usually we need to clear the database and do other operations only once a day.  Operations that need to run every hour are not effected by this setting. Zero will activate the sceduler on the DNN control parameters.</value>
+  </data>
+  <data name="schedulerrunhours.Text" xml:space="preserve">
+    <value>Scheduler Run Hours</value>
+  </data>
+  <data name="urlredirects.Text" xml:space="preserve">
+    <value>URLs for pages on the client webiste can be added here, this allows for SEO links between API calls that happen.&lt;br/&gt;
+URLs can have tokens added for parameters that need to be added to the page link.  &lt;br/&gt;
+(User standard url format for compatibility across systems)
+
+</value>
+  </data>
+  <data name="validateshop.Help" xml:space="preserve">
+    <value>Do a portal level validation of the website.  This willl run a number of test and fix any errors.  Usually this needs to be run when a website has been migrated to another server. </value>
+  </data>
+  <data name="validateshop.Text" xml:space="preserve">
+    <value>Validate Shop</value>
+  </data>
+</root>

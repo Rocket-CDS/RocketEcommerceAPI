@@ -1,0 +1,918 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="cascade.Text" xml:space="preserve">
+    <value>Ajouter aussi aux catégories parentes</value>
+  </data>
+  <data name="grams.Text" xml:space="preserve">
+    <value>grammes</value>
+  </data>
+  <data name="managementpanel.Text" xml:space="preserve">
+    <value>Tableau de gestion</value>
+  </data>
+  <data name="importopenstore3.Text" xml:space="preserve">
+    <value>Importer des fichiers depuis OpenStore 3 ?</value>
+  </data>
+  <data name="category.Text" xml:space="preserve">
+    <value>Catégorie</value>
+  </data>
+  <data name="product.Text" xml:space="preserve">
+    <value>Produit</value>
+  </data>
+  <data name="weight.Text" xml:space="preserve">
+    <value>Poids</value>
+  </data>
+  <data name="all.Text" xml:space="preserve">
+    <value>Tout</value>
+  </data>
+  <data name="securitykey.Help" xml:space="preserve">
+    <value>    </value>
+  </data>
+  <data name="orderstatus160.Text" xml:space="preserve">
+    <value>Acompte</value>
+  </data>
+  <data name="orderstatus170.Text" xml:space="preserve">
+    <value>Acompte non vérifié</value>
+  </data>
+  <data name="collectionon.Text" xml:space="preserve">
+    <value>Activer l’option choix de date et heure.</value>
+  </data>
+  <data name="emailon.Text" xml:space="preserve">
+    <value>Activer les notifications</value>
+  </data>
+  <data name="categoryadmin.Text" xml:space="preserve">
+    <value>Catégories</value>
+  </data>
+  <data name="cartadmin.Text" xml:space="preserve">
+    <value>Admin panier</value>
+  </data>
+  <data name="administrator.Text" xml:space="preserve">
+    <value>Administrateur</value>
+  </data>
+  <data name="address.Text" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="displayaddress.Text" xml:space="preserve">
+    <value>Adresse d’affichage</value>
+  </data>
+  <data name="shippingaddress.Text" xml:space="preserve">
+    <value>Adresse de livraison</value>
+  </data>
+  <data name="billingaddress.Text" xml:space="preserve">
+    <value>Adresse de facturation</value>
+  </data>
+  <data name="orderemail.Text" xml:space="preserve">
+    <value>Adresse e-mail du service commande</value>
+  </data>
+  <data name="addtobasket.Text" xml:space="preserve">
+    <value>Ajouter au panier</value>
+  </data>
+  <data name="orderstatus40.Text" xml:space="preserve">
+    <value>Annulée</value>
+  </data>
+  <data name="afternoon.Text" xml:space="preserve">
+    <value>Après-midi</value>
+  </data>
+  <data name="orderstatus120.Text" xml:space="preserve">
+    <value>Archivée</value>
+  </data>
+  <data name="sqlorderby.Text" xml:space="preserve">
+    <value>Article classé par</value>
+  </data>
+  <data name="items.Text" xml:space="preserve">
+    <value>article(s)</value>
+  </data>
+  <data name="attention.Text" xml:space="preserve">
+    <value>Attention</value>
+  </data>
+  <data name="database.Text" xml:space="preserve">
+    <value>Base de données</value>
+  </data>
+  <data name="postbox.Text" xml:space="preserve">
+    <value>Boîte postale</value>
+  </data>
+  <data name="activeportal.Text" xml:space="preserve">
+    <value>Boutique active</value>
+  </data>
+  <data name="portalshops.Text" xml:space="preserve">
+    <value>Boutiques</value>
+  </data>
+  <data name="hidden.Text" xml:space="preserve">
+    <value>Cachés</value>
+  </data>
+  <data name="catalog.Text" xml:space="preserve">
+    <value>Catalogue</value>
+  </data>
+  <data name="categories.Text" xml:space="preserve">
+    <value>Catégories</value>
+  </data>
+  <data name="imageupload.Text" xml:space="preserve">
+    <value>Chargement des images</value>
+  </data>
+  <data name="imageupload.Msg" xml:space="preserve">
+    <value>Chargez vos images ici, avec un glisser / déposer ou en utilisant le bouton de chargement.</value>
+  </data>
+  <data name="securitykey.Text" xml:space="preserve">
+    <value>Clé de sécurité du portail</value>
+  </data>
+  <data name="validportalkeys.Text" xml:space="preserve">
+    <value>Clés du portail distant</value>
+  </data>
+  <data name="clientnotes.Text" xml:space="preserve">
+    <value>Client Notes</value>
+  </data>
+  <data name="connectioncode.Text" xml:space="preserve">
+    <value>Code de connexion</value>
+  </data>
+  <data name="discountcode.Text" xml:space="preserve">
+    <value>Code de réduction</value>
+  </data>
+  <data name="securitycode.Text" xml:space="preserve">
+    <value>Code de sécurité</value>
+  </data>
+  <data name="currencycode.Text" xml:space="preserve">
+    <value>Code Devise</value>
+  </data>
+  <data name="currencyculturecode.Text" xml:space="preserve">
+    <value>Code Pays</value>
+  </data>
+  <data name="postcode.Text" xml:space="preserve">
+    <value>Code postal</value>
+  </data>
+  <data name="order.Text" xml:space="preserve">
+    <value>Commande</value>
+  </data>
+  <data name="sqlorderbyorder.Text" xml:space="preserve">
+    <value>Commande classée par</value>
+  </data>
+  <data name="pay.Text" xml:space="preserve">
+    <value>Payer</value>
+  </data>
+  <data name="orders.Text" xml:space="preserve">
+    <value>Commandes</value>
+  </data>
+  <data name="setup.Text" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="cartdays.Text" xml:space="preserve">
+    <value>Conservation du panier (en jours)</value>
+  </data>
+  <data name="cartdays.Help" xml:space="preserve">
+    <value>Conservation du panier dans la base de données. Une fois le nombre de jours écoulés, le panier sera retiré de la base de données.</value>
+  </data>
+  <data name="contactus.Text" xml:space="preserve">
+    <value>Contactez-nous</value>
+  </data>
+  <data name="contacts.Text" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="merchantcontacts.Text" xml:space="preserve">
+    <value>Contacts marchands</value>
+  </data>
+  <data name="continueshopping.Text" xml:space="preserve">
+    <value>Continuer les achats</value>
+  </data>
+  <data name="contactdetails.Text" xml:space="preserve">
+    <value>Coordonnées</value>
+  </data>
+  <data name="date.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="orderdate.Text" xml:space="preserve">
+    <value>Date de commande</value>
+  </data>
+  <data name="from.Text" xml:space="preserve">
+    <value>À partir de</value>
+  </data>
+  <data name="fromemail.Text" xml:space="preserve">
+    <value>De la part de</value>
+  </data>
+  <data name="productdata.Help" xml:space="preserve">
+    <value>Décocher la section données rendra la section des données du produit masquée dans l’administrateur du produit. </value>
+  </data>
+  <data name="setdefault.Text" xml:space="preserve">
+    <value>Définir comme valeur par défaut </value>
+  </data>
+  <data name="region.Text" xml:space="preserve">
+    <value>Département</value>
+  </data>
+  <data name="details.Text" xml:space="preserve">
+    <value>Détails</value>
+  </data>
+  <data name="bankdetails.Text" xml:space="preserve">
+    <value>Détails de la banque</value>
+  </data>
+  <data name="activeadminmenu.Help" xml:space="preserve">
+    <value>Différentes configurations ou options rendront certaines options de menu obsolètes. Cela vous permet de sélectionner les options qui doivent apparaître dans le menu administrateur des clients. </value>
+  </data>
+  <data name="document.Text" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="rootdomain.Text" xml:space="preserve">
+    <value>Domaine racine</value>
+  </data>
+  <data name="fail.Text" xml:space="preserve">
+    <value>Echec</value>
+  </data>
+  <data name="emailfail.Text" xml:space="preserve">
+    <value>Echec de l'envoi e-mail</value>
+  </data>
+  <data name="orderstatus150.Text" xml:space="preserve">
+    <value>Echec du paiement</value>
+  </data>
+  <data name="email.Text" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="contactemail.Text" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="manageremail.Text" xml:space="preserve">
+    <value>E-mail du manager de la boutique</value>
+  </data>
+  <data name="emailsent.Text" xml:space="preserve">
+    <value>E-mail envoyé</value>
+  </data>
+  <data name="sendreceivedemail.Text" xml:space="preserve">
+    <value>E-mail reçu</value>
+  </data>
+  <data name="employees.Text" xml:space="preserve">
+    <value>Employés</value>
+  </data>
+  <data name="orderstatus130.Text" xml:space="preserve">
+    <value>En attente</value>
+  </data>
+  <data name="orderstatus30.Text" xml:space="preserve">
+    <value>En attente de la banque</value>
+  </data>
+  <data name="orderstatus220.Text" xml:space="preserve">
+    <value>En attente de paiement</value>
+  </data>
+  <data name="orderstatus70.Text" xml:space="preserve">
+    <value>En attente de paiement</value>
+  </data>
+  <data name="orderstatus80.Text" xml:space="preserve">
+    <value>En attente de stock</value>
+  </data>
+  <data name="orderstatus90.Text" xml:space="preserve">
+    <value>En cours de fabrication</value>
+  </data>
+  <data name="saveandsend.Text" xml:space="preserve">
+    <value>Enregistrer et envoyer une notification</value>
+  </data>
+  <data name="sendemail.Text" xml:space="preserve">
+    <value>Envoyer l'e-mail</value>
+  </data>
+  <data name="orderstatus100.Text" xml:space="preserve">
+    <value>Expédié</value>
+  </data>
+  <data name="export.Text" xml:space="preserve">
+    <value>Exportation</value>
+  </data>
+  <data name="closed.Text" xml:space="preserve">
+    <value>Fermé</value>
+  </data>
+  <data name="sqlfilter.Text" xml:space="preserve">
+    <value>Filtre SQL </value>
+  </data>
+  <data name="sqlfilterproduct.Text" xml:space="preserve">
+    <value>Filtre SQL article  </value>
+  </data>
+  <data name="sqlfilterorder.Text" xml:space="preserve">
+    <value>Filtre SQL de commande  </value>
+  </data>
+  <data name="sqlfilterpayment.Text" xml:space="preserve">
+    <value>Filtre SQL de paiement </value>
+  </data>
+  <data name="general.Text" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="managerpassword.Text" xml:space="preserve">
+    <value>Gérer le mot de passe</value>
+  </data>
+  <data name="orderadmin.Text" xml:space="preserve">
+    <value>Gestion des commandes</value>
+  </data>
+  <data name="paymentadmin.Text" xml:space="preserve">
+    <value>Gestion des paiements</value>
+  </data>
+  <data name="history.Text" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="opentimes.Text" xml:space="preserve">
+    <value>Horaires ouverts</value>
+  </data>
+  <data name="validportalkeys.Help" xml:space="preserve">
+    <value>Il s’agit d’une liste de clés de portail à distance valides. Si l’API du site Web est appelée par un site Web à distance. Le module à distance doit passer une clé de portail.  Cette touche doit correspondre à 1 des valeurs de cette liste, sinon l’appel sera rejeté. (Une longueur minimale de 8 caractères est requise) **</value>
+  </data>
+  <data name="due.Text" xml:space="preserve">
+    <value>Impayé</value>
+  </data>
+  <data name="printlabel.Text" xml:space="preserve">
+    <value>Imprimer une étiquette d'expédition</value>
+  </data>
+  <data name="orderstatus20.Text" xml:space="preserve">
+    <value>Incomplète</value>
+  </data>
+  <data name="orderstatus0.Text" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
+  <data name="uilanguage.Text" xml:space="preserve">
+    <value>Interface utilisateur</value>
+  </data>
+  <data name="day.Text" xml:space="preserve">
+    <value>Jour</value>
+  </data>
+  <data name="collectiontime.Text" xml:space="preserve">
+    <value>Jour et heure de retrait</value>
+  </data>
+  <data name="justify.Text" xml:space="preserve">
+    <value>Justifier</value>
+  </data>
+  <data name="setdefault.Help" xml:space="preserve">
+    <value>L’exportation de ce magasin le définira comme la valeur par défaut pour tous les nouveaux magasins de portail créés sur cette installation. Un fichier "default_portalshop.xml" est créé dans le dossier RocketEcommerceAPI.  Lors de la création d’une nouvelle boutique de portails, ces données xml sont utilisées pour créer le nouveau portail. </value>
+  </data>
+  <data name="engineurl.Help" xml:space="preserve">
+    <value>L’URL du moteur est l’URL du portail qui est utilis&amp;#233;e comme moteur de commerce &amp;#233;lectronique et dont l’authentification utilisateur lui est li&amp;#233;e.  Il est autog&amp;#233;n&amp;#233;r&amp;#233; &amp;#224; l’aide d’une cl&amp;#233; GUID (sous-domaine) et d’un domaine racine.  Habituellement, le domaine racine sera le site par d&amp;#233;faut, mais il peut &amp;#234;tre modifi&amp;#233; pour utiliser une autre URL.  Le DNS EngineUrl devra pointer vers le serveur et &amp;#234;tre attach&amp;#233; &amp;#224; la liaison du site Web.  Il est automatiquement cr&amp;#233;&amp;#233; sous la forme d’un alias portail.&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt; &amp;lt;b&amp;gt;WARNING : modifier incorrectement cette URL peut emp&amp;#234;cher le moteur de commerce &amp;#233;lectronique de fonctionner.&amp;lt;/b&amp;gt; </value>
+  </data>
+  <data name="resetportalshop.Help" xml:space="preserve">
+    <value>La réinitialisation de la boutique restaurera tous les paramètres de la boutique la valeur par défaut pour le système.  (Généralement créé par l’Export PortalShop) </value>
+  </data>
+  <data name="preferedculturecode.Text" xml:space="preserve">
+    <value>Langue par défaut</value>
+  </data>
+  <data name="securitycode.Help" xml:space="preserve">
+    <value>Le code sécurisé est utilisé pour enregistrer un client API.  Ce code doit être envoyé par le système client pour accéder à ce système.  Une mauvaise utilisation de ce code peut entraîner un refus de service.</value>
+  </data>
+  <data name="sqlfilter.Help" xml:space="preserve">
+    <value>Le filtre SQL est une section de SQL qui interagit avec la base de donn&amp;#233;es SPROC pour effectuer une s&amp;#233;lection. Il s’agit presque toujours d’une recherche de texte, mais il peut &amp;#234;tre d&amp;#233;fini &amp;#224; ce que vous souhaitez.  L’id&amp;#233;e de base est d’obtenir le texte de recherche des utilisateurs, puis faire un appel SPROC avec ce filtre.  Les jetons dans &amp;quot;{&amp;#160;&amp;#187; &amp;quot;}&amp;#160;&amp;#187; seront remplac&amp;#233;s par le nom du champ SessionParam. </value>
+  </data>
+  <data name="emptybasket.Text" xml:space="preserve">
+    <value>Le panier est vide.</value>
+  </data>
+  <data name="collectionsegments.Text" xml:space="preserve">
+    <value>Les minutes entre chaque option de sélection de collection</value>
+  </data>
+  <data name="address1.Text" xml:space="preserve">
+    <value>Ligne d’adresse 1</value>
+  </data>
+  <data name="address2.Text" xml:space="preserve">
+    <value>Ligne d’adresse 2</value>
+  </data>
+  <data name="productlinklimit.Text" xml:space="preserve">
+    <value>Limite de lien produit</value>
+  </data>
+  <data name="productlimit.Text" xml:space="preserve">
+    <value>Limite de produit</value>
+  </data>
+  <data name="productdocumentlimit.Text" xml:space="preserve">
+    <value>Limite des documents par produit</value>
+  </data>
+  <data name="productimagelimit.Text" xml:space="preserve">
+    <value>Limite des images par produit</value>
+  </data>
+  <data name="productmodellimit.Text" xml:space="preserve">
+    <value>Limite des modèles par produit</value>
+  </data>
+  <data name="productoptionlimit.Text" xml:space="preserve">
+    <value>Limite des options Produit</value>
+  </data>
+  <data name="shipping.Text" xml:space="preserve">
+    <value>Livraison</value>
+  </data>
+  <data name="manager.Text" xml:space="preserve">
+    <value>Manager</value>
+  </data>
+  <data name="morning.Text" xml:space="preserve">
+    <value>Matin</value>
+  </data>
+  <data name="memebers.Text" xml:space="preserve">
+    <value>Membres</value>
+  </data>
+  <data name="activeadminmenu.Text" xml:space="preserve">
+    <value>Menu Admin actif</value>
+  </data>
+  <data name="shippingmethods.Text" xml:space="preserve">
+    <value>Méthodes de livraison</value>
+  </data>
+  <data name="paymentmethods.Text" xml:space="preserve">
+    <value>Méthodes de paiement</value>
+  </data>
+  <data name="models.Text" xml:space="preserve">
+    <value>Modèles</value>
+  </data>
+  <data name="productdatasection.Text" xml:space="preserve">
+    <value>Modèles&amp;nbsp;&amp;nbsp;&amp;nbsp;,Images&amp;nbsp;&amp;nbsp;&amp;nbsp;,Options&amp;nbsp;&amp;nbsp;&amp;nbsp;,Catégories&amp;nbsp;&amp;nbsp;&amp;nbsp;,Propriétés&amp;nbsp;&amp;nbsp;&amp;nbsp;,Docs&amp;nbsp;&amp;nbsp;&amp;nbsp;,Liens&amp;nbsp;&amp;nbsp;&amp;nbsp;,Html&amp;nbsp;&amp;nbsp;&amp;nbsp;,SEO&amp;nbsp;&amp;nbsp;&amp;nbsp;,Extra </value>
+  </data>
+  <data name="modify.Text" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="amount.Text" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="amountdue.Text" xml:space="preserve">
+    <value>Montant dû</value>
+  </data>
+  <data name="amountpaid.Text" xml:space="preserve">
+    <value>Montant payé</value>
+  </data>
+  <data name="keywords.Text" xml:space="preserve">
+    <value>Mots-clés</value>
+  </data>
+  <data name="name.Text" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="sqlorderby-product-name.Text" xml:space="preserve">
+    <value>Nom ↑</value>
+  </data>
+  <data name="sqlorderby-product-name-desc.Text" xml:space="preserve">
+    <value>Nom ↓</value>
+  </data>
+  <data name="lastname.Text" xml:space="preserve">
+    <value>Nom de famille</value>
+  </data>
+  <data name="bankname.Text" xml:space="preserve">
+    <value>Nom de la banque</value>
+  </data>
+  <data name="storename.Text" xml:space="preserve">
+    <value>Nom de la boutique</value>
+  </data>
+  <data name="companyname.Text" xml:space="preserve">
+    <value>Nom de la société</value>
+  </data>
+  <data name="accountname.Text" xml:space="preserve">
+    <value>Nom du compte</value>
+  </data>
+  <data name="productname.Text" xml:space="preserve">
+    <value>Nom du produit </value>
+  </data>
+  <data name="cartlimit.Text" xml:space="preserve">
+    <value>Nombre de paniers conservés</value>
+  </data>
+  <data name="cartlimit.Help" xml:space="preserve">
+    <value>Nombre de paniers qui peuvent être conservé dans la base de données. Une fois la limite atteinte, les paniers dont la durée dépasse 1 heure seront automatiquement supprimés, quel que soit le paramètre de conservation du panier.</value>
+  </data>
+  <data name="smtpfromemail.Text" xml:space="preserve">
+    <value>Noreply e-mail (SMTP)</value>
+  </data>
+  <data name="emailmessage.Text" xml:space="preserve">
+    <value>Note pour le destinataire</value>
+  </data>
+  <data name="notes.Text" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="internalnotes.Text" xml:space="preserve">
+    <value>Notes internes</value>
+  </data>
+  <data name="notification.Text" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="notifications.Text" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="paymentrequest.Text" xml:space="preserve">
+    <value>Nous sommes dans l'attente de votre paiement</value>
+  </data>
+  <data name="newpayment.Text" xml:space="preserve">
+    <value>Nouveau paiement</value>
+  </data>
+  <data name="newportal.Text" xml:space="preserve">
+    <value>Nouveau portail</value>
+  </data>
+  <data name="number.Text" xml:space="preserve">
+    <value>Numéro</value>
+  </data>
+  <data name="ordernumber.Text" xml:space="preserve">
+    <value>Numéro de commande</value>
+  </data>
+  <data name="accountnumber.Text" xml:space="preserve">
+    <value>Numéro de compte</value>
+  </data>
+  <data name="taxnumber.Text" xml:space="preserve">
+    <value>Numéro de TVA</value>
+  </data>
+  <data name="ok.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="options.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="productorderby.Text" xml:space="preserve">
+    <value>Options de la liste déroulante "Classer par"</value>
+  </data>
+  <data name="tools.Text" xml:space="preserve">
+    <value>Outils</value>
+  </data>
+  <data name="open.Text" xml:space="preserve">
+    <value>Ouvert</value>
+  </data>
+  <data name="pageandlinks.Text" xml:space="preserve">
+    <value>Pages et liens</value>
+  </data>
+  <data name="payment.Text" xml:space="preserve">
+    <value>Paiement</value>
+  </data>
+  <data name="orderstatus50.Text" xml:space="preserve">
+    <value>Paiement accepté</value>
+  </data>
+  <data name="bankpayment.Text" xml:space="preserve">
+    <value>Paiement en ligne sécurisé</value>
+  </data>
+  <data name="orderstatus210.Text" xml:space="preserve">
+    <value>Paiement non vérifié</value>
+  </data>
+  <data name="orderstatus60.Text" xml:space="preserve">
+    <value>Paiement non vérifié</value>
+  </data>
+  <data name="manualpay.Text" xml:space="preserve">
+    <value>Paiement par chèque ou virement</value>
+  </data>
+  <data name="payments.Text" xml:space="preserve">
+    <value>Paiements</value>
+  </data>
+  <data name="cart.Text" xml:space="preserve">
+    <value>Panier</value>
+  </data>
+  <data name="orderstatus10.Text" xml:space="preserve">
+    <value>Panier</value>
+  </data>
+  <data name="settings.Text" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="usersettings.Text" xml:space="preserve">
+    <value>Paramètres de l’utilisateur</value>
+  </data>
+  <data name="portalsettings.Text" xml:space="preserve">
+    <value>Paramètres du portail</value>
+  </data>
+  <data name="generalsettings.Text" xml:space="preserve">
+    <value>Paramètres généraux</value>
+  </data>
+  <data name="paymentprovider.Text" xml:space="preserve">
+    <value>Passerelle de paiement</value>
+  </data>
+  <data name="paymentproviders.Text" xml:space="preserve">
+    <value>Passerelles de paiement</value>
+  </data>
+  <data name="paid.Text" xml:space="preserve">
+    <value>Payée</value>
+  </data>
+  <data name="orderstatus200.Text" xml:space="preserve">
+    <value>Payée</value>
+  </data>
+  <data name="buy.Text" xml:space="preserve">
+    <value>Payer maintenant</value>
+  </data>
+  <data name="settingcountry.Text" xml:space="preserve">
+    <value>Pays</value>
+  </data>
+  <data name="country.Text" xml:space="preserve">
+    <value>Pays</value>
+  </data>
+  <data name="specialinstructions.Text" xml:space="preserve">
+    <value>Précisions commande</value>
+  </data>
+  <data name="firstname.Text" xml:space="preserve">
+    <value>Prénom</value>
+  </data>
+  <data name="price.Text" xml:space="preserve">
+    <value>Prix</value>
+  </data>
+  <data name="sqlorderby-product-price.Text" xml:space="preserve">
+    <value>Prix ↑</value>
+  </data>
+  <data name="sqlorderby-product-price-desc.Text" xml:space="preserve">
+    <value>Prix ↓</value>
+  </data>
+  <data name="discountprice.Text" xml:space="preserve">
+    <value>Prix réduit</value>
+  </data>
+  <data name="close.Text" xml:space="preserve">
+    <value>Proche</value>
+  </data>
+  <data name="products.Text" xml:space="preserve">
+    <value>Produits</value>
+  </data>
+  <data name="productadmin.Text" xml:space="preserve">
+    <value>Produits</value>
+  </data>
+  <data name="propertiesadmin.Text" xml:space="preserve">
+    <value>Propriétés</value>
+  </data>
+  <data name="properties.Text" xml:space="preserve">
+    <value>Propriétés</value>
+  </data>
+  <data name="protocol.Text" xml:space="preserve">
+    <value>Protocole</value>
+  </data>
+  <data name="providers.Text" xml:space="preserve">
+    <value>Providers</value>
+  </data>
+  <data name="qty.Text" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="maxproducts.Text" xml:space="preserve">
+    <value>Quantité de produits Maxium</value>
+  </data>
+  <data name="ref.Text" xml:space="preserve">
+    <value>R&amp;#233;f.</value>
+  </data>
+  <data name="sqlorderby-product-ref.Text" xml:space="preserve">
+    <value>R&amp;#233;f. ↑</value>
+  </data>
+  <data name="sqlorderby-product-ref-desc.Text" xml:space="preserve">
+    <value>R&amp;#233;f. ↓</value>
+  </data>
+  <data name="retrypayment.Text" xml:space="preserve">
+    <value>Réessayer le paiement</value>
+  </data>
+  <data name="invoiceref.Text" xml:space="preserve">
+    <value>Réf. de la facture</value>
+  </data>
+  <data name="resetportalshop.Text" xml:space="preserve">
+    <value>Réinitialiser la boutique</value>
+  </data>
+  <data name="discount.Text" xml:space="preserve">
+    <value>Remises</value>
+  </data>
+  <data name="makeactive.Text" xml:space="preserve">
+    <value>Rendre actif</value>
+  </data>
+  <data name="summary.Text" xml:space="preserve">
+    <value>Résumé</value>
+  </data>
+  <data name="collectinstore.Text" xml:space="preserve">
+    <value>Retrait sur place</value>
+  </data>
+  <data name="rocketecommerceapi.Text" xml:space="preserve">
+    <value>Rocket E-commerce</value>
+  </data>
+  <data name="street.Text" xml:space="preserve">
+    <value>Rue</value>
+  </data>
+  <data name="pleaseselect.Text" xml:space="preserve">
+    <value>S’il vous plaît sélectionner</value>
+  </data>
+  <data name="productdata.Text" xml:space="preserve">
+    <value>Sections de données des produits </value>
+  </data>
+  <data name="chosecollection.Text" xml:space="preserve">
+    <value>Sélectionnez votre jour et heure de retrait</value>
+  </data>
+  <data name="seo.Text" xml:space="preserve">
+    <value>SEO</value>
+  </data>
+  <data name="shippingproviders.Text" xml:space="preserve">
+    <value>Services de livraison</value>
+  </data>
+  <data name="taxproviders.Text" xml:space="preserve">
+    <value>Services de taxes</value>
+  </data>
+  <data name="company.Text" xml:space="preserve">
+    <value>Société</value>
+  </data>
+  <data name="subtotal.Text" xml:space="preserve">
+    <value>Sous-total</value>
+  </data>
+  <data name="orderstatus140.Text" xml:space="preserve">
+    <value>Spécial</value>
+  </data>
+  <data name="status.Text" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="orderstatus.Text" xml:space="preserve">
+    <value>Statut de commande</value>
+  </data>
+  <data name="support.Text" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="removearticle.confirm" xml:space="preserve">
+    <value>Supprimer l’article</value>
+  </data>
+  <data name="removehistory.Text" xml:space="preserve">
+    <value>Supprimer l’historique</value>
+  </data>
+  <data name="dashboard.Text" xml:space="preserve">
+    <value>Tableau de bord</value>
+  </data>
+  <data name="taxmethods.Text" xml:space="preserve">
+    <value>Taxes</value>
+  </data>
+  <data name="tel.Text" xml:space="preserve">
+    <value>Tél.</value>
+  </data>
+  <data name="phone.Text" xml:space="preserve">
+    <value>Téléphone</value>
+  </data>
+  <data name="orderstatus110.Text" xml:space="preserve">
+    <value>Terminée</value>
+  </data>
+  <data name="total.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="allproducts.Text" xml:space="preserve">
+    <value>Tous les articles</value>
+  </data>
+  <data name="orderstatusall.Text" xml:space="preserve">
+    <value>Tous les statuts</value>
+  </data>
+  <data name="sqlorderbyproduct.Text" xml:space="preserve">
+    <value>Tri par article </value>
+  </data>
+  <data name="orderstatus180.Text" xml:space="preserve">
+    <value>Trop perçu</value>
+  </data>
+  <data name="orderstatus190.Text" xml:space="preserve">
+    <value>Trop perçu non vérifié</value>
+  </data>
+  <data name="tax.Text" xml:space="preserve">
+    <value>TVA</value>
+  </data>
+  <data name="controltype.Text" xml:space="preserve">
+    <value>Type de contrôle</value>
+  </data>
+  <data name="discountmethods.Text" xml:space="preserve">
+    <value>Types de remises</value>
+  </data>
+  <data name="sqlorderby.Help" xml:space="preserve">
+    <value>Une liste d’ordre SQL par clauses, ceci sera utilisé pour classer par ordre les listes de produits via un menu déroulant. Pour donner un ordre de tri sur une grande base de données un index sera requis. </value>
+  </data>
+  <data name="unit.Text" xml:space="preserve">
+    <value>Unité</value>
+  </data>
+  <data name="engineurl.Text" xml:space="preserve">
+    <value>URL du moteur</value>
+  </data>
+  <data name="enginedomain.Text" xml:space="preserve">
+    <value>URL du moteur</value>
+  </data>
+  <data name="websiteurl.Text" xml:space="preserve">
+    <value>URL du site Web</value>
+  </data>
+  <data name="usebillingaddress.Text" xml:space="preserve">
+    <value>Utiliser l'adresse de facturation</value>
+  </data>
+  <data name="value.Text" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="sales.Text" xml:space="preserve">
+    <value>Ventes</value>
+  </data>
+  <data name="city.Text" xml:space="preserve">
+    <value>Ville</value>
+  </data>
+  <data name="viewcart.Text" xml:space="preserve">
+    <value>Voir le panier</value>
+  </data>
+  <data name="productlinklimit.Msg" xml:space="preserve">
+    <value>Votre limite de lien produit ne permettra pas d’ajouter des liens supplémentaires.  Contactez votre webmaster pour augmenter la limite de votre lien produit.</value>
+  </data>
+  <data name="productlimit.Msg" xml:space="preserve">
+    <value>Votre limite de produit ne permettra pas d’ajouter d’autres produits.  Contactez votre webmaster pour augmenter votre limite de produit.</value>
+  </data>
+  <data name="productdocumentlimit.Msg" xml:space="preserve">
+    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de document. Contactez nous pour modifier cette limite.</value>
+  </data>
+  <data name="productmodellimit.Msg" xml:space="preserve">
+    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de modèle. Contactez nous pour modifier cette limite.</value>
+  </data>
+  <data name="productoptionlimit.Msg" xml:space="preserve">
+    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de produit. Contactez nous pour modifier cette limite.</value>
+  </data>
+  <data name="productimagelimit.Msg" xml:space="preserve">
+    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter d'image. Contactez nous pour modifier cette limite.</value>
+  </data>
+  <data name="brand.Text" xml:space="preserve">
+    <value>Marque</value>
+  </data>
+  <data name="saleprice.Text" xml:space="preserve">
+    <value>Prix soldé</value>
+  </data>
+  <data name="copy.Text" xml:space="preserve">
+    <value>Copie</value>
+  </data>
+  <data name="yourcontactdetails.Text" xml:space="preserve">
+    <value>Vos coordonnées de contact</value>
+  </data>
+  <data name="deliverymsg.Text" xml:space="preserve">
+    <value>Livraison à domicile</value>
+  </data>
+  <data name="shippingquestion.Text" xml:space="preserve">
+    <value>Comment souhaitez vous recevoir votre commande ?</value>
+  </data>
+</root>

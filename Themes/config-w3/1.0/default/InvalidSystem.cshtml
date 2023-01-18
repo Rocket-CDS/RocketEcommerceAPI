@@ -1,0 +1,21 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var portalShop = (PortalShopLimpet)Model.List.First();
+}
+
+<div class="w3-panel w3-pale-red w3-padding w3-border w3-border-red w3-xlarge">
+    <span class="material-icons w3-text-red" style="font-size:32px;">
+        warning
+    </span>
+    <span class="">@ResourceKey("RE.invalidsetup")</span>
+    <span class="w3-padding w3-button w3-large w3-theme-action simplisity_click" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalShop.PortalId","systemkey":"rocketecommerceapi"}'>@ButtonText(ButtonTypes.setup)</span>
+</div>

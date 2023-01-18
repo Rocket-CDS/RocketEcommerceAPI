@@ -1,0 +1,58 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using System.Globalization;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/rocketecommerceapi/HtmlClickAndCollect/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var cartData = (CartLimpet)Model.List.First();
+    if (cartData.Record != null)
+    {
+        info = new SimplisityInfo(cartData.Record);
+    }
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var companyData = (CompanyLimpet)Model.GetDataObject("companydata");
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+    var appThemeDefault = (AppThemeLimpet)Model.GetDataObject("appthemedefault");
+}
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+<div id="datasection" class="w3-container">
+
+    <h3>@ResourceKey("RE.collectinstore", sessionParams.CultureCode)</h3>
+
+    @RenderTemplate("CartCollectBody.cshtml", appThemeDefault, Model, true)
+
+    <div class="w3-row w3-margin-bottom ">
+        <label>@ResourceKey("RE.specialinstructions", sessionParams.CultureCode)</label>
+        @TextArea(info, "genxml/textbox/clientnotes", " class='w3-input w3-border' rows='4' ")
+    </div>
+
+</div>
+
+@RenderTemplate("CartDetailsButtons.cshtml", appThemeDefault, Model, true)
+
+<script>
+    $(document).ready(function () {
+        $('#collectinstore').prop('checked', true);
+        
+        $('html, body').stop().animate({
+            'scrollTop': $("#ecommerce-tag").offset().top
+        }, 400, 'swing', function () {
+            window.location.hash = "#ecommerce-tag";
+        });
+
+    });
+</script>
+
+
+

@@ -1,0 +1,175 @@
+﻿
+/* all */
+.orderstatusall {
+    background: #f2f2f2;
+    color: black;
+}
+/* Unknown */
+.orderstatus0 {
+    background: #800000;
+    color: white;
+}
+/* Cart */
+.orderstatus10 {
+    background: #bbbbbb;
+    color: white;
+}
+/* Incomplete */
+.orderstatus20 {
+    background: #2d3538;
+    color: white;
+}
+/* Waiting for Bank */
+.orderstatus30 {
+    background: #66797f;
+    color: white;
+}
+/* Cancelled */
+.orderstatus40 {
+    background: #ff1a1a;
+    color: white;
+}
+/* Payment OK */
+.orderstatus50 {
+    background: #009900;
+    color: white;
+}
+/* Payment Not Verified */
+.orderstatus60 {
+    background: #ff6600;
+    color: white;
+}
+/* Waiting for Payment */
+.orderstatus70 {
+    background: #eb2659;
+    color: white;
+}
+/* Waiting for Stock - Pink */
+.orderstatus80 {
+    background: #eb2659;
+    color: white;
+}
+.orderstatus90 {
+    background: #893658;
+    color: white;
+}
+/* Shipped */
+.orderstatus100 {
+    background: #0066ff;
+    color: white;
+}
+.orderstatus110 {
+    background: #003d99;
+    color: white;
+}
+.orderstatus120 {
+    background: #000000;
+    color: white;
+}
+.orderstatus130 {
+    background: #eb2659;
+    color: white;
+}
+/* Special */
+.orderstatus140 {
+    background: #800000;
+    color: white;
+}
+
+/* Payment Failed*/
+.orderstatus150 {
+    background: #ff1a1a;
+    color: white;
+}
+
+/* Partial Payment */
+.orderstatus160 {
+    background: #4169E1;
+    color: white;
+}
+/* Partial Payment Not Verified*/
+.orderstatus170 {
+    background: #FFA500;
+    color: white;
+}
+/* Over Paid*/
+.orderstatus180 {
+    background: #800080;
+    color: white;
+}
+/* Over Paid Not Verified*/
+.orderstatus190 {
+    background: #663399;
+    color: white;
+}
+/* Paid*/
+.orderstatus200 {
+    background: #009900;
+    color: white;
+}
+/* Payment Not Verified */
+.orderstatus210 {
+    background: #ff6600;
+    color: white;
+}
+/* Waiting for Payment */
+.orderstatus220 {
+    background: #eb2659;
+    color: white;
+}
+
+.tag-editor {
+    font: inherit !important;
+}
+.tag-editor .tag-editor-delete {
+    background: white !important;
+}
+.tag-editor .tag-editor-tag {
+    background: #ffffe6 !important;
+    color: #000 !important;
+}
+
+/* Style the list */
+ul.breadcrumb {
+    padding: 3px 4px;
+    list-style: none;
+    background-color: #eee;
+}
+
+/* Display list items side by side */
+ul.breadcrumb li {
+    display: inline;
+    font-size: 14px;
+}
+
+/* Add a slash symbol (/) before/behind each list item */
+ul.breadcrumb li + li:before {
+    padding: 8px;
+    color: black;
+    content: ">";
+}
+
+.w3-ul-alt {
+    list-style-type: none;
+    padding: 0;
+    margin: 0
+}
+
+.w3-ul-alt li {
+    padding: 4px 8px;
+    border-bottom: none;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+
+.material-icons {
+    vertical-align: middle;
+}
+
+@media (max-width:992px) {
+    .w3-top {
+        width: 100% !important;
+    }
+}

@@ -1,0 +1,172 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var cartData = (CartLimpet)Model.List.First();
+    if (cartData.Record != null)
+    {
+        info = new SimplisityInfo(cartData.Record);
+    }
+
+    var optionclass = "a-delivery";
+    if (cartData.CollectInStore)
+    {
+        optionclass = "a-collect";
+    }
+
+    var countryData = new CountryLimpet(PortalUtils.GetPortalId());
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+    var appThemeDefault = (AppThemeLimpet)Model.GetDataObject("appthemedefault");
+}
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+<div id="datasection" class="w3-container">
+
+    <h3>@ResourceKey("RE.shipping", sessionParams.CultureCode)</h3>
+
+    <div class="a-shippingquestion">
+        <div class="w3-xlarge w3-center w3-margin">@ResourceKey("RE.shippingquestion")</div>
+        <div class="w3-row-padding" style="margin:0 -16px">
+            <div class="w3-half">
+                <div style="height:72px; cursor:pointer;" class="w3-card w3-display-container w3-margin-bottom w3-hover-light-grey a-delivery"><div class="a-deliverytext w3-padding w3-display-middle w3-large">@ResourceKey("RE.deliverymsg", sessionParams.CultureCode)</div></div>
+            </div>
+            <div class="w3-half">
+                <div style="height:72px; cursor:pointer;" class="w3-card w3-display-container w3-margin-bottom w3-hover-light-grey a-collect"><div class="a-collecttext w3-padding w3-display-middle w3-large">@ResourceKey("RE.collectinstore", sessionParams.CultureCode)</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-row w3-padding a-collectionsection" style="display:none;">
+        @RenderTemplate("CartCollectBody.cshtml", appThemeDefault, Model, true)
+    </div>
+
+    <div class="w3-row a-deliverysection" style="display:none;">
+        <div class="w3-half w3-padding">
+            @RenderTemplate("CartAddressBillBody.cshtml", appThemeDefault, Model, true)
+        </div>
+        <div class="w3-half w3-padding">
+            @RenderTemplate("CartAddressShipBody.cshtml", appThemeDefault, Model, true)
+        </div>
+    </div>
+
+    <div class="w3-row w3-margin-bottom w3-padding">
+        <label>@ResourceKey("RE.specialinstructions", sessionParams.CultureCode)</label>
+        @TextArea(info, "genxml/textbox/clientnotes", " class='w3-input w3-border' rows='4' ")
+    </div>
+
+</div>
+
+@RenderTemplate("CartDetailsButtons.cshtml", appThemeDefault, Model, true)
+
+<script>
+    $(document).ready(function () {
+
+        $('.a-delivery').off("click");
+        $(".a-delivery").click(function () {
+            showdeliveryoptions();
+        });
+        $('.a-collect').off("click");
+        $(".a-collect").click(function () {
+            showcollectionoptions();
+        });
+
+        @if (!cartData.ShipUseBillAddress) {
+            @: $('.shipaddress').prop("disabled", false);
+        }
+        @if (cartData.CollectInStore) {
+            @: showcollectionoptions();
+        }
+        else {
+            @: showdeliveryoptions();
+        }
+
+
+        $('#usebillingaddress').off("change");
+        $('#usebillingaddress').change(function () {
+            if ($(this).prop('checked')) {
+                $('.shipaddress').prop("disabled", true);
+                copybill2ship();
+            }
+            else {
+                $('.shipaddress').prop("disabled", false);
+                $('.editshipbutton').hide();
+            }
+        });
+        $('#collectinstore').off("change");
+        $('#collectinstore').change(function () {
+            if ($(this).prop('checked')) {
+                showcollectionoptions();
+            }
+            else {
+                showdeliveryoptions();
+            }
+        });
+        $('.billaddress').off("change");
+        $('.billaddress').change(function () {
+            copybill2ship();
+        });
+
+        $('html, body').stop().animate({
+            'scrollTop': $("#ecommerce-tag").offset().top
+        }, 400, 'swing', function () {
+            window.location.hash = "#ecommerce-tag";
+        });
+
+
+    });
+
+    function showcollectionoptions() {
+        $('.a-collectionsection').show();
+        $('.a-deliverysection').hide();
+        $('#collectinstore').prop('checked', true);
+        $('.a-collecttext').addClass('w3-tag');
+        $('.a-deliverytext').removeClass('w3-tag');
+        $('.a-collecttext').addClass('w3-large');
+        $('.a-deliverytext').removeClass('w3-large');
+    }
+    function showdeliveryoptions() {
+        $('.a-collectionsection').hide();
+        $('.a-deliverysection').show();
+        $('#collectinstore').prop('checked', false);
+        $('.a-deliverytext').addClass('w3-tag');
+        $('.a-collecttext').removeClass('w3-tag');
+        $('.a-deliverytext').addClass('w3-large');
+        $('.a-collecttext').removeClass('w3-large');
+    }
+    function editshipaddress() {
+        $('.shipaddress').prop("disabled", false);
+        $('#usebillingaddress').prop("checked", false);
+        $('.editshipbutton').hide();
+    }
+    function copybill2ship() {
+        $('#shipfirstname').val($('#billfirstname').val());
+        $('#shiplastname').val($('#billlastname').val());
+        $('#shipemail').val($('#billemail').val());
+        $('#shipphone').val($('#billphone').val());
+        $('#shipcompany').val($('#billcompany').val());
+        $('#shipaddress1').val($('#billaddress1').val());
+        $('#shipaddress2').val($('#billaddress2').val());
+        $('#shipcity').val($('#billcity').val());
+        $('#shippostcode').val($('#billpostcode').val());
+        $('#shipcountry').val(''); // difficult to populate disabled fields with dropdown data.
+        $('#shipregion').val('');
+    }
+
+</script>
+
+
+

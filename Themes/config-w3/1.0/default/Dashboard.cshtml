@@ -1,0 +1,178 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components
+@using System.Globalization
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketAppTheme/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var portalShop = (PortalShopLimpet)Model.List.First();
+    var systemData = new SystemLimpet("rocketecommerceapi");
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");    
+    var portalStats = (PortalShopLimpetStats)Model.GetDataObject("portalstats");        
+}
+
+@RenderLanguageSelector("dashboard_get", "", appThemeSystem, Model)
+
+<div class='w3-animate-opacity w3-padding'>
+
+    <div class="w3-col m2 w3-tiny w3-right w3-right-align">PortalId:&nbsp;@portalShop.PortalId</div>
+
+    <h2>@portalData.Name</h2>
+
+    <div class="w3-right w3-button w3-blue w3-margin-bottom simplisity_confirmclick" s-cmd="portalshops_calcstats" s-confirm="@ResourceKey("RE.calcstats") ?">
+        <span class="material-icons">
+            functions
+        </span>
+        @ResourceKey("RE.calcstats")       
+    </div>
+
+    <div class="w3-row">
+        <div class="w3-threequarter">
+        <div class="w3-row">
+            <div class="w3-third w3-padding simplisity_click" s-cmd="productadmin_editproductlist" style="cursor:pointer;">
+          <div class="w3-container w3-green w3-padding-16 w3-margin-bottom">
+            <div class="w3-left">
+            <span class="material-icons  w3-xxlarge">
+                redeem
+            </span>    
+            </div>
+            <div class="w3-right">
+              <div class="w3-xlarge">@portalStats.ProductCount</div>
+            </div>
+            <div class="w3-clear"></div>
+            <div class="w3-large w3-margin">@ResourceKey("RE.products")</div>
+          </div>
+
+            </div>
+            <div class="w3-third w3-padding simplisity_click" s-cmd="orderadmin_editlist" style="cursor:pointer;">
+          <div class="w3-container w3-blue w3-padding-16 w3-margin-bottom">
+            <div class="w3-left">
+            <span class="material-icons  w3-xxlarge">
+                shopping_cart_checkout
+            </span>    
+            </div>
+            <div class="w3-right">
+              <div class="w3-xlarge">@portalStats.OrderCount</div>
+            </div>
+            <div class="w3-clear"></div>
+            <div class="w3-large w3-margin">@ResourceKey("RE.orders")</div>
+          </div>
+
+            </div>
+            <div class="w3-third w3-padding">
+          <div class="w3-container w3-orange w3-text-white w3-padding-16 w3-margin-bottom">
+            <div class="w3-left">
+            <span class="material-icons  w3-xxlarge">
+                person_outline
+            </span>    
+            </div>
+            <div class="w3-right">
+              <div class="w3-xlarge">@portalStats.ClientCount</div>
+            </div>
+            <div class="w3-clear"></div>
+            <div class="w3-large w3-margin">@ResourceKey("RE.clients")</div>
+          </div>
+            </div>
+    </div>
+
+    <div class="w3-hide-small chart-container" style="position: relative; height:200px; width:60vw">
+        <canvas id="bar-chart"></canvas>
+    </div>
+
+        </div>
+        <div class="w3-quarter">
+
+            <div class="w3-bar-block  w3-padding " style="width:100%;">
+                @foreach (var s in portalStats.StatusTotals())
+                {
+                    var statuscode = s.Key;
+                    var statuscount = s.Value;
+                    <div class="w3-bar-item orderstatus@(statuscode) w3-round w3-border-bottom">
+                        @ResourceKey("RE.orderstatus" + statuscode)                    
+                        <div class="w3-right">@statuscount</div>
+                    </div>                    
+                }
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@{
+    var chartlabels = "";
+    var chartdata = "";
+    var chartdatalabel = ResourceKey("RE.total").ToString() + ".";
+    var chartdatacolor = "";
+
+    var lp = 1;
+    var monthDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+    while (lp <= 12)
+    {
+        var o = portalStats.GetOrderTotalsByDate(monthDate.Year, monthDate.Month);
+        if (o != null)
+        {
+            chartlabels += "\"" + monthDate.Year + "." + monthDate.Month.ToString("00") + "\",";
+            chartdatacolor += "\"#3e95cd\",";
+            chartdata += Convert.ToInt32(portalShop.CurrencyCentsToDollars(o.GetXmlPropertyInt("genxml/total"))) + ",";
+        }
+        else
+        {
+            chartlabels += "\"" + monthDate.Year + "." + monthDate.Month.ToString("00") + "\",";
+            chartdatacolor += "\"#3e95cd\",";
+            chartdata += "0,";
+        }
+
+        lp += 1;
+        monthDate = monthDate.AddMonths(-1);
+    }
+    chartlabels = chartlabels.TrimEnd(',');
+    chartdatacolor = chartdatacolor.TrimEnd(',');
+    chartdata = chartdata.TrimEnd(',');    
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        selectMenu('dashboard');
+
+        // Bar chart
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+              labels: [@HtmlOf(chartlabels)],
+              datasets: [
+                {
+                  label: "@HtmlOf(chartdatalabel)",
+                  backgroundColor: [@HtmlOf(chartdatacolor)],
+                  data: [@(chartdata)]
+                }
+              ]
+            },
+            options: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: ''
+              }
+            }
+        });
+
+    });
+
+    function docopyclipboard(element) {
+        readmin.CopyTextToClipboard(element);
+    }
+</script>
+

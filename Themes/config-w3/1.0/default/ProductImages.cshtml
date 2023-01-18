@@ -1,0 +1,69 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var productData = (ProductLimpet)Model.List.First();
+    var imgLP = 0;
+
+    var datalist = productData.GetImageList();
+    var globalSettings = new SystemGlobalData();
+}
+
+<div class="w3-row imagelistdatasection">
+
+    <div class="w3-container">
+        <div class="w3-button w3-theme w3-padding-8" onclick="$('#productimageselect').show();">@ButtonIcon(ButtonTypes.add)</div>
+        <div class="w3-button w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <ul id="imagelistdata" class="w3-ul">
+
+        @foreach (var imgInfo in datalist)
+        {
+            imgLP += 1;
+            var articleImage = new ArticleImage(imgInfo, "productimage");
+
+            <li class="imagelist w3-third w3-display-container w3-border-0">
+
+                @SortableListIndex(imgInfo, imgLP)
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-right simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
+                        @ButtonIcon(ButtonTypes.remove)
+                    </span>
+                    <div class="w3-row">
+                        <div class="w3-col m2 w3-padding-small" style="width:56px;">
+                            @if (articleImage.RelPath != "")
+                            {
+                                <img src="@ThumbnailImageUrl(articleImage.RelPath, 48, 48)" style="height: 48px;width: 48px;" class="w3-round" />
+                            }
+                            else
+                            {
+                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 48, 48)" style="height:48px;width:48px;" class="w3-round" />
+                            }
+                        </div>
+                        <div class="w3-col w3-padding m8 w3-hide-small">
+                            @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealt", "class='w3-input w3-border ' MaxLength='200'", "", true, imgLP)
+                            @HiddenField(imgInfo, "genxml/hidden/imagepathproductimage", "", "", false, imgLP)
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+    });
+</script>

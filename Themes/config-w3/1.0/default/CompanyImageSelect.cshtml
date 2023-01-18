@@ -1,0 +1,51 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var globalSettings = new SystemGlobalData();
+    var companyData = (CompanyLimpet)Model.List.First();
+    if (companyData.Info != null)
+    {
+        info = companyData.Info;
+    }
+    var portalShop = new PortalShopLimpet(companyData.PortalId, DNNrocketUtils.GetEditCulture());
+
+}
+
+<div id="companyimageselect" class="w3-modal">
+    <div class="w3-modal-content" style="width:40%;">
+        <div class="w3-margin-top" style="">
+            <div class="w3-container">
+                <span onclick="$('#companyimageselect').hide();" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("RE.imageupload")</h2>
+                <p>@ResourceKey("RE.imageupload", "", "Msg")</p>
+
+
+                <div class="w3-col m12 w3-white w3-margin-bottom" style="border-style:dotted;height:80px;">
+                    <input id="companyimagefileupload" class="simplisity_fileupload" s-reload="false" s-maxchunksize="10000000" s-cmd="company_addimage" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"companyid":"@companyData.CompanyId"}' type="file" name="files[]" multiple style="display:none;">
+                    <p><i>&nbsp;@ResourceKey("DNNrocket.dropimage")...</i></p>
+                </div>
+
+                <div class="w3-row w3-margin-bottom">
+                    <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#companyimagefileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+    });
+
+</script>

@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head runat="server">
+    <title>Rocket E-Commerce</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .w3-sidebar a {
+            font-family: "Roboto", sans-serif
+        }
+
+        body, h1, h2, h3, h4, h5, h6, .w3-wide {
+            font-family: "Montserrat", sans-serif;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/DesktopModules/DNNrocketModules/RocketEcommerceAPI/Themes/config-w3/1.0/css/RocketEcommerceAPI-Theme.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
+
+    <!-- CDN -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    -->
+    <!-- LOCAL -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css">
+    <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+    <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!--
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
+
+        -->
+
+
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
+
+    <script src="https://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>
+
+    <script src="https://www.w3schools.com/lib/w3codecolor.js"></script>
+
+    <script src="/DesktopModules/DNNrocket/js/jquery.selectlistactions.js"></script>
+
+
+    <!--
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Sarabun:200,400,400i,700&display=swap');
+
+        html, body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Sarabun", cursive, sans-serif;
+        }
+    </style>
+
+        -->
+
+    <script>
+        $(document).ready(function () {
+            $(document).simplisityStartUp('http://ipntest.nevoweboffice.com/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketecommerceapi', debug: false });
+        });
+    </script>
+
+</head>
+<body class="w3-content" style="max-width:1200px">
+    <div>
+        <!-- Sidebar/menu -->
+        <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+            <div class="w3-container w3-display-container w3-padding-16">
+                <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+                <h3 class="w3-wide"><b>LOGO</b></h3>
+            </div>
+            <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+                <a href="#" class="w3-bar-item w3-button">Shirts</a>
+                <a href="#" class="w3-bar-item w3-button">Dresses</a>
+                <a onclick="myAccFunc()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
+                    Jeans <i class="fa fa-caret-down"></i>
+                </a>
+                <div id="demoAcc" class="w3-bar-block w3-hide w3-padding-large w3-medium">
+                    <a href="#" class="w3-bar-item w3-button w3-light-grey"><i class="fa fa-caret-right w3-margin-right"></i>Skinny</a>
+                    <a href="#" class="w3-bar-item w3-button">Relaxed</a>
+                    <a href="#" class="w3-bar-item w3-button">Bootcut</a>
+                    <a href="#" class="w3-bar-item w3-button">Straight</a>
+                </div>
+                <a href="#" class="w3-bar-item w3-button">Jackets</a>
+                <a href="#" class="w3-bar-item w3-button">Gymwear</a>
+                <a href="#" class="w3-bar-item w3-button">Blazers</a>
+                <a href="#" class="w3-bar-item w3-button">Shoes</a>
+            </div>
+            <a href="#footer" class="w3-bar-item w3-button w3-padding">Contact</a>
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding" onclick="document.getElementById('newsletter').style.display='block'">Newsletter</a>
+            <a href="#footer" class="w3-bar-item w3-button w3-padding">Subscribe</a>
+        </nav>
+
+
+        <!-- Product grid -->
+        <div id="simplisity_startpanel" class="w3-row w3-grayscale simplisity_panel" s-cmd="rocketecommerceapi_productlist" s-fields='{"remotecall":"true","securitykey":"jPcWWiIMkylhoJHwQTQA","systemkey":"rocketecommerceapi","remotesystemkey":"rocketecommerceapi","remotetemplate":"view.cshtml","appthemefolder":"Rocket_DemoList","appthemeversion":"1.0"}'>
+            <div class="" style="height:100px;">
+                <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
+            </div>
+        </div>
+
+
+        <!-- End page content -->
+    </div>
+
+        <script>
+            // Accordion
+            function myAccFunc() {
+                var x = document.getElementById("demoAcc");
+                if (x.className.indexOf("w3-show") == -1) {
+                    x.className += " w3-show";
+                } else {
+                    x.className = x.className.replace(" w3-show", "");
+                }
+            }
+
+            // Click on the "Jeans" link on page load to open the accordion for demo purposes
+            document.getElementById("myBtn").click();
+
+
+            // Open and close sidebar
+            function w3_open() {
+                document.getElementById("mySidebar").style.display = "block";
+                document.getElementById("myOverlay").style.display = "block";
+            }
+
+            function w3_close() {
+                document.getElementById("mySidebar").style.display = "none";
+                document.getElementById("myOverlay").style.display = "none";
+            }
+        </script>
+
+</body>
+</html>

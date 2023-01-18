@@ -1,0 +1,110 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var cartData = (CartLimpet)Model.List.First();
+    if (cartData.Record != null)
+    {
+        info = new SimplisityInfo(cartData.Record);
+    }
+
+    var countryData = new CountryLimpet(PortalUtils.GetPortalId());
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+    var appThemeDefault = (AppThemeLimpet)Model.GetDataObject("appthemedefault");
+}
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+<div id="datasection" class="w3-container">
+
+    <h3>@ResourceKey("RE.shipping", sessionParams.CultureCode)</h3>
+
+    @CheckBox(info, "genxml/checkbox/collectinstore", "", "class='w3-check w3-hide ' disabled", false)
+
+    <div class="w3-row a-deliverysection">
+        <div class="w3-half w3-padding">
+            @RenderTemplate("CartAddressBillBody.cshtml", appThemeDefault, Model, true)
+        </div>
+        <div class="w3-half w3-padding">
+            @RenderTemplate("CartAddressShipBody.cshtml", appThemeDefault, Model, true)
+        </div>
+    </div>
+    <div class="w3-row w3-margin-bottom w3-padding">
+        <label>@ResourceKey("RE.specialinstructions", sessionParams.CultureCode)</label>
+        @TextArea(info, "genxml/textbox/clientnotes", " class='w3-input w3-border' rows='4' ")
+    </div>
+
+</div>
+
+@RenderTemplate("CartDetailsButtons.cshtml", appThemeDefault, Model, true)
+
+<script>
+    $(document).ready(function () {
+
+        $('#collectinstore').prop('checked', false);
+
+        @if (!cartData.ShipUseBillAddress) {
+            @: $('.shipaddress').prop("disabled", false);
+        }
+
+        $('#collectinstore').prop('checked', false);
+
+        $('#usebillingaddress').off("change");
+        $('#usebillingaddress').change(function () {
+            if ($(this).prop('checked')) {
+                $('.shipaddress').prop("disabled", true);
+                copybill2ship();
+            }
+            else {
+                $('.shipaddress').prop("disabled", false);
+                $('.editshipbutton').hide();
+            }
+        });
+        $('.billaddress').off("change");
+        $('.billaddress').change(function () {
+            copybill2ship();
+        });
+
+        $('html, body').stop().animate({
+            'scrollTop': $("#ecommerce-tag").offset().top
+        }, 400, 'swing', function () {
+            window.location.hash = "#ecommerce-tag";
+        });
+
+    });
+    function editshipaddress() {
+        $('.shipaddress').prop("disabled", false);
+        $('#usebillingaddress').prop("checked", false);
+        $('.editshipbutton').hide();
+    }
+    function copybill2ship() {
+        $('#shipfirstname').val($('#billfirstname').val());
+        $('#shiplastname').val($('#billlastname').val());
+        $('#shipemail').val($('#billemail').val());
+        $('#shipphone').val($('#billphone').val());
+        $('#shipcompany').val($('#billcompany').val());
+        $('#shipaddress1').val($('#billaddress1').val());
+        $('#shipaddress2').val($('#billaddress2').val());
+        $('#shipcity').val($('#billcity').val());
+        $('#shippostcode').val($('#billpostcode').val());
+        $('#shipcountry').val(''); // difficult to populate disabled fields with dropdown data.
+        $('#shipregion').val('');
+    }
+
+</script>
+
+
+

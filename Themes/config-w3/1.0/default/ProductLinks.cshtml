@@ -1,0 +1,135 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var productData = (ProductLimpet)Model.List.First();
+    var linkLP = 0;
+
+    var datalist = productData.GetLinkList();
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+}
+
+<div class="w3-row linklistdatasection">
+
+    <div class="w3-container">
+        @if (productData.GetLinkList().Count < productData.PortalShop.ProductLinkLimit)
+        {
+            <div class="w3-button w3-theme w3-padding-8 simplisity_click"  s-before="saveRichText" s-post="#datasection" s-list=".modellist,.imagelist,.optionlist,.documentlist,.linklist" s-cmd="productadmin_addlink" s-fields='{"productid":"@productData.ProductId"}'>@ButtonIcon(ButtonTypes.add)</div>
+        }
+        else
+        {
+            <div class="w3-button w3-theme w3-padding-8" onclick="$('#productlinkmsg').show();">@ButtonIcon(ButtonTypes.add)</div>
+
+            <div id="productlinkmsg" class="w3-modal">
+                <div class="w3-modal-content" style="width:40%;">
+
+                    <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
+                        <span onclick="$('#productlinkmsg').hide();" class="w3-button w3-display-topright">&times;</span>
+                        <h4></h4>
+                    </header>
+                    <div class="w3-margin-top" style="">
+                        <div class="w3-container">
+                            <h2>@ResourceKey("RE.productlinklimit")</h2>
+                            <p>@ResourceKey("RE.productlinklimit", "", "Msg")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="w3-button w3-padding-8 simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <ul id="linklistdata" class="w3-ul">
+
+        @foreach (var linkInfo in datalist)
+        {
+            <li class="linklist w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(linkInfo, linkLP)
+
+                @{
+                    var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype");
+                    var internaldisplay = "display:none;";
+                    var externaldisplay = "";
+                    if (linktype == 2)
+                    {
+                        internaldisplay = "display:none;";
+                        externaldisplay = "";
+                    }
+                }
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+
+                        <div class="w3-col m6">
+                            @RadioButtonList(linkInfo, "genxml/radio/linktype", "1,2", ResourceKey("DNNrocket.internallink") + "," + ResourceKey("DNNrocket.externallink"), " class='linktypeclick w3-hide' linkrow='" + linkLP + "' ", "2", "", false, linkLP)
+                        </div>
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/linkblank", "&nbsp;" + ResourceKey("DNNrocket.blank").ToString(), " class='w3-check' ", false, false, linkLP)
+                        </div>
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/linkhide", "&nbsp;" + ResourceKey("DNNrocket.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
+                        </div>
+
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col m4 w3-padding">
+                            <label>@ResourceKey("DNNrocket.text")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/linkname", " class='w3-input w3-border' autocomplete='off'", "", true, linkLP)
+                        </div>
+                        <div class="w3-col m6 w3-padding internallink@(linkLP)" style="@(internaldisplay);height:64px;">
+                            <label>@ResourceKey("DNNrocket.page")</label>
+                            @TabSelectList(linkInfo, "genxml/select/linkinternallink", " class='w3-input w3-border' ", true, false, linkLP)
+                        </div>
+                        <div class="w3-col m6 w3-padding externallink@(linkLP)" style="@(externaldisplay);height:64px;">
+                            <label>@ResourceKey("DNNrocket.url")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(linkInfo, "genxml/textbox/linkexternallink", " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
+                        </div>
+
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("DNNrocket.anchor")</label>
+                            @TextBox(linkInfo, "genxml/textbox/linkanchor", " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
+                        </div>
+
+                    </div>
+
+                    <div class="simplisity_removelistitem w3-display-topright w3-padding" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
+                        @ButtonIcon(ButtonTypes.remove)
+                    </div>
+                </div>
+            </li>
+linkLP += 1;
+        }
+    </ul>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#linklistdata").sortable();
+        $("#linklistdata").disableSelection();
+
+        $('.linktypeclick').unbind('click');
+        $('.linktypeclick').click(function () {
+            var linkrow = $(this).attr("linkrow");
+            var selectedval = $(this).find(":checked").val();
+            if (selectedval === '1') {
+                $('.internallink' + linkrow).show();
+                $('.externallink' + linkrow).hide();
+            }
+            if (selectedval === '2') {
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).show();
+            }
+        });
+
+    });
+
+</script>

@@ -1,0 +1,191 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var portalShop = (PortalShopLimpet)Model.List.First();
+    var info = portalShop.Info;
+    var systemData = new SystemLimpet("rocketecommerceapi");
+
+}
+
+@foreach (var p in systemData.InterfaceList)
+{
+    var interfaceProvider = new RocketInterface(systemData.SystemInfo, p.Key);
+    if (interfaceProvider.IsProvider("payment") || interfaceProvider.IsProvider("shipping") || interfaceProvider.IsProvider("tax") || interfaceProvider.IsProvider("discount"))
+    {
+        AddProcessData("resourcepath", interfaceProvider.TemplateRelPath + "/App_LocalResources/");
+    }
+}
+
+
+<div id="sidemenuprovidersdata" class="w3-container a-panelsidemenu" style="display:none;">
+
+    <div class="w3-container">
+        <h2>@ResourceKey("RE.paymentproviders")</h2>
+        <div class="w3-row w3-margin">
+
+            <div class="w3-row  w3-theme-l4 w3-padding">
+                <div class="w3-col m1">@ResourceKey("DNNrocket.active")</div>
+                <div class="w3-col m3">@ResourceKey("system.name")</div>
+                <div class="w3-col m7"></div>
+            </div>
+
+            <ul id="paymentprovidermethodlist" class="w3-ul">
+                @{
+                    var lp4 = 0;
+                }
+
+                @foreach (var interfaceProvider in systemData.ProviderList)
+                {
+                    if (interfaceProvider.IsProvider("payment"))
+                    {
+                        lp4 += 1;
+                        <li class="w3-row w3-padding-small paymentprovidermethod">
+                            <div class="w3-col m1 w3-padding-small">
+                                @{
+                                    var i = portalShop.Info.GetListItem("paymentprovidermethod", "genxml/hidden/paymentmethodkey", interfaceProvider.InterfaceKey);
+                                }
+                                @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border w3-check '", false, false, lp4)
+                            </div>
+                            <div class="w3-col m3 w3-padding-small">
+                                @{
+                                    var providername = ResourceKey("provider." + interfaceProvider.InterfaceKey).ToString();
+                                    if (providername == "")
+                                    {
+                                        providername = interfaceProvider.InterfaceKey;
+                                        if (providername == "")
+                                        {
+                                            providername = interfaceProvider.Assembly;
+                                        }
+                                    }
+                                }
+                                <b>@providername</b>
+                                <input value="@interfaceProvider.InterfaceKey" id="paymentmethodkey_@lp4" s-xpath="genxml/hidden/paymentmethodkey" s-update="save" type="hidden">
+                            </div>
+                            <div class="w3-col m7 w3-padding-small">
+                                <p>@interfaceProvider.InterfaceKey</p>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="w3-container">
+        <h2>@ResourceKey("RE.shippingproviders")</h2>
+        <div class="w3-row w3-margin">
+
+            <div class="w3-row  w3-theme-l4 w3-padding">
+                <div class="w3-col m1">@ResourceKey("DNNrocket.active")</div>
+                <div class="w3-col m3">@ResourceKey("system.name")</div>
+                <div class="w3-col m7"></div>
+            </div>
+
+            <ul id="shippingprovidermethodlist" class="w3-ul">
+                @{
+                    var lp5 = 0;
+                }
+                @foreach (var p in systemData.InterfaceList)
+                {
+                    var interfaceProvider = new RocketInterface(systemData.SystemInfo, p.Key);
+                    if (interfaceProvider.IsProvider("shipping"))
+                    {
+                        lp5 += 1;
+                        <li class="w3-row w3-padding-small shippingprovidermethod">
+                            <div class="w3-col m1 w3-padding-small">
+                                @{
+                                    var i = portalShop.Info.GetListItem("shippingprovidermethod", "genxml/hidden/shippingmethodkey", p.Key);
+                                }
+                                @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border w3-check '", false, false, lp5)
+                            </div>
+                            <div class="w3-col m3 w3-padding-small">
+                                @{
+                                    var providername = ResourceKey("provider." + p.Key).ToString();
+                                    if (providername == "")
+                                    {
+                                        providername = interfaceProvider.InterfaceKey;
+                                        if (providername == "")
+                                        {
+                                            providername = p.Key;
+                                        }
+                                    }
+                                }
+                                <b>@providername</b>
+                                <input value="@p.Key" id="shippingmethodkey_@lp5" s-xpath="genxml/hidden/shippingmethodkey" s-update="save" type="hidden">
+                            </div>
+                            <div class="w3-col m7 w3-padding-small">
+                                <p>@interfaceProvider.InterfaceKey</p>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="w3-container">
+        <h2>@ResourceKey("RE.taxproviders")</h2>
+        <div class="w3-row w3-margin">
+
+            <div class="w3-row  w3-theme-l4 w3-padding">
+                <div class="w3-col m1">@ResourceKey("DNNrocket.active")</div>
+                <div class="w3-col m3">@ResourceKey("system.name")</div>
+                <div class="w3-col m7"></div>
+            </div>
+
+            <ul id="taxprovidermethodlist" class="w3-ul">
+                @{
+                    var lp6 = 0;
+                }
+
+                @foreach (var p in systemData.InterfaceList)
+                {
+                    var interfaceProvider = new RocketInterface(systemData.SystemInfo, p.Key);
+                    if (interfaceProvider.IsProvider("tax"))
+                    {
+                        lp6 += 1;
+                        <li class="w3-row w3-padding-small taxprovidermethod">
+                            <div class="w3-col m1 w3-padding-small">
+                                @{
+                                    var i = portalShop.Info.GetListItem("shippingprovidermethod", "genxml/hidden/taxmethodkey", p.Key);
+                                }
+                                @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border w3-check '", false, false, lp6)
+                            </div>
+                            <div class="w3-col m3 w3-padding-small">
+                                @{
+                                    var providername = ResourceKey("provider." + p.Key).ToString();
+                                    if (providername == "")
+                                    {
+                                        providername = interfaceProvider.InterfaceKey;
+                                        if (providername == "")
+                                        {
+                                            providername = p.Key;
+                                        }
+                                    }
+                                }
+                                <b>@providername</b>
+                                <input type="hidden" id="taxmethodkey_@(lp6)" value="@p.Key" s-path="genxml/hidden/taxmethodkey" />
+                            </div>
+                            <div class="w3-col m7 w3-padding-small">
+                                <p>@interfaceProvider.Info.GetXmlProperty("genxml/textbox/help")</p>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+
+        </div>
+    </div>
+
+</div>

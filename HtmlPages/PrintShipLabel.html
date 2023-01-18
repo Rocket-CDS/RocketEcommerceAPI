@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Rocket E-Commerce</title>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/DesktopModules/DNNrocketModules/RocketEcommerceAPI/Themes/config-w3/1.0/css/RocketEcommerceAPI-Theme.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
+
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css">
+    <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+    <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+
+    <style type="text/css">
+        #outlook a {
+            padding: 0;
+        }
+        /* Force Outlook to provide a "view in browser" button. */
+        .ExternalClass {
+            width: 100%;
+            display: block !important;
+        }
+            /* Force Hotmail to display emails at full width */
+            .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+                line-height: 100%;
+            }
+        /* Forces Hotmail to display normal line spacing */
+        body {
+            margin: 0;
+            padding: 1cm 0;
+        }
+
+        body {
+            -webkit-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+        }
+        /* Prevents Webkit and Windows Mobile platforms from changing default font sizes. */
+        body, .Normal, td, th {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: normal;
+            font-size: 14px;
+            color: #555555;
+        }
+
+        .orderprint {
+            width: 21cm;
+            margin: 0 auto;
+        }
+
+            .orderprint .leftside {
+                float: left;
+                width: 57%;
+                margin-right: 6%;
+            }
+
+            .orderprint .rightside {
+                float: left;
+                width: 37%;
+            }
+
+            .orderprint .address {
+                margin-bottom: 10px;
+            }
+
+            .orderprint .mainaddress {
+                background: #F5F5F5;
+                padding: 10px;
+            }
+
+            .orderprint .billaddress {
+                float: left;
+                width: 47%;
+                margin-right: 6%;
+                line-height: 160%;
+                margin-bottom: 15px;
+            }
+
+            .orderprint .shipaddress {
+                float: left;
+                width: 47%;
+                line-height: 160%;
+                margin-bottom: 15px;
+                min-width: 145px;
+            }
+
+            .orderprint .storeaddress {
+                float: left;
+                width: 100%;
+                line-height: 160%;
+            }
+
+        .orderdetailitems {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+            .orderdetailitems th {
+                border: none !important;
+                padding: 10px;
+            }
+
+            .orderdetailitems tr {
+                border-bottom: 1px solid #dddddd;
+            }
+
+                .orderdetailitems tr.active {
+                    background: #F5F5F5;
+                }
+
+            .orderdetailitems td {
+                vertical-align: top;
+                border: none;
+                padding: 10px;
+            }
+
+        .text-right {
+            text-align: right;
+        }
+    </style>
+
+
+</head>
+<body class="w3-white">
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main w3-container" style="top:0px " id="base-panel">
+
+        <form id="portaladmin_form">
+
+            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="orderadmin_printshiplabel" s-fields='' s-after="PrintPage">
+                <div class="">
+                    <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
+                </div>
+            </div>
+
+        </form>
+
+        <!-- End page content -->
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            $('#simplisity_startpanel').attr('s-fields','{"orderid":"' + urlParams.get("orderid") + '"}');
+
+            $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketecommerceapi', debug: false });
+        });
+
+        function PrintPage() {
+            window.print();
+            return false;
+        }
+
+    </script>
+
+
+</body>
+</html>

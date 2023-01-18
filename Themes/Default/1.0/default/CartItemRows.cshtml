@@ -1,0 +1,111 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using DNNrocket.Country.Components;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var cartData = (CartLimpet)Model.List.First();
+    if (cartData.Record != null)
+    {
+        info = new SimplisityInfo(cartData.Record);
+    }
+
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+
+}
+
+<div>
+    @{
+        var lp1 = 0;
+    }
+    @foreach (var cItem in cartData.CartItemList)
+    {
+        lp1 += 1;
+        var logoRelPath = cItem.ProductData.LogoRelPath;
+        if (cItem.ProductData.LogoRelPath == "")
+        {
+            logoRelPath = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+        }
+
+
+        var selectedModel = cItem.ProductData.GetModel(cItem.ModelId);
+        if (selectedModel != null)
+        {
+            <div class="w3-bar products w3-border-bottom">
+                @HiddenField(new SimplisityInfo(cItem.Record), "genxml/key", "", "", false, lp1)
+                <div class="w3-bar-item">
+                    <div>
+                        @cItem.ProductData.Name &nbsp;
+                        <span class="w3-tiny">@cItem.PriceWithOptionsDisplay</span>
+                        <input id="modelprice_@(lp1)" class="cartitemprice" idxrow="@(lp1)" value="@cItem.PriceWithOptions" type="hidden" />
+                    </div>
+                    <div class="w3-bar w3-small">@selectedModel.Name</div>
+                    @{
+                        var oLp = 1;
+                    }
+                    @foreach (var cartItemOption in cItem.GetSelectedOptions())
+                    {
+                        if (cartItemOption.SelectedText != "")
+                        {
+                            <span class="w3-tiny">
+                                @cartItemOption.OptionName
+                                &nbsp;:&nbsp;
+                                @if (cartItemOption.SelectedText == "true")
+                                {
+                                    <span>
+                                        <i class="far fa-check-circle"></i>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>
+                                        @if (@cartItemOption.SelectedText.Length > 40)
+                                        {
+                                            @cartItemOption.SelectedText.Substring(0, 40)
+                                        }
+                                        else
+                                        {
+                                            @cartItemOption.SelectedText
+                                        }
+                                    </span>
+                                }
+                            </span>
+                            oLp += 1;
+                        }
+                        if (oLp == 3)
+                        {
+                            <br />
+                        }
+                    }
+
+                </div>
+                <div class="w3-bar-item w3-right w3-hide-small w3-hide-medium" style="width:120px;">
+                    <div class="w3-right-align" id="cartitemtotal@(lp1)">@(cItem.TotalWithOptionsDisplay)</div>
+                </div>
+                <div class="w3-bar-item w3-right">
+                    <div>@cItem.Qty</div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+
+
+

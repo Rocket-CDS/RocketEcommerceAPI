@@ -1,0 +1,170 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketAppTheme/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var portalShop = (PortalShopLimpet)Model.List.First();
+    var info = portalShop.Info;
+    var systemData = new SystemLimpet("rocketecommerceapi");
+}
+<style>
+    .checkboxlist input {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        top: 6px;
+    }
+    .checkboxlist label:after {
+        content: "\a";
+        white-space: pre;
+    }
+</style>
+
+<div id="sidemenugeneraldata" class="w3-container a-panelsidemenu">
+
+    <div class="w3-row w3-padding">
+        <div class="w3-col m12">
+            <div class="w3-row">
+                <div class="w3-half">
+                    <div class="w3-row w3-padding">
+                        <label class="">@ResourceKey("RE.securitykey")</label><br />
+                        @TextBox(info, "genxml/securitykey", "class='w3-input w3-border' ", GeneralUtils.GetGuidKey(), false)
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col m6  w3-padding" style="">
+                            <label class="">@ResourceKey("RE.currencyculturecode")</label>
+                            @DropDownCultureCodeList(info, "genxml/currencyculturecode", "class='w3-input w3-border'", DNNrocketUtils.GetEditCulture())
+                        </div>
+                        <div class="w3-col m6 w3-padding">
+                            <label class="">@ResourceKey("RE.currencycode")</label>
+                            @TextBox(info, "genxml/currencycode", "class='w3-input w3-border' disabled ", "", false)
+                        </div>
+                    </div>
+                    <div class="w3-row w3-padding">
+                        <label class="">@ResourceKey("RE.checkouttype")</label>
+                        @DropDownList(info, "genxml/checkouttype", "0,1,2,3", ResourceKey("RE.checkouttypetext").ToString(), "class='w3-input w3-border '", "standard")
+                        @TextBox(info, "genxml/checkouttemplate", "class='w3-input w3-border' disabled", "0_CartDetails.cshtml")
+                    </div>
+                    <div class="w3-row w3-padding">
+                        @CheckBox(info,"genxml/checkbox/manualcategoryorderby","&nbsp;" + ResourceKey("RE.manualcategoryorderby").ToString()," class='w3-check' ", true)
+                    </div>
+                </div>
+                <div class="w3-half w3-padding">
+                        <div class="w3-half w3-padding">
+                            <label class="">@ResourceKey("RE.productdata")</label><br />
+                            <i>
+                                @ResourceKey("RE.productdata", "", "Help")
+                            </i>
+                            @CheckBoxList(info, "genxml/productdata", "0,1,2,3,4,5,6,7,9,8", ResourceKey("RE.productdatasection").ToString(), "class='checkboxlist'", true)
+                        </div>
+                        <div class="w3-half w3-padding">
+                            @{
+                                var datadictionary = new Dictionary<string, string>();
+                            }
+                            @foreach (var iface in systemData.GetInterfaceList())
+                            {
+                                if (iface.IsOnMenu)
+                                {
+                                    var chkText = ResourceKey("RE." + iface.InterfaceKey).ToString();
+                                    if (chkText == "")
+                                    {
+                                        chkText = iface.InterfaceKey;
+                                    }
+                                    datadictionary.Add(iface.InterfaceKey, chkText + "&nbsp;&nbsp;&nbsp;");
+                                }
+                            }
+                            <label class="">@ResourceKey("RE.activeadminmenu")</label><br />
+                            <i>
+                                @ResourceKey("RE.activeadminmenu", "", "Help")
+                            </i>
+                            @CheckBoxList(info, "genxml/activeadminmenu", datadictionary, "class='checkboxlist'", true)
+                        </div>
+                    </div>
+
+
+                </div>
+
+        </div>
+    </div>
+
+    <div class="w3-row">
+        <div class="w3-third">
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("RE.maxproducts")</label>
+                @TextBox(info, "genxml/maxproducts", "class='w3-input w3-border ' style='width:64px;' ", "100", false)
+            </div>
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("RE.productimagelimit")</label>
+                @TextBox(info, "genxml/productimagelimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
+            </div>
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("RE.productdocumentlimit")</label>
+                @TextBox(info, "genxml/productdocumentlimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
+            </div>
+        </div>
+        <div class="w3-third">
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("RE.productmodellimit")</label>
+                @TextBox(info, "genxml/productmodellimit", "class='w3-bar-item w3-input w3-border' style='width:64px;' ", "10", false)
+            </div>
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("RE.productoptionlimit")</label>
+                @TextBox(info, "genxml/productoptionlimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
+            </div>
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("RE.productlinklimit")</label>
+                @TextBox(info, "genxml/productlinklimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
+            </div>
+        </div>
+        <div class="w3-third">
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("DNNrocket.active")</label>
+                @CheckBox(info, "genxml/active", "", "class='w3-input w3-border w3-check'", true)
+            </div>
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("DNNrocket.emailon")</label>
+                @CheckBox(info, "genxml/emailon", "", "class='w3-input w3-border w3-check'", true)
+            </div>
+            <div class="w3-row w3-padding">
+                <label class="">Debug Mode</label>
+                @CheckBox(info, "genxml/debugmode", "", "class='w3-input w3-border w3-check'", false)
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        rpadmin.moveToTop('#systemmodal');
+
+        $("#checkouttype").change(function () {
+            if ($(this).val() == '0') {
+                $('#checkouttemplate').val('0_CartDetails.cshtml');
+                $('#checkouttemplate').attr("disabled", "disabled");
+            }
+            if ($(this).val() == '1') {
+                $('#checkouttemplate').val('1_CartDetails.cshtml');
+                $('#checkouttemplate').attr("disabled", "disabled");
+            }
+            if ($(this).val() == '2') {
+                $('#checkouttemplate').val('2_CartDetails.cshtml');
+                $('#checkouttemplate').attr("disabled", "disabled");
+            }
+            if ($(this).val() == '3') {
+                $('#checkouttemplate').removeAttr("disabled");
+            }
+        });
+        
+    });
+
+</script>

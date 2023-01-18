@@ -1,0 +1,86 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources")
+
+<!-- Sidebar/Menu -->
+<div id="sidebarplaceholder"></div>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<div class="w3-main" style="margin-left:280px;">
+
+    <!-- Main -->
+    <div style="padding-top:56px;">
+        <!-- Content -->
+        <div id="simplisity_startpanel" class="w3-row simplisity_panel" s-cmd="dashboard_get" s-fields=''>
+            <div class="simplisity_loader">
+                <span class=" simplisity_loader_inner">
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#sidebarplaceholder').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'getsidemenu', '{"systemkey":"rocketecommerceapi"}', '')
+        $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketecommerceapi', debug: false });
+
+        $('#sidebarplaceholder').activateSimplisityPanel();
+
+        simplisity_setParamField("reload", true);  // This will flag that a reload is done.  The Server side code will get the last command tracked.
+        simplisity_sessionremove(); // clear the sessions vars on load.  These needs to be reset for the admin panel to work and not use any front office selections.
+
+    });
+
+    // insert here to solve race condition with sidemenu
+    function selectMenu(interfacekey) {
+        $('.sidemenubutton').removeClass("w3-theme-d2");
+        $('.sidemenu' + interfacekey).addClass("w3-theme-d2");
+    }
+
+</script>
+
+
+<!-- Load CSS in body, not ideal but is easier to implement and reduces 1 API call. -->
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+
+<link rel="stylesheet" href="/DesktopModules/DNNrocketModules/RocketEcommerceAPI/Themes/config-w3/1.0/css/theme.css">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/jquery.tag-editor.css" charset="utf-8">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/Simplisity/css/simplisity.css" charset="utf-8">
+
+<script src="/DesktopModules/DNNrocketModules/rocketecommerceapi/Themes/config-w3/1.0/js/RE_Admin.js"></script>
+
+<script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+<script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js?v=1"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
+
+    <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+
+<script src="/DesktopModules/DNNrocket/js/jquery.selectlistactions.js"></script>
+
+<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.caret.min.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.tag-editor.min.js"></script>
+
+<script type="text/javascript" src="/DesktopModules/DNNRocketModules/RocketEcommerceAPI/Themes/config-w3/1.0/js/chart.min.js"></script>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!--
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
+
+-->

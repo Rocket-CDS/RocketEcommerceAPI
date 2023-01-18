@@ -1,0 +1,61 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using System.Globalization;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/rocketecommerceapi/HtmlClickAndCollect/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var cartData = (CartLimpet)Model.List.First();
+    if (cartData.Record != null)
+    {
+        info = new SimplisityInfo(cartData.Record);
+    }
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var companyData = (CompanyLimpet)Model.GetDataObject("companydata");
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+}
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+<div id="contactdetails">
+
+    <div class="w3-xxlarge">
+        <span class="w3-large">
+            @ResourceKey("RE.yourcontactdetails", sessionParams.CultureCode)
+        </span>
+        <span class="w3-margin-left w3-small">
+            @CheckBox(info, "genxml/checkbox/collectinstore", "&nbsp;" + ResourceKey("RE.collectinstore", sessionParams.CultureCode).ToString(), "class='w3-check ' disabled", true)
+        </span>
+    </div>
+
+    <div class="w3-margin-bottom">
+        <label>@ResourceKey("RE.firstname", sessionParams.CultureCode)</label>
+        @TextBox(info, "genxml/textbox/firstname", " class='w3-input w3-border' ")
+    </div>
+    <div class="w3-margin-bottom">
+        <label>@ResourceKey("RE.lastname", sessionParams.CultureCode)</label>
+        @TextBox(info, "genxml/textbox/lastname", " class='w3-input w3-border'  ")
+    </div>
+    <div class="w3-margin-bottom">
+        <label>@ResourceKey("RE.email", sessionParams.CultureCode)&nbsp;*</label>
+        @TextBox(info, "genxml/textbox/email", " class='w3-input w3-border' name='email' required email ")
+    </div>
+    <div class="w3-margin-bottom">
+        <label>@ResourceKey("RE.phone", sessionParams.CultureCode)</label>
+        @TextBox(info, "genxml/textbox/phone", " class='w3-input w3-border' ")
+    </div>
+    <div class="w3-margin-bottom">
+        <label>@ResourceKey("RE.company", sessionParams.CultureCode)&nbsp;(@ResourceKey("RE.optional", sessionParams.CultureCode))</label>
+        @TextBox(info, "genxml/textbox/company", " class='w3-input w3-border' ")
+    </div>
+
+</div>
+

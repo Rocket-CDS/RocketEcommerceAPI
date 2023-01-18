@@ -1,0 +1,179 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{ 
+
+
+}
+
+<div id="dnnrocket_deletedocumentlist">
+    <input id="dnnrocket-documentlist" type="hidden" value="" />
+</div>
+
+<div id="rocketdocumentselect" class="w3-modal">
+    <div class="w3-modal-content">
+
+        <div class="" style="height: 38.5px;">
+            <span onclick="dnnrocketdocs_closethelist();" class="w3-button w3-display-topright">&times;</span>
+        </div>
+
+        <div class="" style="">
+            <br />
+            <div class="w3-container">
+
+                <div class="w3-row w3-margin-bottom">
+                    <span class="w3-col m2 rocket-buttonbar w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#documentfileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>
+                    <span class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8" onclick="dnnrocketdocs_usedocument()">@ButtonText(ButtonTypes.use)</span>
+                    <span class="w3-col m2 rocket-buttonbar w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="@Model.GetSetting("deletecmd")" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-post="#dnnrocket_deletedocumentlist" s-fields='{"theme":"config-w3","documentfolder":"@Model.GetSetting("genxml/hidden/uploadrelfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
+                </div>
+
+                <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
+                    <input id="documentfileupload" class="simplisity_fileupload" s-maxchunksize="10000000" s-cmd="@Model.GetSetting("uploadcmd")" s-reload="false" s-after="dnnrocketdocs_showthelist" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"productid":"@(Model.GetSetting("productid"))","moduleid":"@Model.ModuleId","template":"documentlist.cshtml","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
+                    <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
+                </div>
+
+                <div id="rocketimageselectlist" class="w3-container">
+                    <div class="w3-row">
+                        <table class="w3-table-all w3-hoverable">
+                            @{
+                                var lp = 1;
+                                foreach (SimplisityInfo sInfo in Model.List)
+                                {
+                                    <tr class='dnnrocket-documentselector' dnnrocket-documentname='@sInfo.GetXmlProperty("genxml/name")' dnnrocket-documentrelname='@sInfo.GetXmlProperty("genxml/relname")' selectorcount='@(lp)'>
+                                        <td style="width:40px;"><i style="display:none;" class="fas fa-check-circle dnnrocket-docselector "></i></td>
+                                        <td>@sInfo.GetXmlProperty("genxml/name")</td>
+                                    </tr>
+                                    lp += 1;
+                                }
+                            }
+                        </table>
+                    </div>
+                    <div class="w3-row">
+                        <p>@lp</p>
+                        @if (UserUtils.IsInRole("Administrator"))
+                        {
+                            <p class="w3-small  w3-hide-small">@Model.GetSetting("genxml/hidden/documentfolder")</p>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        dnnrocketdocs_showthelist();
+
+        $('.dnnrocket-documentselector').unbind("click");
+        $('.dnnrocket-documentselector').click(function () {
+            dnnrocketdocs_selectdocument(this);
+        });
+
+        dnnrocketdocs_changeevent();
+        dnnrocketdocs_removeevent();
+
+    });
+
+    function dnnrocketdocs_changeevent() {
+        // Used to display list and assign the index, so we knwo what to update.
+        $('.dnnrocket-documentchange').unbind("click");
+        $('.dnnrocket-documentchange').click(function () {
+            simplisity_setCookieValue('dnnrocket-documentindex', $(this).parent().find("input:first").attr('id'));
+            document.getElementById('rocketdocumentselect').style.display = 'block';
+        });
+    }
+
+    function dnnrocketdocs_removeevent() {
+        $('.dnnrocket-documentremove').unbind("click");
+        $('.dnnrocket-documentremove').click(function () {
+            $(this).parent().find("input").val('');
+            $(this).parent().find('input').attr('disabled', 'true');
+            $(this).html("<i class='fas fa-file-upload'></i>");
+            $(this).removeClass('dnnrocket-documentremove');
+            $(this).addClass('dnnrocket-documentchange');
+            dnnrocketdocs_changeevent();
+        });
+    }
+
+
+    function dnnrocketdocs_selectdocument(element) {
+
+    @if (Model.GetSettingBool("genxml/hidden/documentselectsingle")) {
+        @: dnnrocketdocs_clearselection();
+    }
+
+    if ($(element).hasClass('w3-theme')) {
+        $(element).removeClass('w3-theme');
+        $(element).find('.dnnrocket-docselector').hide();
+    }
+    else {
+        $(element).addClass('w3-theme');
+        $(element).find('.dnnrocket-docselector').show();
+    }
+
+    @if (Model.GetSettingBool("genxml/hidden/documentselectautoreturn")) {
+        @: dnnrocketdocs_usedocument();
+    }
+}
+
+    function dnnrocketdocs_deletedocument() {
+        var documentlist = '';
+        $('.dnnrocket-documentselector').each(function (index) {
+            if ($(this).hasClass('w3-theme')) {
+                var documentname = simplisity_encode($(this).attr('dnnrocket-documentname'));
+                documentlist = documentlist + documentname + ";";
+                $(this).removeClass('w3-theme');
+                $(this).find('.dnnrocket-docselector').hide();
+            }
+        });
+        $('#dnnrocket-documentlist').val(documentlist);
+    }
+
+
+    function dnnrocketdocs_usedocument() {
+        $('.dnnrocket-documentselector').each(function (index) {
+            if ($(this).hasClass('w3-theme')) {
+                var docselectbuttonlp = simplisity_getParamField('docselectbuttonlp')
+                alert(docselectbuttonlp);
+                var idx = simplisity_getCookieValue('dnnrocket-documentindex');
+                $('#doc_' + docselectbuttonlp).val($(this).attr('dnnrocket-documentname'));
+                $('#reldoc_' + docselectbuttonlp).val($(this).attr('dnnrocket-documentrelname'));
+                $('#namedoc_' + docselectbuttonlp).val($(this).attr('dnnrocket-documentname'));
+
+                $(this).removeClass('w3-theme');
+                $(this).find('.dnnrocket-docselector').hide();
+            }
+        });
+        document.getElementById('rocketdocumentselect').style.display = 'none';
+    }
+
+
+    function dnnrocketdocs_clearselection() {
+        $('.dnnrocket-documentselector').each(function (index) {
+            if ($(this).hasClass('w3-theme')) {
+                $(this).removeClass('w3-theme');
+                $(this).find('.dnnrocket-docselector').hide();
+            }
+        });
+    }
+
+    function dnnrocketdocs_showthelist() {
+        $('#rocketdocumentselect').show();
+    }
+
+    function dnnrocketdocs_closethelist() {
+        $('#rocketdocumentselect').hide();
+    }
+
+
+</script>

@@ -348,3 +348,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+Installation/RocketEcommerce.zip
+Installation/Resources.zip
+Installation/RocketEcommerce_1.0.0_Install.zip
+dnnpack.config
+*.zip

@@ -1,0 +1,137 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+
+
+@{
+    var productDataList = (ProductLimpetList)Model.List.First();
+    var passModel = new SimplisityRazor(productDataList.PortalShop, new Dictionary<string, string>());
+    var appThemeSystem = new AppThemeSystemLimpet(productDataList.PortalShop.PortalId, "rocketecommerceapi");
+}
+
+@RenderLanguageSelector("productadmin_editproductlist", "", appThemeSystem, Model)
+
+<div class='w3-animate-opacity w3-padding'>
+
+    <div class="w3-bar w3-padding searchdata">
+
+        @HiddenField(new SimplisityInfo(), "genxml/hidden/page", " class='simplisity_sessionfield' s-update='ignore'", "1")
+
+        @if (productDataList.PortalShop.ProductCount < productDataList.PortalShop.ProductLimit)
+        {
+            <div class="w3-bar-item w3-button w3-theme-action simplisity_click" s-cmd="productadmin_addproduct" s-fields='{"productid":"-1","sitekey":"@(productDataList.PortalShop.SiteKey)"}'>@ButtonText(ButtonTypes.add)</div>
+        }
+        @{
+            var orderbyDictionary = new Dictionary<string, string>();
+            foreach (var orderbyInfo in productDataList.PortalShop.GetProductOrderByList())
+            {
+                orderbyDictionary.Add(orderbyInfo.GetXmlProperty("genxml/key"), ResourceKey("RE." + orderbyInfo.GetXmlProperty("genxml/key")).ToString());
+            }
+        }
+        <div class="w3-bar-item w3-right w3-hide-small w3-margin-left">
+            @DropDownList(new SimplisityInfo(), "genxml/hidden/orderbyref", orderbyDictionary, "class='w3-input w3-border w3-light-grey simplisity_sessionfield simplisity_change ' s-sessionfield='#searchtext,#pagesize,#orderbyref,#page' s-cmd='productadmin_productsearch' s-post='.searchdata' s-fields='{\"track\":\"true\"}' title='" + @ResourceKey("DNNrocket.pagesize") + "'", "32")
+        </div>
+
+        <div class="w3-bar-item w3-right w3-hide-small w3-margin-left" style="width: 100px">
+            @DropDownList(new SimplisityInfo(), "genxml/hidden/pagesize", "8,16,32,64,128", "8,16,32,64,128", "class='w3-input w3-border w3-light-grey simplisity_sessionfield simplisity_change ' s-sessionfield='#searchtext,#pagesize,#orderbyref,#page' s-cmd='productadmin_productsearch' s-post='.searchdata' s-fields='{\"track\":\"true\"}'  title='" + @ResourceKey("DNNrocket.pagesize") + "'", "32")
+        </div>
+
+        <div class="w3-bar-item w3-right " style=''>
+            <div class="w3-bar">
+
+                <span class="w3-bar-item w3-button clearsearch " style="display:none;" s-fields=''>@ButtonIcon(ButtonTypes.cancel)</span>
+                @TextBox(new SimplisityInfo(), "genxml/textbox/searchtext", " style='height:40px;' class='w3-bar-item w3-input w3-border w3-light-grey simplisity_sessionfield actionentrykey' autocomplete='off' ")
+                <span class="w3-bar-item w3-button w3-theme simplisity_click dosearch" style="height:40px;" s-sessionfield='#searchtext,#pagesize,#orderbyref,#page' s-cmd="productadmin_productsearch" s-post=".searchdata">@ButtonIcon(ButtonTypes.search)</span>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="datalistsection" class="w3-container">
+
+        <table class="w3-table w3-bordered w3-hoverable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>@ResourceKey("RE.name")</th>
+					<th></th>
+                    <th class="w3-right-align w3-margin-right">@ResourceKey("RE.price")&nbsp;(@productDataList.PortalShop.CurrencySymbol)</th>
+                </tr>
+            </thead>
+            @foreach (ProductLimpet productData in productDataList.GetArticleList())
+            {
+                <tr class=" simplisity_click" s-cmd="productadmin_editproduct" s-fields='{"productid":"@productData.ProductId","track":"false"}' style="cursor:pointer;">
+                    <td style="width:54px;">
+                        @if (productData.GetImage(0) != null && productData.GetImage(0).RelPath != "")
+                        {
+                            <img src="@ThumbnailImageUrl(productData.GetImage(0).RelPath, 48, 48)" style="height:48px;width:48px;" class="w3-round" />
+                        }
+                        else
+                        {
+                            <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 48, 48)" style="height:48px;width:48px;" class="w3-round" />
+                        }
+
+                    </td>
+                    <td><div class="w3-tiny">@productData.Ref</div><b>@productData.Name</b></td>
+					<td>
+                        @if (productData.IsHidden)
+                        {
+                            <span class="material-icons">
+                                visibility_off
+                            </span>
+                        }
+                    </td>
+                    <td class="w3-right-align"><b>@productData.PriceMaximumDisplayNoSymbol(Model.SessionParamsData.CultureCodeEdit)&nbsp;</b></td>
+                </tr>
+            }
+        </table>
+
+        @RenderTemplate("ProductPaging.cshtml", appThemeSystem, Model, true)
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        selectMenu('productadmin');
+
+        $(':checkbox').attr('class', 'w3-check');
+
+        $('.clearsearch ').unbind("click");
+        $('.clearsearch ').click(function () {
+            $('#searchtext').val('');
+            $('.dosearch').trigger('click');
+            return false; // prevent the button click from happening
+        });
+
+        if ($('#searchtext').val() !== '') {
+            $('.clearsearch').show();
+        }
+
+        $('.actionentrykey').unbind('keypress');
+        $('.actionentrykey').on('keypress', function (e) {
+            if (e.keyCode == 13) {
+                $('.dosearch').trigger('click');
+                return false; // prevent the button click from happening
+            }
+        });
+
+        $('.actionentrykey').focus();
+
+        // move cursor to end of line
+        var tmpStr = $('.actionentrykey').val();
+        $('.actionentrykey').val('');
+        $('.actionentrykey').val(tmpStr);
+
+    });
+
+
+</script>

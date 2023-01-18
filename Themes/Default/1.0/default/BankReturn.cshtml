@@ -1,0 +1,194 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var paymentData = (PaymentLimpet)Model.List.First();
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var info = new SimplisityInfo(paymentData.Record);
+    info.Lang = sessionParams.CultureCode;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var notificationData = (NotificationLimpet)Model.GetDataObject("notificationdata");
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var companyData = new CompanyLimpet(PortalUtils.GetPortalId(), sessionParams.CultureCode);
+    var orderData = new OrderLimpet(paymentData.PortalId, paymentData.OrderId, sessionParams.CultureCode);
+}
+
+<!-- Default uses w3-css, include here incase the ApTheme removes w3-css. -->
+<link rel="stylesheet" href="@(sessionParams.EngineURL)@DNNrocketUtils.AppendFileModifiedDate("/DesktopModules/DNNrocket/css/w3.css")">
+<div id="ecommerce-tag" class="w3-margin-top">
+    &nbsp;
+</div>
+<div id="datasection" class="remote_paymentform">
+    <div class="w3-container">
+
+        <div class="w3-col s1 m3  l4 ">
+            <div class="w3-row w3-small w3-hide-small">
+                <div>
+                    @companyData.CompanyName
+                </div>
+                <div>
+                    @BreakOf(companyData.DisplayAddress)
+                </div>
+                <br />
+                <div>
+                    @companyData.WebsiteUrl
+                </div>
+                @if (companyData.ContactEmail != "")
+                {
+                    <div>
+                        @ResourceKey("RE.email"):&nbsp;@companyData.ContactEmail
+                    </div>
+                }
+                @if (companyData.Phone != "")
+                {
+                    <div>
+                        @ResourceKey("RE.tel"):&nbsp;@companyData.Phone
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="w3-col s10 m6 l4 w3-center">
+
+            <div class="w3-row w3-padding ">
+            </div>
+            <div class="w3-row w3-padding w3-large">
+                <b>
+                    @companyData.CompanyName
+                </b>
+            </div>
+
+            @if (paymentData.BankAction != PaymentAction.BankReturn && (!paymentData.IsPaymentCompleted || !paymentData.Exists))
+            {
+                <div class="w3-panel w3-center w3-card-4 w3-xlarge w3-round w3-red w3-padding-large">
+                    @ResourceKey("RE.orderstatus" + paymentData.StatusCode)
+                </div>
+                <h1>ERROR: NO PAYMENT FOUND</h1>
+            }
+            else
+            {
+                <div class="paymentmessage">
+
+                    @if (paymentData.PaymentProvider.ToLower() == "manualpay")
+                    {
+                        if (paymentData.Status == PaymentStatus.PaymentFailed)
+                        {
+                            <p>
+                                @notificationData.Message_PaymentFormFail
+                            </p>
+                        }
+                        else
+                        {
+                            <table class="w3-table w3-bordered">
+                                <tr class="">
+                                    <td>@ResourceKey("RE.amount")</td>
+                                    <td>
+                                        @paymentData.AmountDisplay
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p>
+                                @BreakOf(notificationData.Message_WaitingForPayment)
+                            </p>
+                        }
+                    }
+                    else
+                    {
+
+                        if (paymentData.PaymentMade || paymentData.IsPaymentCompleted)
+                        {
+                            <table class="w3-table w3-bordered">
+                                <tr class="">
+                                    <td>@ResourceKey("RE.amount")</td>
+                                    <td>
+                                        @paymentData.AmountDisplay
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>@ResourceKey("RE.paid")</td>
+                                    <td>
+                                        @paymentData.AmountPaidDisplay
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>@ResourceKey("RE.due")</td>
+                                    <td>
+                                        @paymentData.AmountDueDisplay
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <div class="w3-panel w3-center w3-card-4 w3-xlarge w3-round w3-padding-large w3-green">
+                                @ResourceKey("RE.orderstatus" + Convert.ToInt32(PaymentStatus.PaymentOK))
+                            </div>
+
+                            if (orderData.CollectInStore)
+                            {
+                                <p>
+                                    @BreakOf(notificationData.Message_StorePickUp)
+                                </p>
+                            }
+                            if (paymentData.Status == PaymentStatus.WaitingForPayment)
+                            {
+                                <p>
+                                    @BreakOf(notificationData.Message_WaitingForPayment)
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    @BreakOf(notificationData.Message_PaymentFormOK)
+                                </p>
+                            }
+
+                        }
+                        else
+                        {
+                            <div class="w3-panel w3-center w3-card-4 w3-xlarge w3-round w3-red w3-padding-large">
+                                @ResourceKey("RE.orderstatus" + paymentData.StatusCode)
+                            </div>
+
+                            if (paymentData.Status == PaymentStatus.PaymentFailed)
+                            {
+                                <p>
+                                    @notificationData.Message_PaymentFormFail
+                                </p>
+                            }
+
+                        }
+                    }
+
+                </div>
+            }
+
+
+            <div class="w3-center w3-margin-top">
+                <div class="w3-bar">
+                    <a class="w3-button w3-border w3-grey" href="@(sessionParams.PageUrl)">@ResourceKey("RE.continueshopping")</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="w3-col s1 m3 l4 w3-right-align">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('html, body').stop().animate({
+            'scrollTop': $("#ecommerce-tag").offset().top
+        }, 400, 'swing', function () {
+            window.location.hash = "#ecommerce-tag";
+        });
+    });
+</script>

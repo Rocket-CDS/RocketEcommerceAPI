@@ -1,0 +1,196 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+
+
+@{
+    var notificationData = (NotificationLimpet)Model.List.First();
+    var info = notificationData.Info;
+    var systemData = new SystemLimpet("rocketecommerceapi");
+    var portalShop = new PortalShopLimpet(notificationData.PortalId, notificationData.CultureCode);
+    var passModel = new SimplisityRazor(portalShop, new Dictionary<string, string>());
+    var editlang = notificationData.CultureCode;
+    var sessionParams = Model.SessionParamsData;
+}
+
+@RenderLanguageSelector("notification_edit", "", portalShop.SystemKey, Model)
+
+<div class='w3-animate-opacity w3-padding'>
+
+<div class="w3-row w3-padding">
+    <div class="w3-button w3-theme-action w3-padding-8 langchangesave simplisity_click" s-cmd="notification_save" s-post="#notificationdata" s-fields='{"sitekey":"@notificationData.SiteKey"}'>@ButtonText(ButtonTypes.save)</div>
+    <div class="w3-button w3-padding-8" onclick="$('#notificationresetmsg').show();">@ButtonText(ButtonTypes.reset)</div>
+    <div class="w3-tiny w3-right w3-right-align">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@notificationData.PortalId</div>
+</div>
+
+<div id="notificationresetmsg" class="w3-modal">
+    <div class="w3-modal-content" style="width:40%;">
+
+        <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
+            <span onclick="$('#notificationresetmsg').hide();" class="w3-button w3-display-topright">&times;</span>
+            <h4></h4>
+        </header>
+        <div class="w3-margin-top" style="">
+            <div class="w3-container">
+                <img src="/DesktopModules/DNNrocket/api/images/avatar5.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+                <h2>@ResourceKey("Help.notificationreset")</h2>
+                <p>@ResourceKey("Help.notificationreset", "", "Msg")</p>
+
+
+                <div class="w3-row w3-padding">
+                    <div class="w3-button w3-theme-action w3-padding-8 simplisity_click" s-cmd="notification_reset" s-post="#notificationdata" s-fields='{"sitekey":"@notificationData.SiteKey"}'>@ButtonText(ButtonTypes.yes)</div>
+                    <div class="w3-button w3-padding-8" onclick="$('#notificationresetmsg').hide();">@ButtonText(ButtonTypes.no)</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="notificationdata" class="w3-container">
+
+    <div class="w3-row">
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_emailordersubject")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_emailordersubject", "", "Help")
+            </div>
+            @TextBox(info, "genxml/lang/genxml/messages/emailordersubject", "class='w3-input w3-border' rows='4' ", ResourceKey("RE.order", editlang).ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_emailorder")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_emailorder", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/email", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_emailorder", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_storepickup")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_storepickup", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/storepickup", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_storepickup", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_checkoutok")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_checkoutok", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/checkoutok", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_checkoutok", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_checkoutfail")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_checkoutfail", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/checkoutfail", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_checkoutfail", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_paymentform")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_paymentform", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/paymentform", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_paymentform", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_emailpaymentsubject")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_emailpaymentsubject", "", "Help")
+            </div>
+            @TextBox(info, "genxml/lang/genxml/messages/emailpaymentsubject", "class='w3-input w3-border' rows='4' ", ResourceKey("RE.payment").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_paymentformemail")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_paymentformemail", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/paymentformemail", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_paymentformemail", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_paymentformok")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_paymentformok", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/paymentformok", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_paymentformok", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_paymentformfail")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_paymentformfail", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/paymentformfail", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_paymentformfail", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_paymentreceived")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_paymentreceived", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/paymentreceived", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_paymentreceived", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_waitingforpayment")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_waitingforpayment", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/waitingforpayment", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_waitingforpayment", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_bankinstructions")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_bankinstructions", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/bankinstructions", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_bankinstructions", editlang, "Default").ToString(), true)
+        </div>
+
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_manualpay")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_manualpay", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/manualpayment", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_manualpay", editlang, "Default").ToString(), true)
+        </div>
+
+        <div class="w3-row  w3-padding">
+            <label class="">@ResourceKey("Help.message_bankpayment")&nbsp;@EditFlag(sessionParams)</label>
+            <div class="w3-small">
+                @ResourceKey("Help.message_bankpayment", "", "Help")
+            </div>
+            @TextArea(info, "genxml/lang/genxml/messages/bankpayment", "class='w3-input w3-border' rows='4' ", ResourceKey("Help.message_bankpayment", editlang, "Default").ToString(), true)
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        selectMenu('notification');
+    });
+
+</script>

@@ -1,0 +1,107 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var settingsData = (ShopSettingsLimpet)Model.List.First();
+    var info = settingsData.Info;
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var defaultCategory = new CategoryLimpet(portalShop.PortalId, settingsData.DefaultCategoryId, DNNrocketUtils.GetCurrentCulture());
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");    
+}
+
+@RenderLanguageSelector("settingsadmin_edit", "", appThemeSystem, Model)
+
+<div id="" class="w3-display-container w3-animate-opacity">
+
+    <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-padding">PortalId:&nbsp;@settingsData.PortalId</div>
+    <div class="w3-bar w3-margin">
+        <div class="w3-bar-item w3-button w3-theme-action simplisity_click" s-list="" s-cmd="settingsadmin_save" s-post="#settingscontent">@ButtonText(ButtonTypes.save)</div>
+    </div>
+
+    <div id="settingscontent" class="w3-margin w3-border-bottom">
+
+        <div class="w3-row w3-padding">
+            <div class="w3-large"><b>@ResourceKey("DNNrocket.settings")</b></div>
+        </div>
+
+        <div class="w3-row portaldatasection">
+            <div class="w3-third w3-padding">
+                <label>@ResourceKey("RE.defaultcategory")&nbsp;</label>
+                <div class="w3-row">
+                    <span class="w3-col m9 w3-border w3-light-grey w3-padding" style="height:40px;">@defaultCategory.Name</span>
+                    <span class="w3-col m3 w3-button w3-theme parentcategoryselect" onclick="$('#categoryselect').show();" style="width:64px;">@ButtonIcon(ButtonTypes.tree)</span>
+                </div>
+                @RenderTemplate("CategoryDefaultSelect.cshtml", appThemeSystem, Model, true)
+            </div>
+            <div class="w3-third w3-padding">
+                <label class="">@ResourceKey("RE.eventname")</label>
+                @TextBox(info, "genxml/textbox/eventname", "class='w3-input w3-border' maxlength='200' autocomplete='off' ", "")
+            </div>
+        </div>
+
+        <div class="w3-row w3-padding">
+        </div>
+
+        <div class="w3-row w3-padding">
+            <label>@ResourceKey("RE.propertygroups")</label>
+            @TextArea(info, "genxml/textbox/propertygroups", " class='w3-input w3-border action_tageditor' disable ", "General")
+        </div>
+        <div class="w3-row w3-padding">
+            <label>@ResourceKey("RE.eventlist")</label><br/>
+            <div class="w3-light-grey" style="min-height:40px;">@settingsData.EventCSV</div>
+        </div>
+
+        <div class="w3-row w3-padding">
+            <label>@ResourceKey("RE.manualorderby")</label><br/>
+            <div class="w3-small">
+                @CheckBox(info,"genxml/checkbox/manualorderby","&nbsp;" + ResourceKey("RE.manualorderby","","Help").ToString()," class='w3-check' ", true)
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <label>@ResourceKey("RE.manualcategoryorderby")</label><br/>
+            <div class="w3-small">
+            @CheckBox(info,"genxml/checkbox/manualcategoryorderby","&nbsp;" + ResourceKey("RE.manualcategoryorderby","","Help").ToString()," class='w3-check' ", true)
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <label>@ResourceKey("RE.incategoryfilter")</label><br/>
+            <div class="w3-small">
+            @CheckBox(info,"genxml/checkbox/incategoryfilter","&nbsp;" + ResourceKey("RE.incategoryfilter","","Help").ToString()," class='w3-check' ", true)
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        selectMenu('settingsadmin');
+
+        $('.action_tageditor').tagEditor({
+            delimiter: ', ', /* space and comma */
+            removeDuplicates: true,
+            forceLowercase: false,
+        });
+        $('.tag-editor').height(100)
+    });
+
+    function docopyclipboard(element) {        
+        rcadmin.CopyTextToClipboard(element);
+    }
+
+</script>
+
+
+

@@ -1,0 +1,45 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+-------------------------------------------------------------------------------
+--------------                       TABLES                        ------------
+-------------------------------------------------------------------------------
+-- CREATE RocketEcommerceAPI
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}RocketEcommerceAPI]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+CREATE TABLE {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (
+	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
+	[PortalId] [int] NULL CONSTRAINT [DF_RocketEcommerceAPI_PortalId]  DEFAULT ((-1)),
+	[ModuleId] [int] NULL CONSTRAINT [DF_RocketEcommerceAPI_ModuleId]  DEFAULT ((-1)),
+	[TypeCode] [nvarchar](50) NULL ,
+	[XMLData] [xml] NULL ,
+	[GUIDKey] [nvarchar](250) NULL ,
+	[ModifiedDate] [datetime] NULL ,
+	[TextData] [nvarchar](MAX) NULL ,
+	[XrefItemId] [int] NULL ,
+	[ParentItemId] [int] NULL ,
+	[Lang] [nvarchar] (50) NULL ,
+	[UserId] [int] NOT NULL CONSTRAINT [DF_RocketEcommerceAPI_UserId] DEFAULT ((-1)),
+	[SortOrder] [int] NULL CONSTRAINT [DF_RocketEcommerceAPI_SortOrder]  DEFAULT ((-1)),	
+	CONSTRAINT [PK_RocketEcommerceAPI] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemId]
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+
+-- Index RocketEcommerceAPI
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPIXref ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPIMod ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPIParent ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPIPortal ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPIType ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPIUserId ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPILang ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPIGuidKey ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketEcommerceAPISortOrder ON {databaseOwner}[{objectQualifier}RocketEcommerceAPI] (  SortOrder ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+
+END
+
+GO

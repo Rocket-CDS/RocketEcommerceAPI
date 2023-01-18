@@ -1,0 +1,132 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Interfaces;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+
+
+@{
+    var portalShop = (PortalShopLimpet)Model.List.First();
+    var systemData = new SystemLimpet("rocketecommerceapi");
+}
+
+@RenderLanguageSelector("shippingmethods_list", "", "rocketecommerceapi", Model)
+
+<div class='w3-animate-opacity w3-padding'>
+
+    @if (portalShop.Exists)
+    {
+
+        foreach (var p in systemData.InterfaceList)
+        {
+            var interfaceProvider = new RocketInterface(systemData.SystemInfo, p.Key);
+            if (interfaceProvider.IsProvider("shipping"))
+            {
+                AddProcessData("resourcepath", interfaceProvider.TemplateRelPath + "/App_LocalResources/");
+            }
+        }
+
+        <h1>
+            @ResourceKey("RE.shippingmethods")
+        </h1>
+        <div id="shippingmethods" class="w3-container">
+
+            <table class="w3-table w3-bordered w3-hoverable">
+
+                @{
+                    var lp1 = 0;
+                }
+                <thead>
+                    <tr>
+                        <th style="width:100px;">@ResourceKey("DNNrocket.active")</th>
+                        <th>@ResourceKey("DNNrocket.key")</th>
+                        <th>@ResourceKey("DNNrocket.name")</th>
+                    </tr>
+                </thead>
+                <tbody id="shiptablebody">
+                    @foreach (var interfaceProvider in systemData.GetInterfaceList())
+                    {
+                        if (interfaceProvider.IsProvider("shipping"))
+                        {
+                            lp1 += 1;
+                            var i = portalShop.Info.GetListItem("shippingprovidermethod", "genxml/hidden/shippingmethodkey", interfaceProvider.InterfaceKey);
+                            if (i != null && i.GetXmlPropertyBool("genxml/checkbox/active"))
+                            {
+                                var providername = ResourceKey("provider." + interfaceProvider.InterfaceKey).ToString();
+                                if (providername == "")
+                                {
+                                    providername = interfaceProvider.InterfaceKey;
+                                }
+                                try
+                                {
+                                    var providerInterface = systemData.GetProvider(interfaceProvider.InterfaceKey);
+                                    var prov = ShippingInterface.Instance(providerInterface.Assembly, providerInterface.NameSpaceClass);
+                                    <tr class="tablelist simplisity_click" s-cmd="@interfaceProvider.DefaultCommand" style="cursor:pointer;">
+                                        <td>
+                                            @if (prov.Active())
+                                            {
+                                                @ButtonIcon(ButtonTypes.ok)
+                                            }
+                                            else
+                                            {
+                                                @ButtonIcon(ButtonTypes.fail)
+                                            }
+                                        </td>
+                                        <td>@interfaceProvider.InterfaceKey</td>
+                                        <td>@providername</td>
+                                    </tr>
+                                }
+                                catch (Exception ex)
+                                {
+                                    <tr>
+                                        <td colspan="3">
+                                            <b>ERROR: Invalid Provider -  @interfaceProvider.InterfaceKey Assembly: @interfaceProvider.Assembly NameSpaceClass: @interfaceProvider.NameSpaceClass </b>
+                                            <p> @ex.ToString() </p>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- Hidden element to trigger save on sort order change -->
+        <span id="savesortlist" s-cmd="dashboard_shipmethodsort" s-return="#savesortlist" class="w3-hide" s-list=".tablelist"></span>
+
+    }
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        selectMenu('shippingmethods');
+
+        $("#shiptablebody").sortable({
+            items: 'tr',
+            cursor: 'pointer',
+            axis: 'y',
+            dropOnEmpty: false,
+            start: function (e, ui) {
+                ui.item.addClass("selected");
+            },
+            stop: function (e, ui) {
+                ui.item.removeClass("selected");
+                simplisity_callserver($('#savesortlist'))
+            }
+        });
+
+    });
+
+</script>

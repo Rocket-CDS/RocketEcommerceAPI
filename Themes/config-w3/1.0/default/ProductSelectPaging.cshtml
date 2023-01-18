@@ -1,0 +1,87 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var articleDataList = (ProductLimpetList)Model.List.First();
+
+
+    var rowcount = articleDataList.SessionParamData.RowCount;
+    var page = articleDataList.SessionParamData.Page;
+    var pagesize = articleDataList.SessionParamData.PageSize;
+    var pagechapter = 5;
+    var lastpage = 0;
+
+    var r = (page - 1) / pagechapter;
+    var BeginPage = 0;
+    var EndPage = 0;
+
+    if (pagesize > 0)
+    {
+        lastpage = System.Convert.ToInt32(rowcount / pagesize);
+        if (rowcount % pagesize > 0)
+        {
+            lastpage += 1;
+        }
+        BeginPage = pagechapter * r + 1;
+        EndPage = Math.Min(pagechapter * (r + 1), lastpage);
+    }
+
+}
+
+@if (pagesize > 0 && (EndPage != BeginPage))
+{
+
+    <div class="w3-center w3-margin">
+        <div class="w3-bar">
+            @if (BeginPage != 1)
+            {
+                <a class="w3-button w3-hover-theme" onclick="$('#page').val('1'); $('.dosearchselect').trigger('click');" href="javascript:void(0);">|❮</a>
+                if (page >= 6)
+                {
+                    <a class="w3-button w3-hover-theme" onclick="$('#page').val('@(BeginPage - 1)'); $('.dosearchselect').trigger('click');" href="javascript:void(0);">..</a>
+                }
+            }
+
+            @for (int i = BeginPage; i < (EndPage + 1); i++)
+            {
+                var selected = "";
+                if (i == page)
+                {
+                    selected = "w3-theme";
+                }
+                if (i <= lastpage)
+                {
+                    <a href='javascript:void(0);' class='w3-button w3-hover-theme @selected ' onclick="$('#page').val('@(i)'); $('.dosearchselect').trigger('click');">@i</a>
+                }
+            }
+
+            @if (page < lastpage)
+            {
+                if (EndPage != lastpage)
+                {
+                    <a class="w3-button w3-hover-theme " onclick="$('#page').val('@(EndPage + 1)'); $('.dosearchselect').trigger('click');" href="javascript:void(0);">..</a>
+                }
+                <a class="w3-button w3-hover-theme " onclick="$('#page').val('@(lastpage)'); $('.dosearchselect').trigger('click');" href="javascript:void(0);">❯|</a>
+            }
+
+        </div>
+    </div>
+
+}
+
+<script>
+
+    $(document).ready(function () {
+
+
+    });
+
+</script>

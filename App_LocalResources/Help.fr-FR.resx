@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="completed.Msg" xml:space="preserve">
+    <value>Votre requête a été traitée.</value>
+  </data>
+  <data name="completed.Text" xml:space="preserve">
+    <value>Achevé</value>
+  </data>
+  <data name="emailfail.Msg" xml:space="preserve">
+    <value>Votre email n'a pas été envoyé à {email}. Veuillez réessayer. Si le problème persiste, demandez à votre webmestre de vérifier votre SMTP et la configuration du portail.</value>
+  </data>
+  <data name="emailfail.Text" xml:space="preserve">
+    <value>Echec de l'email.</value>
+  </data>
+  <data name="emailsent.Msg" xml:space="preserve">
+    <value>Votre email a été envoyé à {email} </value>
+  </data>
+  <data name="emailsent.Text" xml:space="preserve">
+    <value>Email envoyé.</value>
+  </data>
+  <data name="example.Text" xml:space="preserve">
+    <value>Exemple</value>
+  </data>
+  <data name="exportconfig.Help" xml:space="preserve">
+    <value>L’exportation de cette boutique sera définie comme la valeur par défaut pour tous les nouveaux magasins de portail créés sur cette installation.  Un fichier "default_portalshop.xml" est créé dans le dossier RocketEcommerceAPI. Lorsqu’un nouveau portail est créé, ces données XML seront utilisées pour créer le nouveau portail.</value>
+  </data>
+  <data name="importopenstore3config.Help" xml:space="preserve">
+    <value>Pour importer les données depuis Open Store 3, renommez le fichier XML exporté en " Portals {portalid} DNNrocketTemp openstore3_export.xml" et placez-le à la racine du portail. Les images vont dans " Portails {portalid} DNNrocket RocketEcommerceAPI images" pour l'importation
+.</value>
+  </data>
+  <data name="message_bankinstructions.Default" xml:space="preserve">
+    <value>Veuillez effectuer votre paiement bancaire dès que possible sur le compte ci-dessous. Insérez le numéro de commande dans le champ de référence et saisissez également votre nom s’il est différent de celui de votre comptre.</value>
+  </data>
+  <data name="message_bankinstructions.Help" xml:space="preserve">
+    <value>Message affiché sur l’e-mail de commande, lorsque la commande n’a pas été payée via l’interface en ligne. </value>
+  </data>
+  <data name="message_bankinstructions.Text" xml:space="preserve">
+    <value>Instructions bancaires</value>
+  </data>
+  <data name="message_bankpayment.Default" xml:space="preserve">
+    <value>Le paiement peut être effectué en ligne via notre lien sécurisé vers la banque. Votre commande sera traitée immédiatement.</value>
+  </data>
+  <data name="message_bankpayment.Help" xml:space="preserve">
+    <value>Ce message apparaît sur l'interface client à côté de l’option du paiement bancaire en ligne.</value>
+  </data>
+  <data name="message_bankpayment.Text" xml:space="preserve">
+    <value>Message du bouton de paiement bancaire en ligne</value>
+  </data>
+  <data name="message_checkoutfail.Default" xml:space="preserve">
+    <value>La commande a été annulée ou le paiement a échoué. Veuillez contacter votre banque ou nous contacter si vous pensez qu’il y a un problème avec la page de paiement. </value>
+  </data>
+  <data name="message_checkoutfail.Help" xml:space="preserve">
+    <value>Texte affiché au client après une commande échouée.</value>
+  </data>
+  <data name="message_checkoutfail.Text" xml:space="preserve">
+    <value>Message d’échec du paiement</value>
+  </data>
+  <data name="message_checkoutok.Default" xml:space="preserve">
+    <value>Merci pour votre commande. Vous recevrez une confirmation par e-mail contenant tous les détails de la commande. Veuillez vérifier vos courriers indésirables si vous ne la recevez pas dans les 30 minutes. Prenez note du numéro ci-dessous si vous souhaitez nous contacter au sujet de cette commande. </value>
+  </data>
+  <data name="message_checkoutok.Help" xml:space="preserve">
+    <value>Texte affiché dans l’e-mail reçu par le client lors d'une commande confirmée. </value>
+  </data>
+  <data name="message_checkoutok.Text" xml:space="preserve">
+    <value>Message de paiement OK</value>
+  </data>
+  <data name="message_emailorder.Default" xml:space="preserve">
+    <value>Merci pour votre commande. Nous sommes là pour vous aider ! Contactez-nous si vous avez une question sur votre commande. </value>
+  </data>
+  <data name="message_emailorder.Help" xml:space="preserve">
+    <value>Texte affiché dans l’e-mail de commande réussie envoyé au client.</value>
+  </data>
+  <data name="message_emailorder.Text" xml:space="preserve">
+    <value>E-mail de commande</value>
+  </data>
+  <data name="message_emailordersubject.Text" xml:space="preserve">
+    <value>Objet de l'e-mail de commande</value>
+  </data>
+  <data name="message_emailpaymentsubject.Text" xml:space="preserve">
+    <value>Objet de l'e-mail de paiement</value>
+  </data>
+  <data name="message_manualpay.Default" xml:space="preserve">
+    <value>Le paiement peut être effectué par chèque ou par virement bancaire. Votre commande peut être retardée jusqu’à la réception du paiement.</value>
+  </data>
+  <data name="message_manualpay.Help" xml:space="preserve">
+    <value>Ce message apparaît sur l'interface client à côté de l’option de paiement manuel.</value>
+  </data>
+  <data name="message_manualpay.Text" xml:space="preserve">
+    <value>Message du bouton de paiement manuel</value>
+  </data>
+  <data name="message_paymentform.Default" xml:space="preserve">
+    <value>Ce formulaire vous permet de régler votre commande. Saisissez vos coordonnées et cliquez sur le bouton "Payer maintenant". Vous serez redirigé vers le site de la banque pour effectuer votre paiement sécurisé.</value>
+  </data>
+  <data name="message_paymentform.Help" xml:space="preserve">
+    <value>Ce message s’affiche sur le formulaire de paiement.</value>
+  </data>
+  <data name="message_paymentform.Text" xml:space="preserve">
+    <value>Message du formulaire de paiement</value>
+  </data>
+  <data name="message_paymentformemail.Default" xml:space="preserve">
+    <value>Un paiement sécurisé peut être effectué sur notre site web. Cliquez sur le bouton "Règler ma commande" ci-dessous pour accèder au formulaire de paiement.</value>
+  </data>
+  <data name="message_paymentformemail.Help" xml:space="preserve">
+    <value>Contenu du message par défaut de l'e-mail de paiement.</value>
+  </data>
+  <data name="message_paymentformemail.Text" xml:space="preserve">
+    <value>Message de l'e-mail de paiement </value>
+  </data>
+  <data name="message_paymentformfail.Default" xml:space="preserve">
+    <value>Votre paiement a été refusé ou annulé, veuillez s’il vous plait essayer à nouveau.</value>
+  </data>
+  <data name="message_paymentformfail.Help" xml:space="preserve">
+    <value>Message qui s’affiche au client au retour de la banque après un paiement échoué.</value>
+  </data>
+  <data name="message_paymentformfail.Text" xml:space="preserve">
+    <value>Message de paiement échoué</value>
+  </data>
+  <data name="message_paymentformok.Default" xml:space="preserve">
+    <value>Merci, votre paiement a bien été pris en compte.</value>
+  </data>
+  <data name="message_paymentformok.Help" xml:space="preserve">
+    <value>Message qui s’affiche au client au retour de la banque après un paiement réussi.</value>
+  </data>
+  <data name="message_paymentformok.Text" xml:space="preserve">
+    <value>Message de paiement réussi</value>
+  </data>
+  <data name="message_paymentreceived.Default" xml:space="preserve">
+    <value>Nous vous remercions pour votre règlement.</value>
+  </data>
+  <data name="message_paymentreceived.Help" xml:space="preserve">
+    <value>Texte qui s’affichera dans l’e-mail "Paiement confirmé" envoyé au client </value>
+  </data>
+  <data name="message_paymentreceived.Text" xml:space="preserve">
+    <value>Paiement reçu </value>
+  </data>
+  <data name="message_storepickup.Default" xml:space="preserve">
+    <value>Vous pouvez récupérer votre commande chez nous pendant les heures d’ouverture. Merci de nous contacter au préalable afin de vous assurer qu’elle soit prête.</value>
+  </data>
+  <data name="message_storepickup.Help" xml:space="preserve">
+    <value>Si vous avez une option de retrait pour l’expédition, ce message est affiché sur le site web pendant la sélection d’expédition. </value>
+  </data>
+  <data name="message_storepickup.Text" xml:space="preserve">
+    <value>Retrait en magasin </value>
+  </data>
+  <data name="message_waitingforpayment.Default" xml:space="preserve">
+    <value>Vous avez choisi de régler votre commande manuellement, par chèque ou virement. Un e-mail contenant des instructions pour nous faire parvenir votre règlement vous a été envoyé.</value>
+  </data>
+  <data name="message_waitingforpayment.Help" xml:space="preserve">
+    <value>Lorsque le "paiement classique" est utilisé, votre paiement doit être envoyé au commerçant via d’autres méthodes (chèque, liquide, virement, etc.).  Ce message s’affiche après avoir cliqué sur "Paiement classique".</value>
+  </data>
+  <data name="message_waitingforpayment.Text" xml:space="preserve">
+    <value>En attente de paiement</value>
+  </data>
+  <data name="nosubcategories.Text" xml:space="preserve">
+    <value>Cette catégorie n’a pas de sous-catégories</value>
+  </data>
+  <data name="notificationreset.Msg" xml:space="preserve">
+    <value>Cette action réinitialisera TOUS les messages de notification par défaut. Les notifications actuelles, pour TOUTES les langues, seront perdues. Vous devez également enregistrer les messages après une réinitialisation. Etes-vous sûr ?</value>
+  </data>
+  <data name="notificationreset.Text" xml:space="preserve">
+    <value>Réinitialisation de la notification</value>
+  </data>
+  <data name="pageslinks_checkout.Help" xml:space="preserve">
+    <value>URL de la page de paiement</value>
+  </data>
+  <data name="pageslinks_paymentpage.Help" xml:space="preserve">
+    <value>URL de la page de paiement</value>
+  </data>
+  <data name="pageslinks_productdetail.Help" xml:space="preserve">
+    <value>URL du détail du produit</value>
+  </data>
+  <data name="pageslinks_productlist.Help" xml:space="preserve">
+    <value>URL de la liste de produits</value>
+  </data>
+  <data name="resetportalshop.Help" xml:space="preserve">
+    <value>La réinitialisation de la boutique rétablit tous les paramètres par défaut du système (habituellement créé par le portail d'export de la boutique</value>
+  </data>
+  <data name="resetportalshop.Text" xml:space="preserve">
+    <value>Réinitialisation de la boutique</value>
+  </data>
+  <data name="schedulerrunhours.Help" xml:space="preserve">
+    <value>Le temps passé à partir du dernier cycle de planification sera exécuté à nouveau. Cela est également contrôlé dans DNN, mais est habituellement configuré pour chaque heure. Habituellement, nous devons vider la base de données et effectuer d’autres opérations seulement une fois par jour. Les opérations qui doivent être exécutées toutes les heures ne sont pas effectuées par ce paramètre.</value>
+  </data>
+  <data name="schedulerrunhours.Text" xml:space="preserve">
+    <value>Heures d'exécution du planificateur</value>
+  </data>
+  <data name="urlredirects.Text" xml:space="preserve">
+    <value>		Les URL des pages du webiste client peuvent être ajoutées ici, ce qui permet d’établir des liens SEO entre les appels API. Les URLs peuvent avoir des jetons ajoutés pour les paramètres qui doivent être ajoutés au lien de la page.</value>
+  </data>
+  <data name="validateshop.Help" xml:space="preserve">
+    <value>Faire un "Run portal validation" du site Web. Cela permettra d’exécuter un certain nombre de tests et de corriger toute erreur. Habituellement, cela doit être exécuté lorsqu’un site Web a été migré vers un autre serveur. Zéro activera le planificateur sur les paramètres de contrôle DNN.</value>
+  </data>
+  <data name="validateshop.Text" xml:space="preserve">
+    <value>Validate Shop</value>
+  </data>
+</root>

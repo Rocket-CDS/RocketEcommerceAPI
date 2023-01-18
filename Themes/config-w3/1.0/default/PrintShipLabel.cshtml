@@ -1,0 +1,22 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var orderData = (OrderLimpet)Model.List.First();
+}
+<div class="ordershipprint">
+    @if (orderData != null)
+    {
+        <div class="shipaddress">
+            <div class="address mainaddress">
+                @HtmlOf(orderData.ShipAddressHtml)
+            </div>
+        </div>
+    }
+</div>
+

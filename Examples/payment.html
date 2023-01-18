@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Rocket E-Commerce</title>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/DesktopModules/DNNrocketModules/RocketEcommerceAPI/Themes/config-w3/1.0/css/RocketEcommerceAPI-Theme.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
+
+    <!-- CDN -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    -->
+    <!-- LOCAL -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css">
+    <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+    <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!--
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
+
+        -->
+
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.validate.min.js"></script>
+
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+
+</head>
+<body class="w3-white">
+
+    <div class="w3-main w3-container" style="top:0px " id="base-panel">
+        <form id="remote_paymentform">
+            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketecommerceapi_payment" s-fields='{"systemkey":"rocketecommerceapi","template":"paymentform.cshtml","appthemefolder":"Rocket_PaymentForm","appthemeversion":"1.0"}'>
+                <div class="">
+                    <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
+                </div>
+            </div>
+        </form>
+
+        <!-- End page content -->
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            //$(document).simplisityStartUp('https://dev.dnnrocket.com/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketecommerceapi', debug: false });
+
+            $(document).simplisityStartUp('http://aaa.dnnrocket.com/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketecommerceapi', debug: false });
+            
+        });
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,305 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+
+
+@{
+    var info = new SimplisityInfo();
+    var paymentLimpet = (PaymentLimpet)Model.List.First();
+    if (paymentLimpet.Record != null)
+    {
+        info = new SimplisityInfo(paymentLimpet.Record);
+    }
+    var portalShop = new PortalShopLimpet(paymentLimpet.PortalId, DNNrocketUtils.GetEditCulture());
+
+    var duecolor = "w3-pale-red";
+    if (paymentLimpet.AmountDue == 0)
+    {
+        duecolor = "w3-pale-green";
+    }
+
+}
+@RenderLanguageSelector("paymentadmin_editpayment", "{\"paymentid\":\"" + paymentLimpet.PaymentId + "\"}", portalShop.SystemKey, Model)
+
+<div class='w3-animate-opacity w3-padding'>
+
+
+    <div id="displaypaymentdetails">
+
+        <div class="w3-row w3-padding">
+            <button class="w3-button simplisity_click" s-cmd="paymentadmin_editlist">@ButtonIcon(ButtonTypes.back)</button>
+            <div class="w3-button w3-theme-action simplisity_click langchangesave" s-cmd="paymentadmin_savedata" s-post="#datasection" s-fields='{"paymentid":"@info.ItemID"}'>@ButtonText(ButtonTypes.save)</div>
+
+            @if (paymentLimpet.Amount > 0 && GeneralUtils.IsEmail(paymentLimpet.Email))
+            {
+                if (paymentLimpet.AmountDue > 0)
+                {
+                    <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("RE.sendemail")&nbsp;?" s-cmd="paymentadmin_paymentemail" s-return="#emailsendrespone" s-post="#datasection" s-fields='{"paymentid":"@info.ItemID"}'>@ResourceKey("RE.sendemail")</div>
+                }
+                else
+                {
+                    <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("RE.sendemail")&nbsp;?" s-cmd="paymentadmin_receivedemail" s-return="#emailsendrespone" s-post="#datasection" s-fields='{"paymentid":"@info.ItemID"}'>@ResourceKey("RE.sendreceivedemail")</div>
+                }
+            }
+            @if (paymentLimpet.OrderId > 0)
+            {
+                <div class="w3-button simplisity_click" s-cmd="orderadmin_editorder" s-fields='{"orderid":"@(paymentLimpet.OrderId)"}'>@ResourceKey("RE.order")</div>
+            }
+            @if (portalShop.PaymentPageUrl != "")
+            {
+                <div class="w3-button simplisity_click" s-cmd="paymentadmin_savedata" s-after="redirecttopay" s-post="#datasection" s-fields='{"paymentid":"@info.ItemID"}'>@ResourceKey("RE.pay")</div>
+            }
+            @if (paymentLimpet.StatusCode == Convert.ToInt32(PaymentStatus.Archived))
+            {
+                <div class="w3-button w3-right w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="paymentadmin_delete" s-fields='{"paymentid":"@info.ItemID"}'>@ButtonText(ButtonTypes.delete)</div>
+            }
+        </div>
+        <h2>@ResourceKey("RE.payment")</h2>
+
+        <div id="emailsendrespone" class="w3-row">
+
+        </div>
+
+
+        <div id="datasection" class="">
+
+            <div class="w3-container">
+                <div class="w3-row ">
+
+                    <div class="w3-row ">
+                        <div class="w3-third w3-padding @duecolor w3-xlarge w3-margin-top">
+                            <label>@ResourceKey("RE.amountdue"):&nbsp;</label>
+                            <b>@paymentLimpet.AmountDueDisplay</b>
+                        </div>
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RE.amount")</label>
+                            <!-- pass to server as a string and process as currency on the server side code.-->
+                            @TextBoxMoney(PortalUtils.GetCurrentPortalId(), DNNrocketUtils.GetEditCulture(), info, "genxml/textbox/amount", " class='w3-input w3-border' style='font-weight: bold;' autocomplete='off'  ", "0")
+                        </div>
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RE.amountpaid")</label>
+                            @TextBoxMoney(PortalUtils.GetCurrentPortalId(), DNNrocketUtils.GetEditCulture(), info, "genxml/textbox/amountpaid", " class='w3-input w3-border' style='font-weight: bold;' autocomplete='off' ", "0")
+                        </div>
+                    </div>
+
+                    <div class="w3-third w3-padding">
+                        <label>@ResourceKey("RE.number")</label>
+                        <div class="w3-input w3-border w3-light-grey w3-padding">
+                            @if (paymentLimpet.PaymentId > 0)
+                            {
+                                <b>@paymentLimpet.PaymentId</b>
+                            }
+                            else
+                            {
+                                <span>.</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="w3-third w3-padding">
+                        <label>@ResourceKey("RE.date")</label>
+                        <div class="w3-input w3-border w3-light-grey w3-padding">
+                            @if (paymentLimpet.PaymentDate != DateTime.MinValue)
+                            {
+                                @paymentLimpet.PaymentDate.ToString()
+                            }
+                            else
+                            {
+                                <span>.</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="w3-third w3-padding">
+                        <label>@ResourceKey("RE.status")</label>
+                        <div class="w3-dropdown-click " onclick="paymentDropdownClick();" style="width:100%;">
+                            <div id="statuscodedisplay" class="@("orderstatus" + paymentLimpet.StatusCode) w3-padding w3-round ">
+                                @ResourceKey("RE.orderstatus" + paymentLimpet.StatusCode)
+                            </div>
+                            <div id="paymentDropdownClick" class="w3-dropdown-content w3-bar-block  w3-card-4 w3-padding  w3-animate-opacity" style="width:100%;cursor:pointer;">
+                                <div class="w3-bar-item dd orderstatus20 orderstatusdisplay20 w3-round w3-border-bottom" onclick="changestatus('20');">@ResourceKey("RE.orderstatus20")</div>
+                                <div class="w3-bar-item dd orderstatus30 orderstatusdisplay30 w3-round w3-border-bottom" onclick="changestatus('30');">@ResourceKey("RE.orderstatus30")</div>
+                                <div class="w3-bar-item dd orderstatus220 orderstatusdisplay220 w3-round w3-border-bottom" onclick="changestatus('220');">@ResourceKey("RE.orderstatus220")</div>
+                                <div class="w3-bar-item dd orderstatus160 orderstatusdisplay160 w3-round w3-border-bottom" onclick="changestatus('160');">@ResourceKey("RE.orderstatus160")</div>
+                                <div class="w3-bar-item dd orderstatus170 orderstatusdisplay170 w3-round w3-border-bottom" onclick="changestatus('170');">@ResourceKey("RE.orderstatus170")</div>
+                                <div class="w3-bar-item dd orderstatus50 orderstatusdisplay50 w3-round w3-border-bottom" onclick="changestatus('50');">@ResourceKey("RE.orderstatus50")</div>
+                                <div class="w3-bar-item dd orderstatus60 orderstatusdisplay60 w3-round w3-border-bottom" onclick="changestatus('60');">@ResourceKey("RE.orderstatus60")</div>
+                                <div class="w3-bar-item dd orderstatus150 orderstatusdisplay150 w3-round w3-border-bottom" onclick="changestatus('150');">@ResourceKey("RE.orderstatus150")</div>
+                                <div class="w3-bar-item dd orderstatus180 orderstatusdisplay180 w3-round w3-border-bottom" onclick="changestatus('180');">@ResourceKey("RE.orderstatus180")</div>
+                                <div class="w3-bar-item dd orderstatus190 orderstatusdisplay190 w3-round w3-border-bottom" onclick="changestatus('190');">@ResourceKey("RE.orderstatus190")</div>
+                                <div class="w3-bar-item dd orderstatus120 orderstatusdisplay120 w3-round w3-border-bottom" onclick="changestatus('120');">@ResourceKey("RE.orderstatus120")</div>
+                                <div class="w3-bar-item dd orderstatus140 orderstatusdisplay140 w3-round w3-border-bottom" onclick="changestatus('140');">@ResourceKey("RE.orderstatus140")</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w3-row">
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RE.email")</label>
+                            @TextBox(info, "genxml/textbox/email", " class='w3-input w3-border' autocomplete='off' ")
+                        </div>
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RE.company")</label>
+                            @TextBox(info, "genxml/textbox/company", " class='w3-input w3-border' autocomplete='off' ")
+                        </div>
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RE.invoiceref")</label>
+                            @TextBox(info, "genxml/textbox/invoiceref", " class='w3-input w3-border' autocomplete='off' ")
+                        </div>
+                    </div>
+
+                    <div class="w3-row">
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RE.firstname")</label>
+                            @TextBox(info, "genxml/textbox/firstname", " class='w3-input w3-border' autocomplete='off' ")
+                        </div>
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RE.lastname")</label>
+                            @TextBox(info, "genxml/textbox/lastname", " class='w3-input w3-border' autocomplete='off' ")
+                        </div>
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RE.paymentprovider")</label>
+                            @TextBox(info, "genxml/textbox/paymentprovider", " class='w3-input w3-border' disabled autocomplete='off' ")
+                        </div>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-third w3-padding">
+                            <label class="">@ResourceKey("RE.preferedculturecode")</label>
+                            @{
+                                var cultureCodes = new Dictionary<string, string>();
+                                var cultureList = DNNrocketUtils.GetCultureCodeList();
+                                foreach (var cc in cultureList)
+                                {
+                                    cultureCodes.Add(cc, cc);
+                                }
+                            }
+                            @DropDownList(info, "genxml/textbox/preferedculturecode", cultureCodes, "class='w3-input w3-border'", DNNrocketUtils.GetEditCulture())
+                        </div>
+                        <div class="w3-third w3-padding">
+                        </div>
+                        <div class="w3-third w3-padding">
+                        </div>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-half w3-padding">
+                            <label>@ResourceKey("RE.emailmessage")</label>
+                            @TextArea(info, "genxml/textbox/emailmessage", " class='w3-input w3-border' rows='3' style='resize: none;' ", "", false, 0)
+                        </div>
+                        <div class="w3-half w3-padding">
+                            <label>@ResourceKey("RE.internalnotes")</label>
+                            @TextArea(info, "genxml/textbox/internalnotes", " class='w3-input w3-border' rows='3' style='resize: none;' ", "", false, 0)
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="w3-row w3-padding">
+            <h2>
+                @ResourceKey("RE.history")
+            </h2>
+            <div class="w3-button w3-right w3-pale-red w3-margin-bottom w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RE.removehistory")&nbsp;?" s-cmd="paymentadmin_removehistory" s-fields='{"paymentid":"@info.ItemID"}'>@ButtonText(ButtonTypes.remove)</div>
+            <table class="w3-table w3-striped w3-hoverable">
+                <tr class="w3-theme-l2 w3-padding">
+                    <th>@ResourceKey("RE.date")</th>
+                    <th class="w3-hide-small">@ResourceKey("RE.name")</th>
+                    <th class="w3-hide-small"></th>
+                    <th class="w3-hide-small">@ResourceKey("RE.amount")</th>
+                    <th class="w3-hide-small">@ResourceKey("RE.paid")</th>
+                    <th style="width:250px;">@ResourceKey("RE.orderstatus")</th>
+                </tr>
+                @foreach (var historyRec in paymentLimpet.GetHistory())
+                {
+
+                    <tr class="history">
+                        <td>
+                            @historyRec.GetXmlPropertyDate("genxml/datetime").ToString()
+                        </td>
+                        <td class="w3-hide-small">
+                            @historyRec.GetXmlProperty("genxml/username")
+                        </td>
+                        <td class="w3-hide-small">
+                            @HtmlOf(historyRec.GetXmlProperty("genxml/comment"))
+                        </td>
+                        <td class="w3-hide-small" style="width:120px;">
+                            <b>@historyRec.GetXmlProperty("genxml/amount")</b>
+                        </td>
+                        <td class="w3-hide-small" style="width:120px;">
+                            <b>@historyRec.GetXmlProperty("genxml/amountpaid")</b>
+                        </td>
+                        <td style="width:250px;">
+                            <div class="@("orderstatus" + historyRec.GetXmlProperty("genxml/statuscode")) w3-padding-small w3-round">
+                                @ResourceKey("RE.orderstatus" + historyRec.GetXmlProperty("genxml/statuscode"))
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+    </div>
+
+    <div>
+        @if (UserUtils.IsInRole("Administrator") && paymentLimpet.Exists)
+        {
+            <div class="w3-container">
+
+                <div class="w3-button rocket-buttonbar w3-black simplisity_confirmclick" s-confirm="@ResourceKey("RE.sendemail")&nbsp;?" s-cmd="paymentadmin_testrequestemail" s-return="#emailsendrespone" s-post="#datasection" s-fields='{"paymentid":"@info.ItemID"}'><i title="Send" class="far  fa-paper-plane fa-fw fa-lg"></i>&nbsp;TEST: Payment Email</div>
+                <div class="w3-button rocket-buttonbar w3-black simplisity_confirmclick" s-confirm="@ResourceKey("RE.sendemail")&nbsp;?" s-cmd="paymentadmin_testclientemail" s-return="#emailsendrespone" s-post="#datasection" s-fields='{"paymentid":"@info.ItemID"}'><i title="Send" class="far  fa-paper-plane fa-fw fa-lg"></i>&nbsp;TEST: Client Email</div>
+                <div class="w3-button rocket-buttonbar w3-black simplisity_confirmclick" s-confirm="@ResourceKey("RE.sendemail")&nbsp;?" s-cmd="paymentadmin_testmanageremail" s-return="#emailsendrespone" s-post="#datasection" s-fields='{"paymentid":"@info.ItemID"}'><i title="Send" class="far  fa-paper-plane fa-fw fa-lg"></i>&nbsp;TEST: Manager Email</div>
+
+                <div class="w3-right">
+                    @RenderTemplateInfo("XmlModelDisplay.cshtml", info)
+                </div>
+            </div>
+        }
+        <i>ID: </i> @info.ItemID&nbsp;<i>&nbsp;GUID:</i> @paymentLimpet.GUIDKey&nbsp;<i>&nbsp; ACTION: </i> @paymentLimpet.BankAction
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        // On creation of new order/cart ensure we save the correct assigned statuscode
+        // The order record does not exist until we save, so we need to pass back the already assigned status.
+        simplisity_setParamField('statuscode', '@paymentLimpet.StatusCode');
+
+        readmin.moveToTop('#articlemodal');
+        $('#articlemodal').show();
+    });
+
+    function changestatus(scode) {
+        simplisity_setParamField('statuscode', scode)
+        $("#statuscodedisplay").attr('class', 'w3-padding w3-round');
+        $('#statuscodedisplay').addClass('orderstatus' + scode);
+        $('#statuscodedisplay').text($('.orderstatusdisplay' + scode).text())
+        //$('.langchangesave').trigger('click');
+    }
+
+    function paymentDropdownClick() {
+        var x = document.getElementById("paymentDropdownClick");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+    function redirecttopay() {
+        window.open("@(portalShop.PaymentPageUrl + "?key=" + paymentLimpet.GUIDKey)");
+    }
+
+</script>
+
+
+

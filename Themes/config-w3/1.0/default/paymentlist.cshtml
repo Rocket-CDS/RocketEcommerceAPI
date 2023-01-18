@@ -1,0 +1,207 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+
+
+@{
+    var paymentLimpetList = (PaymentLimpetList)Model.List.First();
+    var lp1 = 0;
+    var passModel = new SimplisityRazor(paymentLimpetList.PortalShop, new Dictionary<string, string>());
+    var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
+}
+
+@RenderLanguageSelector("paymentadmin_editlist", "", appThemeSystem, Model)
+
+<div class='w3-animate-opacity w3-padding'>
+
+    <div class="w3-bar searchdata">
+
+        @HiddenField(new SimplisityInfo(), "genxml/hidden/page", " class='simplisity_sessionfield' s-update='ignore'", "1")
+
+        <div class="w3-bar-item">
+            <div class="w3-bar-item w3-button w3-theme-action simplisity_click" s-cmd="paymentadmin_addpayment" s-fields='{"paymentid":"-1","sitekey":"@(paymentLimpetList.PortalShop.SiteKey)"}'>@ButtonText(ButtonTypes.add)</div>
+        </div>
+
+        <div class="w3-bar-item w3-right w3-hide-small w3-margin-left" style="width: 100px">
+            @DropDownList(new SimplisityInfo(), "genxml/hidden/pagesize", "8,16,32,64,128", "8,16,32,64,128", "class='w3-input w3-border w3-light-grey simplisity_sessionfield simplisity_change ' s-sessionfield='#searchstatuscode,#searchtextpayment,#pagesize,#page' s-cmd='paymentadmin_search' s-post='.searchdata' s-fields='{\"track\":\"true\"}'  title='" + @ResourceKey("DNNrocket.pagesize") + "'", "32")
+        </div>
+
+        <div class="w3-bar-item w3-right " style=''>
+            <div class="w3-bar">
+                @TextBox(new SimplisityInfo(), "genxml/textbox/searchtextpayment", " s-update='ignore' class='w3-bar-item w3-input w3-border w3-light-grey simplisity_sessionfield actionentrykey' autocomplete='off' ")
+                <span class="w3-bar-item w3-button w3-theme-d3 clearsearch " style="display:none;height:40px;" s-fields=''>@ButtonText(ButtonTypes.cancelsearch)</span>
+                <span class="w3-bar-item w3-button w3-theme langchangesave simplisity_click dosearch" style="height:40px;" s-sessionfield='#searchstatuscode,#searchtextpayment,#pagesize,#page' s-cmd="paymentadmin_search" s-post=".searchdata" s-fields='{"track":"true"}'>@ButtonText(ButtonTypes.search)</span>
+            </div>
+        </div>
+
+        <div class="w3-bar-item w3-right " style="">
+            <div class=" " onclick="statusdropdownclick()" style="">
+                @HiddenField(new SimplisityInfo(), "genxml/hidden/searchstatuscode", " class='simplisity_sessionfield' s-update='ignore'")
+                <div class="orderstatusall orderstatusdisplay w3-padding w3-border">
+                    @ResourceKey("RE.orderstatusall")
+                </div>
+                <div id="statusdropdownclick" class="w3-dropdown-content w3-bar-block  w3-card-4 w3-padding" style="cursor:pointer;">
+                    <div class="w3-bar-item dd orderstatusall w3-round w3-border-bottom" onclick="changestatus('');">@ResourceKey("RE.orderstatusall")</div>
+                    <div class="w3-bar-item dd orderstatus20 w3-round w3-border-bottom" onclick="changestatus('20');">@ResourceKey("RE.orderstatus20")</div>
+                    <div class="w3-bar-item dd orderstatus40 w3-round w3-border-bottom" onclick="changestatus('40');">@ResourceKey("RE.orderstatus40")</div>
+                    <div class="w3-bar-item dd orderstatus200 w3-round w3-border-bottom" onclick="changestatus('200');">@ResourceKey("RE.orderstatus200")</div>
+                    <div class="w3-bar-item dd orderstatus210 w3-round w3-border-bottom" onclick="changestatus('210');">@ResourceKey("RE.orderstatus210")</div>
+                    <div class="w3-bar-item dd orderstatus70 w3-round w3-border-bottom" onclick="changestatus('70');">@ResourceKey("RE.orderstatus70")</div>
+                    <div class="w3-bar-item dd orderstatus80 w3-round w3-border-bottom" onclick="changestatus('80');">@ResourceKey("RE.orderstatus80")</div>
+                    <div class="w3-bar-item dd orderstatus130 w3-round w3-border-bottom" onclick="changestatus('130');">@ResourceKey("RE.orderstatus130")</div>
+                    <div class="w3-bar-item dd orderstatus90 w3-round w3-border-bottom" onclick="changestatus('90');">@ResourceKey("RE.orderstatus90")</div>
+                    <div class="w3-bar-item dd orderstatus100 w3-round w3-border-bottom" onclick="changestatus('100');">@ResourceKey("RE.orderstatus100")</div>
+                    <div class="w3-bar-item dd orderstatus110 w3-round w3-border-bottom" onclick="changestatus('110');">@ResourceKey("RE.orderstatus110")</div>
+                    <div class="w3-bar-item dd orderstatus120 w3-round w3-border-bottom" onclick="changestatus('120');">@ResourceKey("RE.orderstatus120")</div>
+                    <div class="w3-bar-item dd orderstatus140 w3-round w3-border-bottom" onclick="changestatus('140');">@ResourceKey("RE.orderstatus140")</div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="datasectionlist" class="">
+
+        <table class="w3-table w3-bordered w3-hoverable">
+            <tr>
+                <th>@ResourceKey("RE.name")</th>
+                <th>@ResourceKey("RE.email")</th>
+                <th class=" w3-hide-small">@ResourceKey("RE.date")</th>
+                <th class=" w3-hide-small">@ResourceKey("RE.amount")</th>
+                <th class=" w3-hide-small">@ResourceKey("RE.amountdue")</th>
+                <th>@ResourceKey("RE.status")</th>
+            </tr>
+            @{
+                lp1 = 0;
+            }
+            @foreach (PaymentLimpet paymentLimpet in paymentLimpetList.GetPaymentList())
+            {
+                lp1 += 1;
+                var amountduecolor = "w3-text-red";
+                if (paymentLimpet.AmountDue == 0)
+                {
+                    amountduecolor = "w3-text-green";
+                }
+
+                <tr class="simplisity_click" s-cmd="paymentadmin_editpayment" s-fields='{"paymentid":"@(paymentLimpet.PaymentId)"}' style="cursor:pointer;">
+                    <td>
+                        @paymentLimpet.Name
+                    </td>
+                    <td>
+                        @paymentLimpet.Email
+                    </td>
+                    <td class=" w3-hide-small">
+                        @paymentLimpet.PaymentDate.ToString()
+                    </td>
+                    <td class="w3-hide-small w3-small">
+                        @paymentLimpet.AmountDisplay
+                    </td>
+                    <td class="@amountduecolor  w3-hide-small">
+                        <b>
+                            @paymentLimpet.AmountDueDisplay
+                        </b>
+                    </td>
+                    <td>
+                        <div class="@("orderstatus" + paymentLimpet.StatusCode) w3-padding-small w3-round">
+                            @ResourceKey("RE.orderstatus" + paymentLimpet.StatusCode)
+                        </div>
+                    </td>
+                </tr>
+            }
+
+
+        </table>
+
+        @RenderTemplate("paymentPaging.cshtml", appThemeSystem, Model, true)
+
+    </div>
+
+</div>
+
+<script>
+        $(document).ready(function () {
+
+            selectMenu('paymentadmin');
+
+            $(':checkbox').attr('class', 'w3-check');
+
+            $('.clearsearch').unbind("click");
+            $('.clearsearch').click(function () {
+                $('#searchtextpayment').val('');
+                $('.dosearch').trigger('click');
+                return false; // prevent the button click from happening
+            });
+
+            if ($('#searchtextpayment').val() !== '') {
+                $('.dosearch').hide();
+                $('.clearsearch').show();
+            }
+
+            $('.actionentrykey').unbind('keypress');
+            $('.actionentrykey').on('keypress', function (e) {
+                if (e.keyCode == 13) {
+                    $('.dosearch').trigger('click');
+                    return false; // prevent the button click from happening
+                }
+            });
+
+            $('.actionentrykey').focus();
+
+            // move cursor to end of line
+            var tmpStr = $('.actionentrykey').val();
+            $('.actionentrykey').val('');
+            $('.actionentrykey').val(tmpStr);
+
+            //  change color of panel, s we show it has a selection
+            if (tmpStr != '') {
+                $('#searchtextpayment').addClass('w3-border-red');
+            }
+
+            // simplisityjs populating sessionParams needs to affect display.
+            statusupdate($('#searchstatuscode').val());
+
+        });
+
+    function statusdropdownclick() {
+        var x = document.getElementById("statusdropdownclick");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+        function languageChange() {
+            $('.dosearch').trigger("click");
+        }
+
+        function statusupdate(scode) {
+            $('.paymentstatusdisplay').text('');
+            if (scode === '') {
+                $('.paymentstatusdisplay').removeClass('orderstatus' + $('#searchstatuscode').val());
+                $('.paymentstatusdisplay').text('@ResourceKey("RE.orderstatusall")');
+                $('.paymentstatusdisplay').addClass('orderstatusall');
+                $('#searchstatuscode').val(scode);
+            } else {
+                $('.paymentstatusdisplay').removeClass('orderstatusall');
+                $('.paymentstatusdisplay').removeClass('orderstatus' + $('#searchstatuscode').val());
+                $('.paymentstatusdisplay').text($('.dd.orderstatus' + scode).text());
+                $('.paymentstatusdisplay').addClass('orderstatus' + scode);
+                $('#searchstatuscode').val(scode);
+            }
+        }
+
+        function changestatussearch(scode) {
+            statusupdate(scode);
+            $('.dosearch').trigger('click');
+        }
+
+</script>

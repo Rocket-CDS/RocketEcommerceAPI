@@ -1,0 +1,102 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var productDataList = (ProductLimpetList)Model.GetDataObject("productlist");
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
+    var categoryData = new CategoryLimpet(portalShop.PortalId, sessionParams.GetInt("searchcategoryid"), sessionParams.CultureCode);
+}
+
+<div class="w3-bar searchdata">
+
+    <div class="w3-bar-item " style=''>
+        <div class="w3-bar">
+            @TextBox(new SimplisityInfo(), "genxml/textbox/searchtext", " style='height:40px;width:250px;' class='w3-bar-item w3-input w3-border w3-light-grey simplisity_sessionfield actionentrykey' autocomplete='off' ", sessionParams.Get("searchtext"))
+            <span class="w3-bar-item ">
+                <span class="material-icons dosearch" style="cursor: pointer;" onclick="$('.triggersearch').trigger('click');">
+                    search
+                </span>
+                <span class="material-icons w3-small clearsearch" onclick="$('.triggersearch').trigger('click');" style="vertical-align: top; display: none; cursor: pointer; ">
+                    cancel
+                </span>
+            </span>
+        </div>
+    </div>
+
+    @if (productDataList != null)
+    {
+        var orderbyDictionary = new Dictionary<string, string>();
+        orderbyDictionary.Add("", "");
+        foreach (var orderbyInfo in portalShop.GetProductOrderByList())
+        {
+            orderbyDictionary.Add(orderbyInfo.GetXmlProperty("genxml/key"), ResourceKey("RE." + orderbyInfo.GetXmlProperty("genxml/key"), sessionParams.CultureCode).ToString());
+        }
+        <div class="w3-bar-item w3-right w3-hide-small w3-margin-left">
+            @DropDownList(new SimplisityInfo(), "genxml/hidden/pagesize", "8,16,32,64,128", "8,16,32,64,128", " style='height:40px;' class='w3-input w3-border simplisity_sessionfield ' onchange=\"$('.triggersearch').trigger('click');\" title='" + @ResourceKey("DNNrocket.pagesize", sessionParams.CultureCode) + "'", "32")
+        </div>
+        <div class="w3-bar-item w3-right w3-hide-small w3-margin-left">
+            <span>
+                @DropDownList(new SimplisityInfo(), "genxml/hidden/orderbyref", orderbyDictionary, " style='height:40px;' class='w3-input w3-border simplisity_sessionfield ' onchange=\"$('.triggersearch').trigger('click');\"", "")
+            </span>
+        </div>
+    }
+
+</div>
+
+<!-- Element to trigger simplisity call from JS event -->
+<span class="w3-hide triggersearch" onclick="setSessionParams();"></span>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('.clearsearch ').unbind("click");
+        $('.clearsearch ').click(function () {
+            $('#searchtext').val('');
+            $('.dosearch').trigger('click');
+            return false; // prevent the button click from happening
+        });
+
+
+        if ($('.actionentrykey').val() !== '') {
+            $('.actionentrykey').focus();
+            $('.clearsearch').show();
+            var tmpStr = $('.actionentrykey').val();
+            $('.actionentrykey').val('');
+            $('.actionentrykey').val(tmpStr);
+            $('#searchtext').addClass('w3-theme-light');
+        }
+        else {
+            $('#searchtext').removeClass('w3-theme-light');
+        }
+
+        $('.actionentrykey').unbind('keypress');
+        $('.actionentrykey').on('keypress', function (e) {
+            if (e.keyCode == 13) {
+                $('.dosearch').trigger('click');
+                return false; // prevent the button click from happening
+            }
+        });
+
+    });
+
+
+    function setSessionParams() {
+        simplisity_setSessionField('searchtext', $('#searchtext').val());
+        simplisity_setSessionField('pagesize', $('#pagesize').val());
+        simplisity_setSessionField('orderbyref', $('#orderbyref').val());
+        $('.simplisity_loader').show();
+        window.location.href = '@(sessionParams.PageUrl)';
+    }
+
+</script>

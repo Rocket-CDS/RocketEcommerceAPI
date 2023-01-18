@@ -1,0 +1,130 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var articleDataList = (ProductLimpetList)Model.List.First();
+    var lp1 = 0;
+    var passModel = new SimplisityRazor(articleDataList.PortalShop, new Dictionary<string, string>());
+    var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
+}
+
+<div id="">
+
+    <div class="w3-bar searchdata">
+
+        @HiddenField(new SimplisityInfo(), "genxml/hidden/page", " class='simplisity_sessionfield' s-update='ignore'", "1")
+
+        <div class="w3-bar-item w3-right w3-hide-small w3-margin-left" style="width: 100px">
+            @DropDownList(new SimplisityInfo(), "genxml/hidden/pagesize", "6,12,24,48,92", "6,12,24,48,92", "class='w3-input w3-border w3-light-grey simplisity_sessionfield simplisity_change ' s-sessionfield='#searchtext,#pagesize,#orderbyref,#page' s-cmd='orderadmin_articleselectlist' s-return='#productlistreturn' s-post='.searchdata' title='" + @ResourceKey("DNNrocket.pagesize") + "'", "24")
+        </div>
+
+        <div class="w3-bar-item w3-right " style=''>
+            <div class="w3-bar">
+                @TextBox(new SimplisityInfo(), "genxml/textbox/searchtext", "class='w3-bar-item w3-input w3-border w3-light-grey simplisity_sessionfield ' autocomplete='off' ")
+                <span class="w3-bar-item w3-button w3-theme-d3 clearsearchselect " style="display:none;height:40px;" s-fields=''>@ButtonText(ButtonTypes.cancelsearch)</span>
+                <span class="w3-bar-item w3-button w3-theme simplisity_click dosearchselect" style="height:40px;" s-sessionfield='#searchtext,#pagesize,#orderbyref,#page' s-cmd="orderadmin_articleselectlist" s-return="#productlistreturn" s-post=".searchdata">@ButtonText(ButtonTypes.search)</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="datasection" class="">
+
+
+        <div id="datalist2" class="w3-row w3-padding  w3-margin-top ">
+
+            <table class="w3-table w3-bordered w3-hoverable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>@ResourceKey("RE.name")</th>
+                        <th class="w3-right-align w3-margin-right">@ResourceKey("RE.price")&nbsp;(@articleDataList.PortalShop.CurrencySymbol)</th>
+                    </tr>
+                </thead>
+                @foreach (ProductLimpet productData in articleDataList.GetArticleList())
+                {
+                    <tr class=" simplisity_click" s-cmd="orderadmin_articleselectdetail" s-return=".articleselectpopup" s-fields='{"orderid":"@Model.GetSetting("orderid")","productid":"@productData.ProductId"}' style="cursor:pointer;">
+                        <td style="width:42px;">
+                            @if (productData.GetImage(0) != null && productData.GetImage(0).RelPath != "")
+                            {
+                                <img src="@ThumbnailImageUrl(productData.GetImage(0).RelPath, 32, 32)" style="height:32px;width:32px;" class="w3-round" />
+                            }
+                            else
+                            {
+                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 32, 32)" style="height:32px;width:32px;" class="w3-round" />
+                            }
+
+                        </td>
+                        <td style="width:54px;">
+                            @if (productData.IsHidden)
+                            {
+                                <span class="material-icons">
+                                    hide_source
+                                </span>
+                            }
+                        </td>
+                        <td><b>@productData.Name</b><span class="w3-tiny">&nbsp;@productData.Ref</span></td>
+                        <td class="w3-right-align w3-margin-right"><b>@productData.PriceMaximumDisplayNoSymbol()&nbsp;</b></td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        @RenderTemplate("ProductSelectPaging.cshtml", appThemeSystem, Model, true)
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $(':checkbox').attr('class', 'w3-check');
+
+        $('.clearsearchselect').unbind("click");
+        $('.clearsearchselect').click(function () {
+            $('#searchtext').val('');
+            $('.dosearchselect').trigger('click');
+            return false; // prevent the button click from happening
+        });
+
+        if ($('#searchtext').val() !== '') {
+            $('.dosearchselect').hide();
+            $('.clearsearchselect').show();
+        }
+
+
+        $('#searchtext').unbind('keypress');
+        $('#searchtext').on('keypress', function (e) {
+            if (e.keyCode == 13) {
+                $('.dosearchselect').trigger('click');
+                return false; // prevent the button click from happening
+            }
+        });
+
+        $('#searchtext').focus();
+
+        // move cursor to end of line
+        var tmpStr = $('#searchtext').val();
+        $('#searchtext').val('');
+        $('#searchtext').val(tmpStr);
+
+        //  change color of panel, s we show it has a selection
+        if (tmpStr != '') {
+            $('#searchtext').addClass('w3-border-red');
+        }
+
+        readmin.moveToTop('#orderproductlistmodel');
+        $('#orderproductlistmodel').show();
+
+    });
+
+
+</script>

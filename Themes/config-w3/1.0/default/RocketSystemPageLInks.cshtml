@@ -1,0 +1,121 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var portalShop = (PortalShopLimpet)Model.List.First();
+    var linkLP = 0;
+    var info = portalShop.Info;
+    var globalSettings = new SystemGlobalData();
+    var defaultsData = new DefaultsLimpet();
+    var companyData = new CompanyLimpet(portalShop.PortalId, DNNrocketUtils.GetCurrentCulture());
+
+}
+
+
+<div id="sidemenupageandlinksdata" class="w3-container a-panelsidemenu" style="display:none;">
+
+    <div class="w3-row linklistdatasection  w3-margin-bottom">
+
+        <div class="w3-row w3-padding">
+            <div class="w3-col m9 w3-padding">
+                @ResourceKey("Help.urlredirects")
+                <br />
+                <br />
+                @ResourceKey("Help.example"):
+                <input s-update="ignore" value="?productid={productid}&{productname}" class="w3-input w3-border" disabled />
+            </div>
+            <div class="w3-col m3 w3-right w3-padding">
+                <br />
+                {productid} = productid<br />
+                {productname} = Product Name<br />
+                {catid} = catid<br />
+                {categoryname} = Category Name<br />
+                {culturecode} = culture code (en-US)<br />
+                {language} = language code (en)<br />
+                {country} = country code (US)<br />
+                {page} = Page - url param "p"<br />
+                {pagesize} = Page Size - url param "ps"<br />
+            </div>
+        </div>
+
+        <div class="w3-padding w3-card">
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8">
+                    <label>@ResourceKey("Help.pageslinks_productlist")</label>
+                    @TextBox(info, "genxml/textbox/productlisturl", " class='w3-input w3-border' autocomplete='off'", "/?catid={catid}&{categoryname}", false, linkLP)
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_productlist", "", "Help")</label>
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8">
+                    <label>@ResourceKey("Help.pageslinks_productlistpaging")</label>
+                    @TextBox(info, "genxml/textbox/productlistpagingurl", " class='w3-input w3-border' autocomplete='off'", "/?catid={catid}&p={page}&ps={pagesize}&{categoryname}", false, linkLP)
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_productlistpaging", "", "Help")</label>
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8">
+                    <label>@ResourceKey("Help.pageslinks_productdetail", "", "Text")</label>
+                    @TextBox(info, "genxml/textbox/productdetailurl", " class='w3-input w3-border' autocomplete='off'", "/?productid={productid}&{productname}", false, linkLP)
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_productdetail", "", "Help")</label>
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8">
+                    <label>@ResourceKey("Help.pageslinks_paymentpageurl", "", "Text")</label>
+                    @TextBox(info, "genxml/textbox/paymentpageurl", " class='w3-input w3-border' autocomplete='off' placeholder='https://....'", "", false, linkLP)
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_paymentpageurl", "", "Help")</label>
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8">
+                    <label>@ResourceKey("Help.pageslinks_producturl", "", "Text")</label>
+                    @TextBox(info, "genxml/textbox/producturl", " class='w3-input w3-border' autocomplete='off' placeholder='https://....'", "", false, linkLP)
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_producturl", "", "Help")</label>
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8">
+                    <label>@ResourceKey("Help.pageslinks_productdetailurl", "", "Text")</label>
+                    @TextBox(info, "genxml/textbox/productdetailurl", " class='w3-input w3-border' autocomplete='off' placeholder='https://....'", "", false, linkLP)
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_productdetailurl", "", "Help")</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+    });
+
+</script>

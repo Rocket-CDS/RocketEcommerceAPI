@@ -1,0 +1,235 @@
+<item>
+	<itemid>0</itemid>
+	<portalid>0</portalid>
+	<moduleid>-1</moduleid>
+	<xrefitemid>0</xrefitemid>
+	<parentitemid>0</parentitemid>
+	<typecode>PortalShop</typecode>
+	<guidkey></guidkey>
+	<lang></lang>
+	<userid>0</userid>
+	<sortorder>0</sortorder>
+	<genxml>
+		<currencyculturecode>fr-FR</currencyculturecode>
+		<checkouttype>0</checkouttype>
+		<default>true</default>
+		<sourcelanguage>fr-FR</sourcelanguage>
+		<destlanguage>fr-FR</destlanguage>
+		<securitykey></securitykey>
+		<currencycode>EUR</currencycode>
+		<checkouttemplate>0_CartDetails.cshtml</checkouttemplate>
+		<maxproducts>500</maxproducts>
+		<productimagelimit>10</productimagelimit>
+		<productdocumentlimit>10</productdocumentlimit>
+		<productmodellimit>10</productmodellimit>
+		<productoptionlimit>10</productoptionlimit>
+		<productlinklimit>10</productlinklimit>
+		<textbox>
+			<productlisturl>?catid={catid}&amp;{categoryname}</productlisturl>
+			<productlistpagingurl>?catid={catid}&amp;p={page}&amp;ps={pagesize}&amp;{categoryname}</productlistpagingurl>
+			<productdetailurl>?productid={productid}&amp;{productname}</productdetailurl>
+			<paymentpageurl />
+		</textbox>
+		<sqlfilterproduct>
+			and (
+			isnull([XMLData].value('(genxml/lang/genxml/textbox/productname)[1]','nvarchar(max)'),'') like '%{searchtext}%'
+			or isnull([XMLData].value('(genxml/textbox/productref)[1]','nvarchar(max)'),'') like '%{searchtext}%'
+			)
+		</sqlfilterproduct>
+		<sqlfilterorder>
+			and
+			(
+			R1.ItemID like '%{searchtextorder}%'
+			or [XMLData].value('(genxml/textbox/email)[1]','nvarchar(max)') like '%{searchtextorder}%'
+			or [XMLData].value('(genxml/textbox/firstname)[1]','nvarchar(max)') like '%{searchtextorder}%'
+			or [XMLData].value('(genxml/textbox/lastname)[1]','nvarchar(max)') like '%{searchtextorder}%'
+			or [XMLData].value('(genxml/billaddress/company)[1]','nvarchar(max)') like '%{searchtextorder}%'
+			or [XMLData].value('(genxml/hidden/total)[1]','nvarchar(max)') like '%{searchtextorder}%'
+			)
+			and (R1.SortOrder = '{searchstatuscode}' or '{searchstatuscode}' = '' )
+			and (not (R1.SortOrder = '120') or ('{searchstatuscode}' = '120'))
+		</sqlfilterorder>
+		<sqlfilterpayment>
+			and
+			(
+			R1.ItemID like '%{searchtextpayment}%'
+			or [XMLData].value('(genxml/textbox/invoiceref)[1]','nvarchar(max)') like '%{searchtextpayment}%'
+			or [XMLData].value('(genxml/textbox/email)[1]','nvarchar(max)') like '%{searchtextpayment}%'
+			or [XMLData].value('(genxml/textbox/firstname)[1]','nvarchar(max)') like '%{searchtextpayment}%'
+			or [XMLData].value('(genxml/textbox/lastname)[1]','nvarchar(max)') like '%{searchtextpayment}%'
+			or [XMLData].value('(genxml/textbox/company)[1]','nvarchar(max)') like '%{searchtextpayment}%'
+			or [XMLData].value('(genxml/textbox/amount)[1]','nvarchar(max)') like '%{searchtextpayment}%'
+			or [XMLData].value('(genxml/textbox/amountpaid)[1]','nvarchar(max)') like '%{searchtextpayment}%'
+			)
+			and (R1.SortOrder = '{searchstatuscode}' or '{searchstatuscode}' = '' )
+			and (not (R1.SortOrder = '120') or ('{searchstatuscode}' = '120'))
+		</sqlfilterpayment>
+		<key>sqlorderby-product-price-desc</key>
+		<value>        order by isnull(RLangIdx.XmlData.value('(genxml/priceminimum)[1]','int'),0) desc      </value>
+		<schedulerrunhours>24</schedulerrunhours>
+		<checkbox>
+			<manualcategoryorderby>true</manualcategoryorderby>
+			<active>true</active>
+		</checkbox>
+		<productdata>
+			<chk
+			  value="true"
+			  data="0" />
+			<chk
+			  value="true"
+			  data="1" />
+			<chk
+			  value="true"
+			  data="2" />
+			<chk
+			  value="true"
+			  data="3" />
+			<chk
+			  value="true"
+			  data="4" />
+			<chk
+			  value="true"
+			  data="5" />
+			<chk
+			  value="true"
+			  data="6" />
+			<chk
+			  value="true"
+			  data="7" />
+			<chk
+			  value="true"
+			  data="9" />
+			<chk
+			  value="true"
+			  data="8" />
+		</productdata>
+		<activeadminmenu>
+			<chk
+			  value="true"
+			  data="dashboard" />
+			<chk
+			  value="true"
+			  data="productadmin" />
+			<chk
+			  value="true"
+			  data="settingsadmin" />
+			<chk
+			  value="true"
+			  data="company" />
+			<chk
+			  value="true"
+			  data="notification" />
+			<chk
+			  value="true"
+			  data="orderadmin" />
+			<chk
+			  value="true"
+			  data="settingcountry" />
+			<chk
+			  value="true"
+			  data="paymentadmin" />
+			<chk
+			  value="true"
+			  data="paymentmethods" />
+			<chk
+			  value="true"
+			  data="categoryadmin" />
+			<chk
+			  value="true"
+			  data="propertiesadmin" />
+			<chk
+			  value="true"
+			  data="shippingmethods" />
+			<chk
+			  value="true"
+			  data="taxmethods" />
+			<chk
+			  value="true"
+			  data="discountmethods" />
+		</activeadminmenu>
+		<active>true</active>
+		<emailon>false</emailon>
+		<debugmode>true</debugmode>
+		<overwritelang>false</overwritelang>
+		<sqlorderbyproduct
+		  list="true">
+			<genxml>
+				<default>true</default>
+				<key>sqlorderby-product-name</key>
+				<value>        order by RLangIdx.XmlData.value('(genxml/lang/genxml/textbox/productname)[1]','nvarchar(max)')      </value>
+			</genxml>
+			<genxml>
+				<default>true</default>
+				<key>sqlorderby-product-name-desc</key>
+				<value>        order by RLangIdx.XmlData.value('(genxml/lang/genxml/textbox/productname)[1]','nvarchar(max)') desc      </value>
+			</genxml>
+			<genxml>
+				<default>true</default>
+				<key>sqlorderby-product-ref</key>
+				<value>        order by RLangIdx.XmlData.value('(genxml/textbox/productref)[1]','nvarchar(max)')      </value>
+			</genxml>
+			<genxml>
+				<default>true</default>
+				<key>sqlorderby-product-ref-desc</key>
+				<value>        order by RLangIdx.XmlData.value('(genxml/textbox/productref)[1]','nvarchar(max)') desc      </value>
+			</genxml>
+			<genxml>
+				<default>true</default>
+				<key>sqlorderby-product-price</key>
+				<value>        order by isnull(RLangIdx.XmlData.value('(genxml/priceminimum)[1]','int'),0)      </value>
+			</genxml>
+			<genxml>
+				<default>true</default>
+				<key>sqlorderby-product-price-desc</key>
+				<value>        order by isnull(RLangIdx.XmlData.value('(genxml/priceminimum)[1]','int'),0) desc      </value>
+			</genxml>
+		</sqlorderbyproduct>
+		<paymentprovidermethod
+		  list="true">
+			<genxml>
+				<hidden>
+					<paymentmethodkey>manualpay</paymentmethodkey>
+				</hidden>
+				<checkbox>
+					<active>true</active>
+				</checkbox>
+			</genxml>
+			<genxml>
+				<hidden>
+					<paymentmethodkey>paypal</paymentmethodkey>
+				</hidden>
+				<checkbox>
+					<active>true</active>
+				</checkbox>
+			</genxml>
+			<genxml>
+				<hidden>
+					<paymentmethodkey>sips</paymentmethodkey>
+				</hidden>
+				<checkbox>
+					<active>true</active>
+				</checkbox>
+			</genxml>
+		</paymentprovidermethod>
+		<shippingprovidermethod
+		  list="true">
+			<genxml>
+				<hidden>
+					<shippingmethodkey>cartpriceship</shippingmethodkey>
+				</hidden>
+				<checkbox>
+					<active>true</active>
+				</checkbox>
+			</genxml>
+		</shippingprovidermethod>
+		<currencydecimaldigits>2</currencydecimaldigits>
+		<currencydecimalseparator>,</currencydecimalseparator>
+		<currencygroupseparator> </currencygroupseparator>
+		<currencysymbol>€</currencysymbol>
+		<lastschedulertime
+		  datatype="date">2022-09-30T13:46:48</lastschedulertime>
+		<select>
+			<selectedproject><![CDATA[AppTheme-W3-CSS]]></selectedproject>
+		</select>
+	</genxml>
+</item>

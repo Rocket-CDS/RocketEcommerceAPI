@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>ipntest.nevoweboffice.com Paiement</title>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://ipntest.nevoweboffice.com/DesktopModules/DNNrocketModules/RocketEcommerceAPI/Themes/config-w3/1.0/css/RocketEcommerceAPI-Theme.css">
+    <link rel="stylesheet" href="http://ipntest.nevoweboffice.com/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
+
+    <link rel="stylesheet" href="http://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="http://ipntest.nevoweboffice.com/DesktopModules/DNNrocket/js/jquery.validate.min.js"></script>
+
+    <script type="text/javascript" src="http://ipntest.nevoweboffice.com/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+
+</head>
+<body class="w3-white">
+
+    <div class="w3-main w3-container" style="top:0px " id="base-panel">
+        <form id="Form">
+            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketecommerceapi_payment" s-fields='{"systemkey":"rocketecommerceapi","template":"paymentform.cshtml","appthemefolder":"Rocket_PaymentForm","appthemeversion":"1.0"}'>
+                <div class="">
+                    <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
+                </div>
+            </div>
+        </form>
+
+        <!-- End page content -->
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Take ALL params passed to the page and pass them to the server as hidden fields in paramInfo.
+            var urlParams = new URLSearchParams(window.location.search);
+            urlParams.forEach(function (value, key) {
+                simplisity_setParamField(key, value);
+            });
+
+            $(document).simplisityStartUp('http://ipntest.nevoweboffice.com/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketecommerceapi', debug: false });
+
+        });
+    </script>
+
+
+</body>
+</html>

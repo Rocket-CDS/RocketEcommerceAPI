@@ -1,0 +1,131 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var orderData = (OrderLimpet)Model.List.First();
+    if (orderData.Record != null)
+    {
+        info = new SimplisityInfo(orderData.Record);
+    }
+
+    var addresstype = Model.GetSetting("addresstype").TrimEnd('/');
+    var xpathroot = Model.GetSetting("xpathroot");
+
+    var systemData = new SystemLimpet("rocketecommerceapi");
+    var rocketInterface = new RocketInterface(new SimplisityInfo(systemData.Record), "settingcountry");
+
+}
+<div id="remote_addressmodel@(addresstype)" class="w3-modal">
+    <div class="w3-modal-content">
+        <header class="w3-container w3-theme-d4" style="height:38px;">
+            <span onclick="document.getElementById('remote_addressmodel@(addresstype)').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        </header>
+        <div class="w3-container w3-padding">
+            <div class="w3-button w3-theme-action" onclick="hideAddress@(addresstype)();triggersave@(addresstype)()">@ButtonText(ButtonTypes.save)</div>
+        </div>
+        <div class="w3-container w3-padding">
+            <span onclick="hideAddress@(addresstype)();" class="w3-button w3-display-topright">&times;</span>
+
+
+            <div class="w3-row">
+                <div class="w3-half w3-padding-small">
+                    <label>@ResourceKey("RE.firstname")</label>
+                    @TextBox(info, xpathroot + "/" + addresstype + "firstname", " class='w3-input w3-border shipaddress'  ")
+                </div>
+                <div class="w3-half w3-padding-small">
+                    <label>@ResourceKey("RE.lastname")</label>
+                    @TextBox(info, xpathroot + "/" + addresstype + "lastname", " class='w3-input w3-border shipaddress'   ")
+                </div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-half w3-padding-small">
+                    <label>@ResourceKey("RE.email")</label>
+                    @TextBox(info, xpathroot + "/" + addresstype + "email", " class='w3-input w3-border shipaddress' name='email' email  ")
+                </div>
+                <div class="w3-half w3-padding-small">
+                    <label>@ResourceKey("RE.phone")</label>
+                    @TextBox(info, xpathroot + "/" + addresstype + "phone", " class='w3-input w3-border shipaddress'  ")
+                </div>
+            </div>
+
+
+            <div class="w3-row">
+                <div class="w3-threequarter w3-padding-small">
+                    <label>@ResourceKey("RE.company")</label>
+                    @TextBox(info, xpathroot + "/" + addresstype + "company", " class='w3-input w3-border' autocomplete='off' ")
+                </div>
+                <div class="w3-quarter w3-padding-small">
+                    <label>@ResourceKey("RE.unit")</label>
+                    @TextBox(info, xpathroot + "/" + addresstype + "unit", " class='w3-input w3-border' autocomplete='off' ")
+                </div>
+            </div>
+            <div class="w3-row w3-padding-small">
+                <label>@ResourceKey("RE.address1")</label>
+                @TextBox(info, xpathroot + "/" + addresstype + "address1", " class='w3-input w3-border' autocomplete='off' ")
+            </div>
+            <div class="w3-row w3-padding-small">
+                <label>@ResourceKey("RE.address2")</label>
+                @TextBox(info, xpathroot + "/" + addresstype + "address2", " class='w3-input w3-border' autocomplete='off' ")
+            </div>
+            <div class="w3-row">
+                <div class="w3-half w3-padding-small">
+                    <label>@ResourceKey("RE.city")</label>
+                    @TextBox(info, xpathroot + "/" + addresstype + "city", " class='w3-input w3-border' autocomplete='off' ")
+                </div>
+                <div class="w3-half w3-padding-small">
+                    <label>@ResourceKey("RE.postcode")</label>
+                    @TextBox(info, xpathroot + "/" + addresstype + "postcode", " class='w3-input w3-border' autocomplete='off' ")
+                </div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-half w3-padding-small">
+                    <label>@ResourceKey("RE.country")</label>
+                    @{
+                        var countryData = new CountryLimpet(PortalUtils.GetPortalId());
+                    }
+                    @DropDownList(info, xpathroot + "/" + addresstype + "country", countryData.GetSelectedDictCountries(), "class='w3-input w3-border simplisity_change' s-cmd='settingcountry_getregion' s-dropdownlist='#" + addresstype + "region'")
+                </div>
+                <div class="w3-half w3-padding-small">
+                    <label>@ResourceKey("RE.region")</label>
+                    @{
+                        var countrycode = info.GetXmlProperty(xpathroot + "/" + addresstype + "country");
+                        if (countrycode == "")
+                        {
+                            countrycode = countryData.GetPrimaryCountry();
+                        }
+                    }
+                    @DropDownList(info, xpathroot + "/" + addresstype + "region", countryData.RegionDictionary(countrycode), "class='w3-input w3-border' ")
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+    });
+
+    function showAddress@(addresstype)() {
+        $('#remote_addressmodel@(addresstype)').show();
+    }
+    function hideAddress@(addresstype)() {
+        $('#remote_addressmodel@(addresstype)').hide();
+    }
+    function triggersave@(addresstype)() {
+        $('.langchangesave').trigger('click');
+    }
+
+</script>
+
+
+

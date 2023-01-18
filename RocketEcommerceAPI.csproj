@@ -1,0 +1,93 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;Razor;Comp All;CompAll</Configurations>
+    <AssemblyVersion>1.0.12.0</AssemblyVersion>
+    <FileVersion>1.0.12.0</FileVersion>
+    <Version>1.0.14</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Razor|AnyCPU'">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="AppThemeBase\**" />
+    <Compile Remove="Providers\**" />
+    <EmbeddedResource Remove="AppThemeBase\**" />
+    <EmbeddedResource Remove="Providers\**" />
+    <None Remove="AppThemeBase\**" />
+    <None Remove="Providers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DNNrocket\API\DNNrocketAPI.csproj" />
+    <ProjectReference Include="..\..\DNNrocket\Country\Country.csproj" />
+    <ProjectReference Include="..\..\DNNrocket\RocketAppTheme\AppThemes.csproj" />
+    <ProjectReference Include="..\..\DNNrocket\RocketPortal\RocketPortal.csproj" />
+    <ProjectReference Include="..\..\DNNrocket\Simplisity\Simplisity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Handlebars">
+      <HintPath>..\..\DNNrocket\API\_external\Handlebars.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\DNNrocket\API\_external\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App_LocalResources\RE.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RE.resx</DependentUpon>
+    </Compile>
+    <Compile Update="App_LocalResources\rocketecommerceapi.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>rocketecommerceapi.resx</DependentUpon>
+    </Compile>
+    <Compile Update="App_LocalResources\SideMenu.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SideMenu.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="App_LocalResources\Help.resx">
+      <LastGenOutput>RE.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="App_LocalResources\rocketecommerceapi.resx">
+      <LastGenOutput>RocketEcommerce.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="App_LocalResources\SideMenu.fr-FR.resx">
+      <LastGenOutput>SideMenu.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="App_LocalResources\SideMenu.resx">
+      <LastGenOutput>SideMenu.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="App_LocalResources\RE.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RE.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="images\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&#xD;&#xA;DNNpackager.exe $(ProjectDir) $(ProjectDir)$(OutDir) $(ConfigurationName)&#xD;&#xA;" />
+  </Target>
+
+</Project>

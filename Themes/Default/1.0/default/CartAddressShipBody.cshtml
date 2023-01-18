@@ -1,0 +1,114 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var cartData = (CartLimpet)Model.List.First();
+    if (cartData.Record != null)
+    {
+        info = new SimplisityInfo(cartData.Record);
+    }
+
+    var countryData = new CountryLimpet(PortalUtils.GetPortalId());
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+
+}
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+<div id="shipingdetails">
+
+    <div id="remote_addressmodelship">
+
+
+        <div>
+            <span class="w3-large">
+                @ResourceKey("RE.shippingaddress", sessionParams.CultureCode)
+            </span>
+            <span class="w3-margin-left">
+                @CheckBox(info, "genxml/shipaddress/usebillingaddress", "&nbsp;" + ResourceKey("RE.usebillingaddress", sessionParams.CultureCode).ToString(), "class=' '", true)
+            </span>
+        </div>
+
+        <div id="shippingaddressinput">
+
+            <div class="w3-container w3-border w3-padding-32">
+
+                <div class="w3-row">
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.firstname", sessionParams.CultureCode)</label>
+                        @TextBox(info, "genxml/shipaddress/shipfirstname", " class='w3-input w3-border shipaddress'  disabled")
+                    </div>
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.lastname", sessionParams.CultureCode)</label>
+                        @TextBox(info, "genxml/shipaddress/shiplastname", " class='w3-input w3-border shipaddress'   disabled")
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.email", sessionParams.CultureCode)</label>
+                        @TextBox(info, "genxml/shipaddress/shipemail", " class='w3-input w3-border shipaddress' name='email' email  disabled")
+                    </div>
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.phone", sessionParams.CultureCode)</label>
+                        @TextBox(info, "genxml/shipaddress/shipphone", " class='w3-input w3-border shipaddress'  disabled")
+                    </div>
+                </div>
+
+                <div class="w3-row w3-padding-small">
+                    <label>@ResourceKey("RE.company", sessionParams.CultureCode)</label>
+                    @TextBox(info, "genxml/shipaddress/shipcompany", " class='w3-input w3-border shipaddress' autocomplete='off' disabled")
+                </div>
+                <div class="w3-row w3-padding-small">
+                    <label>@ResourceKey("RE.address1", sessionParams.CultureCode)</label>
+                    @TextBox(info, "genxml/shipaddress/shipaddress1", " class='w3-input w3-border shipaddress' autocomplete='off'  disabled")
+                </div>
+                <div class="w3-row w3-padding-small">
+                    <label>@ResourceKey("RE.address2", sessionParams.CultureCode)</label>
+                    @TextBox(info, "genxml/shipaddress/shipaddress2", " class='w3-input w3-border shipaddress' autocomplete='off' disabled")
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.city", sessionParams.CultureCode)</label>
+                        @TextBox(info, "genxml/shipaddress/shipcity", " class='w3-input w3-border shipaddress' autocomplete='off' disabled")
+                    </div>
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)</label>
+                        @TextBox(info, "genxml/shipaddress/shippostcode", " class='w3-input w3-border shipaddress' autocomplete='off' disabled")
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.country", sessionParams.CultureCode)</label>
+                        @DropDownList(info, "genxml/shipaddress/shipcountry", countryData.GetSelectedDictCountries(), "class='w3-input w3-border shipaddress simplisity_change' disabled s-dropdownlist='#shipregion' s-cmd='settingcountry_getregion' s-fields='{\"moduleref\":\"" + remoteModule.ModuleRef + "\"}' ")
+                    </div>
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.region", sessionParams.CultureCode)</label>
+                        @{
+                            var countrycode = info.GetXmlProperty("genxml/shipaddress/shipcountry");
+                            if (countrycode == "")
+                            {
+                                countrycode = countryData.GetPrimaryCountry();
+                            }
+                        }
+                        @DropDownList(info, "genxml/shipaddress/shipregion", countryData.RegionDictionary(countrycode), "class='w3-input w3-border shipaddress' disabled")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

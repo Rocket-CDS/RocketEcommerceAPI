@@ -1,0 +1,44 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using RocketEcommerceAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var messageData = (MessageLimpet)Model.List.First();
+    var headingcolor = "w3-theme-d5";
+    if (messageData.MessageType == "error")
+    {
+        headingcolor = "w3-red";
+    }
+}
+
+
+<div id="messagemodal" class="w3-modal">
+    <div class="w3-modal-content" style="width:40%;">
+
+        <header class=" @(headingcolor) w3-center" style="height: 38.5px;">
+            <span onclick="$('#messagemodal').hide();" class="w3-button w3-display-topright">&times;</span>
+            <h4></h4>
+        </header>
+        <div class="w3-margin-top" style="">
+            <div class="w3-container">
+
+                    <h2>@messageData.Title </h2>
+                    <p>
+                        @messageData.Message
+                    </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#messagemodal').show();
+        @if (messageData.FadeModel) {
+            @:$('#messagemodal').fadeOut(4000);
+        }
+    });
+</script>
+
+

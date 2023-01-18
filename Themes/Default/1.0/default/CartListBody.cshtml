@@ -1,0 +1,191 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var cartData = (CartLimpet)Model.List.First();
+    var companyData = new CompanyLimpet(cartData.PortalId, DNNrocketUtils.GetCurrentCulture());
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+
+    var cartitemList = cartData.CartItemList;
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+}
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+    @if (cartitemList.Count > 0)
+    {
+        <div class="w3-border w3-padding">
+            <div class="w3-border-bottom"><h3>@ResourceKey("RE.cart", sessionParams.CultureCode): @cartData.QtyCount @ResourceKey("RE.items", sessionParams.CultureCode) @ResourceKey("essential1.inyourcart", sessionParams.CultureCode)</h3></div>
+            <ul class="w3-ul">
+                @{
+                    var lp1 = 0;
+                    decimal carttotal = 0;
+                }
+                @foreach (var cItem in cartitemList)
+                {
+                    var logoRelPath = cItem.ProductData.LogoRelPath;
+                    if (cItem.ProductData.LogoRelPath == "")
+                    {
+                        logoRelPath = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+                    }
+
+
+                    var selectedModel = cItem.ProductData.GetModel(cItem.ModelId);
+                    var cartitemtotal = Convert.ToDecimal(cItem.Qty) * cItem.PriceWithOptions;
+                    carttotal += cartitemtotal;
+                    if (selectedModel != null)
+                    {
+                        <li class="w3-bar products">
+                            @HiddenField(new SimplisityInfo(cItem.Record), "genxml/key", "", "", false, lp1)
+
+                            <div class="w3-bar-item w3-hide-small w3-left"><img src="@ThumbnailImageWebsiteDomainUrl(portalData.EngineUrlWithProtocol, logoRelPath, 120, 120)" style="width:85px;"></div>
+
+                            <div class="w3-bar-item w3-row w3-left">
+                                <div class="w3-bar-item w3-border w3-button w3-center product-subtract" idxrow="@(lp1)">&minus;</div>
+                                <input id="qty_@(lp1)" s-xpath="genxml/qty" class="w3-bar-item w3-input w3-border-top w3-border-bottom w3-center qtyvalue" value="@(cItem.Qty.ToString())" maxlength="3" style="width:64px;" />
+                                <div class="w3-bar-item w3-border w3-button w3-center product-plus" idxrow="@(lp1)">&plus;</div>
+                                <div id="removecartitem_@(lp1)" class="w3-button w3-center w3-hide w3-large w3-right simplisity_click" s-return='#ecommerce-tag' s-cmd="rocketecommerceapi_removecartitem" s-fields='{"cartitemindex":"@(lp1)","systemkey":"rocketecommerceapi","template":"cartlist.cshtml","moduleref":"@(remoteModule.ModuleRef)"}'>&times;</div>
+                            </div>
+
+                            <div class="w3-bar-item">
+                                <div class="w3-row">
+                                    <div class="w3-large">
+                                        @cItem.ProductData.Name &nbsp;
+                                        <span class="w3-small">@cItem.PriceWithOptionsDisplay</span>
+                                        <input id="modelprice_@(lp1)" class="cartitemprice" idxrow="@(lp1)" value="@cItem.PriceWithOptions.ToString().Replace(",",".")" type="hidden" />
+                                    </div>
+                                </div>
+                                <div class="w3-bar w3-small">@selectedModel.Name</div>
+                                @{
+                                    var oLp = 1;
+                                }
+                                @foreach (var cartItemOption in cItem.GetSelectedOptions())
+                                {
+                                    if (cartItemOption.SelectedText != "")
+                                    {
+                                        <span class="w3-small">
+                                            @cartItemOption.OptionName
+                                            &nbsp;:&nbsp;
+                                            @if (cartItemOption.SelectedText == "true")
+                                            {
+                                                <span>&#8226;</span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    @if (@cartItemOption.SelectedText.Length > 40)
+                                                    {
+                                                        @cartItemOption.SelectedText.Substring(0, 40)
+                                                    }
+                                                    else
+                                                    {
+                                                        @cartItemOption.SelectedText
+                                                    }
+                                                </span>
+                                            }
+                                        </span>
+                                        oLp += 1;
+                                        <br />
+                                    }
+                                }
+
+                            </div>
+                            <div class="w3-bar-item w3-right w3-hide-small w3-hide-medium" style="width:140px;">
+                                <div class="w3-right-align" id="cartitemtotal@(lp1)">@(portalShop.CurrencyDisplay(cartitemtotal))</div>
+                            </div>
+
+                        </li>
+
+                    }
+                    lp1 += 1;
+                }
+            </ul>
+        </div>
+
+        <div class="w3-row w3-margin-top">
+            <div class="w3-left">
+                <div class="w3-bar">
+                    <div class="w3-bar-item w3-button w3-border w3-light-grey w3-center w3-margin-right w3-margin-bottom simplisity_click " s-cmd="rocketecommerceapi_savecartlist" s-post='#datasection' s-return='#ecommerce-tag' s-list=".products" s-fields='{"systemkey":"rocketecommerceapi","template":"cartlist.cshtml","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonText(ButtonTypes.save, sessionParams.CultureCode)</div>
+                    <div class="w3-bar-item w3-button w3-border w3-light-grey w3-center w3-margin-right w3-margin-bottom w3-hide-small simplisity_click " s-cmd="rocketecommerceapi_cartlist" s-return='#ecommerce-tag' s-fields='{"systemkey":"rocketecommerceapi","template":"cartlist.cshtml","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonIcon(ButtonTypes.refresh, sessionParams.CultureCode)</div>
+                    <div class="w3-bar-item w3-button w3-border w3-light-grey w3-center w3-margin-bottom simplisity_confirmclick " s-confirm="@ResourceKey("DNNRocket.delete") ?" s-cmd="rocketecommerceapi_cartdelete" s-return='#ecommerce-tag' s-fields='{"systemkey":"rocketecommerceapi","template":"cartlist.cshtml","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonText(ButtonTypes.delete, sessionParams.CultureCode)</div>
+                </div>
+            </div>
+            <div class="w3-right">
+                <div class="w3-bar">
+                    <div class="w3-bar-item"><b>@ResourceKey("RE.total", sessionParams.CultureCode) : </b></div>
+                    <div class="w3-bar-item"><b id="carttotal">@(portalShop.CurrencyDisplay(Convert.ToDecimal(carttotal)))</b></div>
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="w3-row w3-xxlarge w3-center">@ResourceKey("RE.emptybasket", sessionParams.CultureCode)</div>
+    }
+
+<script>
+            $(document).ready(function () {
+
+                // CART EVENTS
+                $('.product-subtract').unbind("click");
+                $('.product-subtract').click(function () {
+                    updateCartQty($(this).attr("idxrow"), -1)
+                    return false; // prevent the button click from happening
+                });
+                $('.product-plus').unbind("click");
+                $('.product-plus').click(function () {
+                    updateCartQty($(this).attr("idxrow"), 1)
+                    return false; // prevent the button click from happening
+                });
+                $(".qtyvalue").keyup(function () {
+                    updateCartQty($(this).attr("idxrow"), 0)
+                    return false; // prevent the button click from happening
+                });
+
+            });
+
+    var formatter = new Intl.NumberFormat('@(portalShop.CurrencyCultureCode)', {
+        style: 'currency',
+        currency: '@(portalShop.CurrencyCode)',
+    });
+
+    function updateCartQty(idxrow, addvalue) {
+
+        // calc QTY
+        var qty = parseInt($('#qty_' + idxrow).val());
+        var newqty = qty + addvalue;
+        if (newqty < 1) {
+            $('#removecartitem_' + idxrow).trigger("click");
+        };
+        $('#qty_' + idxrow).val(newqty);
+
+        var carttotal = 0;
+        $(".cartitemprice").each(function () {
+            var idxrowlp = $(this).attr('idxrow');
+            var qty = parseInt($('#qty_' + idxrowlp).val());
+            var modelprice = parseFloat($('#modelprice_' + idxrowlp).val());
+            var modelitemprice = parseFloat(modelprice * qty);
+            if (isNaN(modelitemprice)) {
+                $('#cartitemtotal' + idxrowlp).html('0');
+            } else {
+                $('#cartitemtotal' + idxrowlp).html(formatter.format(modelitemprice));
+                carttotal += parseFloat(modelitemprice);
+            }
+        });
+        $('#carttotal').html(formatter.format(carttotal));
+    }
+
+
+
+</script>

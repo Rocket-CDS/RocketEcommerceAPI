@@ -1,0 +1,63 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+
+@{
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+    var sessionParams = Model.SessionParamsData;
+}
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources")
+
+<!-- Top Bar -->
+<div id="topbar" class="w3-bar w3-top w3-theme-d5 w3-padding w3-card" style="z-index:2;overflow:visible;width: calc(100% - 280px);">
+    <div class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><span class="material-icons">menu</span></div>
+
+    @foreach (var l in enabledlanguages)
+    {
+        var selectedcolor = "w3-theme-d3";
+        if (sessionParams.CultureCodeEdit == l)
+        {
+            selectedcolor = "w3-theme-l5";
+        }
+        <div class="w3-button w3-round @(selectedcolor) " onclick="simplisity_setSessionField('culturecodeedit', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" class="w3-round" /></div>
+    }
+    <div class="w3-right">
+        <div type="button" class="w3-button " onclick="topbaractiontools()"><span class="material-icons">more_vert</span></div>
+        <div id="actiontools" class="w3-dropdown-content w3-left w3-bar-block w3-card" style="z-index: 5;right: 0">
+
+            @if (UserUtils.IsAdministrator())
+            {
+                <div class="w3-bar-item w3-button simplisity_click" s-cmd="rocketapi_clearallcache" s-reload="true" s-fields='' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.clearallcache")</div>
+                <a class="w3-bar-item w3-button" href="/cms" style="text-decoration: none;color: black;">@ResourceKey("DNNrocket.cmsadmin")</a>
+            }
+            @if (UserUtils.IsSuperUser())
+            {
+                <div class="w3-bar-item w3-button simplisity_confirmclick" s-reload="true" s-confirm="@ResourceKey("DNNrocket.cleartempdb") &nbsp;?" s-cmd="rocketapi_cleartempdb">@ResourceKey("DNNrocket.cleartempdb")</div>
+                <div class="w3-bar-item w3-button simplisity_click" s-reload="true" s-cmd="rocketapi_recycleapppool">@ResourceKey("DNNrocket.recycleapppool")</div>
+                <a class="w3-bar-item w3-button" href="/" style="text-decoration: none;color: black;">@ResourceKey("DNNrocket.cmsadmin")</a>
+            }
+
+            <div class="w3-bar-item w3-button simplisity_click" s-cmd="login_signout" s-reload="true">@ResourceKey("DNNrocket.signout")</div>
+
+        </div>
+    </div>
+    <div class="w3-right w3-padding w3-hide-small">@UserUtils.GetCurrentUserName()</div>
+</div>
+
+<script>
+    $(document).ready(function () {
+    });
+
+    // Tools dropdown menu
+    function topbaractiontools() {
+        var x = document.getElementById("actiontools");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+</script>
+

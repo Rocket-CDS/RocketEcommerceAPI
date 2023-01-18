@@ -1,0 +1,100 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var productData = (ProductLimpet)Model.List.First();
+    var modLP = 0;
+
+    var datalist = productData.GetModelList();
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+}
+
+<div class="w3-row modellistdatasection">
+
+    <div class="w3-container">
+        <div class="w3-col ">
+            @if (productData.GetModelList().Count < productData.PortalShop.ProductModelLimit)
+            {
+                <div class="w3-button w3-theme w3-padding-8 simplisity_click" s-before="saveRichText" s-post="#datasection" s-list=".modellist,.imagelist,.optionlist,.documentlist,.linklist" s-cmd="productadmin_addmodel" s-fields='{"productid":"@productData.ProductId"}'>@ButtonIcon(ButtonTypes.add)</div>
+            }
+            else
+            {
+                <div class="w3-button w3-theme w3-padding-8" onclick="$('#productmodellimitmsg').show();">@ButtonIcon(ButtonTypes.add)</div>
+
+                <div id="productmodellimitmsg" class="w3-modal">
+                    <div class="w3-modal-content" style="width:40%;">
+                        <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
+                            <span onclick="$('#productmodellimitmsg').hide();" class="w3-button w3-display-topright">&times;</span>
+                        </header>
+                        <div class="" style="">
+                            <br />
+                            <div class="w3-container">
+                                <h2>@ResourceKey("RE.productmodellimit")</h2>
+                                <p>@ResourceKey("RE.productmodellimit", "", "Msg")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="w3-button w3-padding-8 simplisity_itemundo" s-recylebin="modellistbin" s-return="#modellistdata" s-removelist=".modellist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+        </div>
+    </div>
+
+    <div id="modellistcontainer" class="w3-container">
+
+        <ul id="modellistdata" class="w3-ul">
+
+            @foreach (var info in datalist)
+            {
+                <li class="modellist w3-display-container w3-padding w3-border-0">
+                    @SortableListIndex(info, modLP)
+
+                    <input id="modelkey" type="hidden" value="@info.GetXmlProperty("genxml/hidden/modelkey")" />
+
+                    <div class="w3-row w3-display-container w3-card">
+                        <div class="w3-col m1 w3-padding" style="min-width: 160px;">
+                            <label class="">@ResourceKey("RE.ref")</label>
+                            @TextBox(info, "genxml/textbox/modelref", " class='w3-input w3-border' autocomplete='off' ", "", false, modLP)
+                        </div>
+                        <div class="w3-col m6 w3-padding" style="min-width: 200px;">
+                            <label class="">@ResourceKey("RE.name")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(info, "genxml/lang/genxml/textbox/modelname", " class='w3-input w3-border' autocomplete='off' ", "", true, modLP)
+                        </div>
+                        <div class="w3-col m1 w3-padding" style="min-width: 160px;">
+                            <label class="">@ResourceKey("RE.weight")&nbsp;(@ResourceKey("RE.grams"))</label>
+                            @TextBox(info, "genxml/textbox/weight", " class='w3-input w3-border w3-right-align ' autocomplete='off' ", "0", false, modLP)
+                        </div>
+                        <div class="w3-col m1 w3-padding" style="min-width: 160px;">
+                            <label class="">@ResourceKey("RE.price")</label>
+                            @TextBoxMoney(productData.PortalId, productData.CultureCode, info, "genxml/textbox/modelprice", "  class='w3-input w3-border w3-right-align ' autocomplete='off' ", "0", false, modLP)
+                        </div>
+                        <div class="w3-col m1 w3-padding" style="min-width: 160px;">
+                            <label class="">@ResourceKey("RE.saleprice")</label>
+                            @TextBoxMoney(productData.PortalId, productData.CultureCode, info, "genxml/textbox/modelsaleprice", "  class='w3-input w3-border w3-right-align ' autocomplete='off' ", "0", false, modLP)
+                        </div>
+                        <div class="simplisity_removelistitem w3-right w3-padding" s-removelist=".modellist" s-recylebin="modellistbin" style="cursor: pointer;">
+                            @ButtonIcon(ButtonTypes.remove)
+                        </div>
+                    </div>
+
+                </li>
+                modLP += 1;
+            }
+        </ul>
+    </div>
+
+</div>
+
+    <script>
+        $(document).ready(function () {
+            $("#modellistdata").sortable();
+            $("#modellistdata").disableSelection();
+        });
+    </script>

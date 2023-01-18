@@ -1,0 +1,85 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var productOption = (ProductOptionLimpet)Model.List.First();
+    var lp = 1;
+    var sessionParams = Model.SessionParamsData;
+}
+
+<div id="optionsfield" class="w3-modal">
+    <div class="w3-modal-content" style="width:60%;">
+
+        <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
+            <span onclick="$('#optionsfieldreturn').html('');$('#optionsfield').hide();" class="w3-button w3-display-topright">&times;</span>
+            <h4></h4>
+        </header>
+        <div class="w3-margin-top" style="">
+
+            <div class="w3-row w3-padding">
+                <div class="w3-button w3-theme-action simplisity_click " s-after="clearoptionsfieldreturn" s-return="#optionsfieldreturn" s-cmd="productadmin_saveoptionsfield" s-list=".optionfieldlist" s-post="#optionsfieldcontainer" s-fields='{"productid":"@productOption.ProductId","optionkey":"@productOption.OptionKey"}' style="min-width:126px;">@ButtonText(ButtonTypes.save)</div>
+                <div class="w3-button w3-theme w3-padding-8 simplisity_click" s-cmd="productadmin_addoptionsfield" s-return="#optionsfieldreturn" s-fields='{"productid":"@productOption.ProductId","optionkey":"@productOption.OptionKey"}'>@ButtonIcon(ButtonTypes.add)</div>
+                <div class="w3-button w3-padding-8 simplisity_itemundo" s-recylebin="optionfieldlistbin" s-return="#optionfieldlistdata" s-removelist=".optionfieldlist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+            </div>
+
+
+            <div id="optionsfieldcontainer" class="w3-container">
+
+                <div class="w3-container">
+                    <div class="w3-col m8 w3-center">
+                        @ResourceKey("RE.value")&nbsp;@EditFlag(sessionParams)
+                    </div>
+                    <div class="w3-col m4 w3-center">
+                        @ResourceKey("RE.price")
+                    </div>
+                </div>
+
+                <ul id="optionfieldlistdata" class="w3-ul w3-padding">
+                    @foreach (var pof in productOption.GetOptionFields())
+                    {
+                        <li class="optionfieldlist">
+                            <div class="w3-row  w3-display-container w3-card">
+                                @HiddenField(pof.Info, "genxml/optionsfieldref","","",false,lp)
+                                <div class="w3-col w3-padding m8">
+                                    @TextBox(pof.Info, "genxml/lang/genxml/optionsfieldvalue", " class='w3-input w3-border' autocomplete='off'", "", true, lp)
+                                </div>
+                                <div class="w3-col w3-padding m3" style="min-width:160px;">
+                                    @TextBoxMoney(productOption.PortalShop.PortalId, productOption.CultureCode, pof.Info, "genxml/optionsfieldprice", "  class='w3-input w3-border w3-right-align ' autocomplete='off' ", "0", false, lp)
+                                </div>
+                                <div class="w3-display-right" style="">
+                                    <span class="simplisity_removelistitem  w3-button" s-removelist=".optionfieldlist" s-recylebin="optionfieldlistbin" style="cursor: pointer;">@ButtonIcon(ButtonTypes.remove)</span>
+                                </div>
+                            </div>
+                        </li>
+                        lp += 1;
+                    }
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#optionsfield').show();
+
+        $("#optionfieldlistdata").sortable();
+        $("#optionfieldlistdata").disableSelection();
+
+    });
+
+    function clearoptionsfieldreturn() {
+        $('#optionsfieldreturn').html('');
+    }
+</script>
+
+
+
+

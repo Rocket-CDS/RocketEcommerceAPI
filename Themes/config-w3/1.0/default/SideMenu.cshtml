@@ -1,0 +1,206 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources")
+
+@{
+    var systemGloablData = new SystemGlobalData();
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var sessionParams = Model.SessionParamsData;
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+    var appThemeSystem = new AppThemeSystemLimpet(systemData.SystemKey);
+}
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/@(portalData.ColorAdminTheme)">
+
+
+@functions
+{
+    public IEncodedString GetInterfaceLink(SystemLimpet systemData, RocketInterface rinterface, bool submenu)
+    {
+        var portalShop = new PortalShopLimpet(PortalUtils.GetCurrentPortalId(), Model.SessionParamsData.CultureCodeEdit);
+        var rtn = "";
+        if (rinterface.IsOnMenu && (portalShop.IsAdminMenuTurnOn(rinterface.InterfaceKey) || UserUtils.IsAdministrator()))
+        {
+            var securityData = new SecurityLimpet(portalShop.PortalId, systemData.SystemKey, rinterface, -1, -1); ;
+            if (securityData.HasSecurityAccess(rinterface.DefaultCommand))
+            {
+                var interfaceName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/App_LocalResources", "SideMenu." + rinterface.InterfaceKey, "Text", DNNrocketUtils.GetCurrentCulture());
+                if (interfaceName == "")
+                {
+                    interfaceName = DNNrocketUtils.GetResourceString(rinterface.TemplateRelPath + "/App_LocalResources", "SideMenu." + rinterface.InterfaceKey, "Text", DNNrocketUtils.GetCurrentCulture());
+                }
+                if (interfaceName == "")
+                {
+                    interfaceName = rinterface.InterfaceKey;
+                }
+                if (submenu)
+                {
+                    rtn = "<button class='w3-bar-item w3-button w3-margin-left sidemenubutton sidemenu" + rinterface.InterfaceKey + " simplisity_click' s-cmd='" + rinterface.DefaultCommand + "' s-fields='{\"track\":\"true\"}'><strong>" + interfaceName + "</strong></a>";
+                }
+                else
+                {
+                    rtn = "<button class='w3-bar-item w3-button w3-padding-16 sidemenubutton sidemenu" + rinterface.InterfaceKey + " simplisity_click' s-cmd='" + rinterface.DefaultCommand + "'  s-fields='{\"track\":\"true\"}'><strong><span class='material-icons'>" + rinterface.InterfaceIcon + "</span>&nbsp;" + interfaceName + "</strong></a>";
+                }
+            }
+        }
+        return new RawString(rtn);
+    }
+}
+
+<nav class="w3-sidebar w3-collapse w3-theme-l4  w3-card" style="width:280px;z-index:3;" id="mySidebar">
+
+    <div class="w3-display-container w3-border-bottom w3-white" style="height:56px;">
+		<div class="w3-button w3-hide-large w3-display-right" onclick="w3_open();"><span class="material-icons">close</span></div>
+        @RenderTemplate(systemGloablData.LogoTemplate, appThemeSystem, Model, true)
+    </div>
+    <div class="w3-bar-block">
+        @{
+            var groupList = systemData.GetGroups(true);
+        }
+
+        @foreach (var g in groupList)
+        {
+            var groupref = g.Key;
+            var groupicon = g.Value;
+            var interfacelist = systemData.GetGroupInterfaceList(groupref);
+            if (interfacelist.Count > 0)
+            {
+                if (groupref == "")
+                {
+                    foreach (var r in interfacelist)
+                    {
+                        if (r.IsOnMenu && r.InterfaceKey == "dashboard")
+                        {
+                            <div class="">
+                                @GetInterfaceLink(systemData, r, false)
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+
+                    var groupName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/App_LocalResources", "SideMenu." + groupref, "Text", DNNrocketUtils.GetCurrentCulture());
+                    if (groupName == "")
+                    {
+                        groupName = groupref;
+                    }
+
+                    <div class="w3-bar-item w3-button w3-padding-16 groupmenu" groupref="@groupref"><strong><span class='material-icons'>@groupicon</span>&nbsp;@groupName</strong><span class="material-icons w3-right">expand_more</span></div>
+
+                    <!-- SubMenu  -->
+                    <div class="w3-bar-block" id="submenu@(groupref)" style="display:none;padding-bottom:16px;">
+                        @foreach (var r in interfacelist)
+                        {
+                            @GetInterfaceLink(systemData, r, true)
+                        }
+                    </div>
+                }
+            }
+        }
+
+        @{
+            var interfacelist2 = systemData.GetGroupInterfaceList("");
+            if (interfacelist2.Count > 0)
+            {
+                foreach (var r in interfacelist2)
+                {
+                    if (r.IsOnMenu && r.InterfaceKey != "dashboard")
+                    {
+                        <div class="">
+                            @GetInterfaceLink(systemData, r, false)
+                        </div>
+                    }
+                }
+            }
+        }
+
+
+
+    </div>
+
+    <!-- Admin Menu -->
+    <div class="w3-bottom w3-theme-l5" style="width:280px;">
+        <div class="w3-bar-block">
+            <button type="button" class="w3-bar-item w3-button w3-padding-16 w3-center" id="adminbtn"><span class="material-icons">more_horiz</span></button>
+        </div>
+        <div class="w3-bar-block w3-section" style="display:none;" id="adminmenu">
+            <a class="w3-bar-item w3-button w3-text-black " href='/'>@ButtonText(ButtonTypes.home)</a>
+            @if (UserUtils.IsAdministrator())
+            {
+                <button type="button" class="w3-bar-item w3-button w3-padding-16 simplisity_click" s-cmd="rocketapptheme_getlist" s-fields="" s-index="2"><strong><span class="material-icons">developer_mode</span>&nbsp;AppThemes</strong></button>
+                <a class="w3-bar-item w3-button" href="//@PortalUtils.GetPortalAlias(sessionParams.CultureCode, 0)" style="text-decoration: none;color: black;">
+                    <span class="material-icons">
+                        miscellaneous_services
+                    </span>
+                    @ResourceKey("DNNrocket.services")
+                </a>
+            }
+
+            <div class="w3-row w3-padding">
+                @foreach (var l in enabledlanguages)
+                {
+                    <div class="w3-button w3-round " onclick="simplisity_setSessionField('culturecode', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/16/@(l).png" class="w3-round" /></div>
+                }
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+
+<script>
+
+    // Toggle between showing and hiding the sidebar, and add overlay effect
+    function w3_open() {
+        if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+            overlayBg.style.display = "none";
+        } else {
+            mySidebar.style.display = 'block';
+            overlayBg.style.display = "block";
+        }
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        mySidebar.style.display = "none";
+        overlayBg.style.display = "none";
+    }
+
+    $(document).ready(function () {
+        $('#simplisity_startpanel').show();
+        $('#a-displaywrapper').show();
+
+        // Toggle Search
+        $("#searchbtn").click(function () {
+            $('#searchbar').slideToggle();
+        });
+
+        // Toggle SubMenu
+        $(".groupmenu").click(function () {
+            var groupref = $(this).attr('groupref');
+            $('#submenu' + groupref).slideToggle();
+        });
+
+        // Toggle Admin Menu
+        $("#adminbtn").click(function (e) {
+            $('#adminmenu').slideToggle();
+        });
+
+        simplisity_setSessionField('culturecode', '@sessionParams.CultureCode')
+        simplisity_setSessionField('culturecodeedit', '@sessionParams.CultureCodeEdit')
+
+        $('#sidebarplaceholder').activateSimplisityPanel();
+
+    });
+
+</script>
+
+

@@ -1,0 +1,178 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var portalShop = (PortalShopLimpet)Model.List.First();
+    var info = portalShop.Info;
+    var defaultsData = new DefaultsLimpet();
+    var disableSqlEdit = " disabled ";
+    if (UserUtils.IsSuperUser())
+    {
+        disableSqlEdit = "";
+    }
+}
+
+<div id="sidemenuconfigdata" class="w3-container a-panelsidemenu" style="display:none;">
+
+    @if (!UserUtils.IsSuperUser())
+    {
+        <div class="w3-panel w3-pale-red w3-padding-16">
+            @ResourceKey("DNNrocket.suonly")
+        </div>
+    }
+
+    <div class="w3-row  w3-padding">
+        <label class=""><b>@ResourceKey("RE.sqlfilter")</b></label>
+        <div class="w3-small">
+            <i>
+                @ResourceKey("RE.sqlfilter", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row  w3-padding">
+        <label class="">@ResourceKey("RE.sqlfilterproduct")</label>
+        @TextArea(info, "genxml/sqlfilterproduct", "class='w3-input w3-border' s-datatype='coded' rows='6' " + disableSqlEdit, defaultsData.Get("root/sqlfilter/product"), false)
+    </div>
+    <div class="w3-row  w3-padding">
+        <label class="">@ResourceKey("RE.sqlfilterorder")</label>
+        @TextArea(info, "genxml/sqlfilterorder", "class='w3-input w3-border' s-datatype='coded' rows='6' " + disableSqlEdit, defaultsData.Get("root/sqlfilter/order"), false)
+    </div>
+    <div class="w3-row  w3-padding">
+        <label class="">@ResourceKey("RE.sqlfilterpayment")</label>
+        @TextArea(info, "genxml/sqlfilterpayment", "class='w3-input w3-border' s-datatype='coded' rows='6' " + disableSqlEdit, defaultsData.Get("root/sqlfilter/payment"), false)
+    </div>
+    <div class="w3-row  w3-padding">
+        <label class=""><b>@ResourceKey("RE.sqlorderby")</b></label>
+        <div class="w3-small">
+            <i>
+                @ResourceKey("RE.sqlorderby", "", "Help")
+            </i>
+        </div>
+    </div>
+
+
+    <div id="orderbylist">
+        <div class="w3-container">
+            <div class="w3-row w3-margin">
+                @if (UserUtils.IsSuperUser())
+                {
+                    <div class="w3-col m6">
+                        <div row="sqlorderbyproduct" class="sqlorderbyproductaddvaluekey w3-button w3-teal w3-padding">@ButtonText(ButtonTypes.add)</div>
+                    </div>
+                }
+            </div>
+
+            <div class="w3-row w3-margin">
+
+                <div class="w3-row  w3-theme-l4 w3-padding">
+                    <div class="w3-col m3">@ResourceKey("DNNrocket.key")</div>
+                    <div class="w3-col m8">@ResourceKey("DNNrocket.value")</div>
+                    <div class="w3-col m1" style="width:20px;"></div>
+                </div>
+
+                @{
+                    var lp3 = 1;
+                    var orderbylist = portalShop.GetOrderByList();
+                    if (orderbylist.Count == 0)
+                    {
+                        foreach (var d in defaultsData.ProductOrderBy())
+                        {
+                            var s = new SimplisityInfo();
+                            s.SetXmlProperty("genxml/key", d.Key);
+                            s.SetXmlProperty("genxml/value", d.Value);
+                            s.SetXmlProperty("genxml/default", "true");
+                            orderbylist.Add(s);
+                        }
+                    }
+                }
+                <ul class="w3-ul w3-padding dictionarylistsqlorderbyproduct">
+                    @foreach (var orderby in orderbylist)
+                    {
+                        var disabledstr = "";
+                        if (orderby.GetXmlPropertyBool("genxml/default"))
+                        {
+                            disabledstr = "disabled";
+                        }
+
+                        <li class="sqlorderbyproduct w3-card w3-margin-bottom w3-display-container ui-sortable-handle">
+                            <input id="sqlorderbyproductdefault_@lp3" value="@orderby.GetXmlProperty("genxml/default")" s-xpath="genxml/default" class="w3-input w3-border" autocomplete="off" type="hidden">
+                            <div class="w3-row">
+                                <div class="w3-col w3-padding m3">
+                                    <input id="sqlorderbyproductkey_@lp3" value="@orderby.GetXmlProperty("genxml/key")" s-xpath="genxml/key" class="w3-input w3-border" @disabledstr @disableSqlEdit autocomplete="off" type="text">
+                                </div>
+                                <div class="w3-col w3-padding m8">
+                                    <input id="sqlorderbyproductvalue_@lp3" value="@orderby.GetXmlProperty("genxml/value")" s-xpath="genxml/value" class="w3-input w3-border" @disableSqlEdit autocomplete="off" type="text">
+                                </div>
+                                <div onclick="this.parentElement.parentElement.remove();" class=" w3-col m1 w3-padding-small" style="width:60px;">
+                                    @if (UserUtils.IsSuperUser())
+                                    {
+                                        <div class="w3-button">
+                                            @ButtonIcon(ButtonTypes.remove)
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+
+                        lp3 += 1;
+                    }
+                </ul>
+
+            </div>
+        </div>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $('.dictionarylistsqlorderbyproduct').sortable();
+                $('.dictionarylistsqlorderbyproduct').disableSelection();
+
+                $('.sqlorderbyproductaddvaluekey').unbind("click");
+                $('.sqlorderbyproductaddvaluekey').click(function () {
+                    dnnrocket_addtextli('', '');
+                });
+            });
+
+
+            function dnnrocket_addtextli(key, value) {
+
+                if (typeof value === 'undefined') {
+                    value = '';
+                }
+
+                var rowlp = $("ul.dictionarylistsqlorderbyproduct li").length + 1;
+
+                var addtext = '';
+                addtext += '<li class="sqlorderbyproduct w3-card w3-margin-bottom w3-display-container"> ';
+                addtext += '    <div class="w3-row">';
+                addtext += '		<div class="w3-col w3-padding m3">';
+                addtext += '			<input id="sqlorderbyproductkey_' + rowlp + '" value="sqlorderby-" s-xpath="genxml/key" class="w3-input w3-border" autocomplete="off" type="text">';
+                addtext += '		</div>';
+                addtext += '		<div class="w3-col w3-padding m8">';
+                addtext += '			<input id="sqlorderbyproductvalue_' + rowlp + '" value="' + value + '" s-xpath="genxml/value" class="w3-input w3-border" autocomplete="off" type="text">';
+                addtext += '		</div>';
+                addtext += '        <div onclick="this.parentElement.parentElement.remove();" class=" w3-col m1 w3-padding-small" style="width:60px;">';
+                addtext += '           <div class="w3-button" ><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>';
+                addtext += '        </div>';
+                addtext += '	</div>';
+                addtext += '</li>';
+
+                $('.dictionarylistsqlorderbyproduct').append(addtext);
+                $('.dictionarylistsqlorderbyproduct').sortable();
+                $('.dictionarylistsqlorderbyproduct').disableSelection();
+
+            }
+
+        </script>
+
+    </div>
+
+</div>

@@ -1,0 +1,84 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var articleData = (ProductLimpet)Model.List.First();
+    var lp1 = 0;
+    var categoryDataList = new CategoryLimpetList(PortalUtils.GetCurrentPortalId(), DNNrocketUtils.GetEditCulture(), false);
+}
+
+<div class="w3-container">
+    <div class="w3-button w3-theme w3-padding-8" onclick="$('#categoryselect').show();">@ButtonIcon(ButtonTypes.add)</div>
+    <div class="w3-button w3-padding-8 simplisity_itemundo" s-recylebin="categorylistbin" s-return="#categorylistdata" s-removelist=".categorylist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+</div>
+
+<div id="datasection" class="">
+
+    <div id="datalist" class="w3-row w3-margin-top ">
+        @{
+            lp1 = 0;
+            var catList = articleData.GetCategories();
+        }
+
+        <table id="categorylistdata" class="w3-table ">
+            <thead>
+                <tr>
+                    <th>@ResourceKey("RE.name")</th>
+                </tr>
+            </thead>
+            @foreach (var categoryData in catList)
+            {
+                lp1 += 1;
+                var breadcrumbList = categoryDataList.GetBreadCrumbList(categoryData.CategoryId);
+                var breadcrumbdisplay = "";
+                foreach (var c in breadcrumbList)
+                {
+                    breadcrumbdisplay += " > " + GeneralUtils.RemoveDiacritics(c.Name);
+                }
+
+                <tr>
+                    <td>
+                        <div class="w3-bar">
+                            <div class="w3-bar-item w3-button w3-left simplisity_click" s-cmd="categoryadmin_edit" s-fields='{"categoryid":"@categoryData.CategoryId"}'>
+                                @ButtonIcon(ButtonTypes.edit)
+                            </div>
+                            <div class="w3-bar-item" title="@(breadcrumbdisplay)">
+                                @categoryData.Name
+                            </div>
+                            <div class="w3-bar-item w3-button w3-right simplisity_click " s-return=".a-articlecategorylist" s-cmd="productadmin_removecategory" s-fields='{"productid":"@(articleData.ProductId)","categoryid":"@(categoryData.CategoryId)"}'>
+                                @ButtonIcon(ButtonTypes.remove)
+                            </div>
+                            <div class="w3-bar-item w3-button w3-right simplisity_click " s-return=".a-articlecategorylist" s-cmd="productadmin_assigndefaultcategory" s-fields='{"productid":"@(articleData.ProductId)","categoryid":"@(categoryData.CategoryId)"}'>
+                                @if (articleData.DefaultCategory() == categoryData.CategoryId)
+                                {
+                                    <span class="material-icons">
+                                        radio_button_checked
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="material-icons">
+                                        radio_button_unchecked
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+    });
+</script>

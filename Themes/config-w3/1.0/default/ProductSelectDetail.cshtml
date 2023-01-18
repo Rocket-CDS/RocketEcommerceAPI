@@ -1,0 +1,111 @@
+﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var productData = (ProductLimpet)Model.List.First();
+}
+
+    <div class="w3-row w3-border w3-padding w3-margin-bottom w3-margin-top" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
+        <div class="w3-col m2 w3-padding" title="@productData.Name" style="width:180px;">
+
+            @if (productData.GetImage(0) != null && productData.GetImage(0).RelPath != "")
+            {
+                <img src="@ThumbnailImageUrl(productData.GetImage(0).RelPath, 172, 172)" style="height: 172px; width: 172px;" class="w3-round" />
+            }
+            else
+            {
+                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 172, 172)" style="height: 172px; width: 172px;" class="w3-round" />
+            }
+        </div>
+        <div class="w3-col m10 articledetails">
+            <div class="w3-row">
+                <div class="w3-half">
+                    <div class="w3-padding" title="@productData.Name">
+                        <b>@productData.Name</b>
+                    </div>
+                    <div class="w3-padding">
+                        <b>@ResourceKey("RE.from"):&nbsp;@productData.PriceMinimumDisplay(DNNrocketUtils.GetEditCulture())</b>
+                    </div>
+                    <div class="w3-padding">
+                        @ResourceKey("RE.ref") : @productData.Ref
+                    </div>
+                    <div class="w3-padding">
+                        @BreakOf(productData.Summary)
+                    </div>
+                </div>
+                <div class="w3-half">
+                    <div id="modelinput@(productData.ProductId)" class="w3-border w3-white w3-margin-bottom modelinput" style="width:80%;">
+                        @ModelDropdown(productData)
+                    </div>
+                    <div id="optionsinput@(productData.ProductId)" class="w3-white w3-margin-bottom modelinput" style="width:80%;">
+                        @OptionsInput(productData)
+                    </div>
+                    <div class="w3-padding" style="">
+
+                        <div class="w3-cell-row" style="">
+                            <div class="w3-button w3-light-grey w3-cell qtyminus" style="height:40px;width:42px;">
+                                <span class="material-icons">
+                                    remove
+                                </span>
+                            </div>
+                            <div class="w3-cell" style="height:40px;width:50px;">
+                                @TextBox(new SimplisityInfo(), "genxml/textbox/qty", " class='w3-input w3-border qtytextbox' style='height:40px;width:50px;' maxlength='3' ", "1")
+                            </div>
+                            <div class="w3-button w3-light-grey w3-cell qtyplus" style="height:40px;width:42px;">
+                                <span class="material-icons">
+                                    add
+                                </span>
+                            </div>
+                            <div class="w3-button w3-blue w3-cell w3-margin-left simplisity_click" s-after="hidearticleselectmodal" s-cmd="orderadmin_addorderarticle" s-return=".articleselectpopup" s-post=".articledetails" s-fields='{"orderid":"@(Model.GetSetting("orderid"))","productid":"@(productData.ProductId)"}' style="height:40px;width:60px;">
+                                <span class="material-icons">
+                                    shopping_cart
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function () {
+        $(':checkbox').attr('class', 'w3-check');
+
+        var maxqty = @(productData.MaxPurchase);
+        var minqty = @(productData.MinPurchase);
+
+        $('.qtyminus').unbind("click");
+        $('.qtyminus').click(function () {
+            var newqty = (parseInt($('.qtytextbox').val()) - 1);
+            if (newqty >= minqty)
+            {
+                $('.qtytextbox').val(newqty)
+            }
+        });
+
+        $('.qtyplus').unbind("click");
+        $('.qtyplus').click(function () {
+            $('.qtytextbox').val(parseInt($('.qtytextbox').val()) + 1);
+            if (maxqty > 0 && parseInt($('.qtytextbox').val()) > maxqty) {
+                $('.qtytextbox').val(maxqty);
+            }
+        });
+
+        readmin.moveToTop('#articleselectmodal');
+        $('#articleselectmodal').show();
+
+    });
+
+    function hidearticleselectmodal() {
+        $('#articleselectmodal').hide();
+    }
+
+</script>

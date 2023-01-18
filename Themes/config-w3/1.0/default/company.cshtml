@@ -1,0 +1,167 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using System.Globalization;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var companyData = (CompanyLimpet)Model.List.First();
+    var info = companyData.Info;
+    var systemData = new SystemLimpet("rocketecommerceapi");
+    var portalShop = new PortalShopLimpet(companyData.PortalId, companyData.CultureCode);
+    var passModel = new SimplisityRazor(portalShop, new Dictionary<string, string>());
+    var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
+}
+
+@RenderLanguageSelector("company_edit", "", portalShop.SystemKey, Model)
+
+<div class='w3-animate-opacity w3-padding'>
+
+    <div class="w3-row w3-padding">
+        <div class="w3-button w3-theme-action langchangesave simplisity_click" s-cmd="company_save" s-post="#companydata" s-fields='{"sitekey":"@companyData.SiteKey"}'>@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-tiny w3-right w3-right-align">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@companyData.PortalId</div>
+    </div>
+
+    <div id="companydata" class="w3-container">
+
+        <div class="w3-row w3-padding">
+            <div class="w3-col m2 w3-margin-right w3-margin-top w3-display-container" style="width:172px;">
+                <span onclick="$('#companyimageselect').show();" class="w3-button w3-display-topright">@ButtonIcon(ButtonTypes.photo)</span>
+                @if (companyData.LogoRelPath != "")
+                {
+                    <img src="@ThumbnailImageUrl(companyData.LogoRelPath, 172, 172)" style="height:172px;width:172px;" class="w3-round" />
+                }
+                else
+                {
+                    <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 72, 72)" style="height:172px;width:172px;" class="w3-round" />
+                }
+                @HiddenField(info, "genxml/hidden/imagepathlogo")
+                @RenderTemplate("CompanyImageSelect.cshtml", appThemeSystem, Model, true)
+            </div>
+            <div class="w3-col m8 w3-padding">
+                <div class="w3-row w3-padding">
+                    <label class="">@ResourceKey("RE.companyname")</label>
+                    @TextBox(info, "genxml/merchant/companyname", "class='w3-input w3-border' maxlength='200' autocomplete='off' ", "")
+                </div>
+                <div class="w3-row w3-padding">
+                    <label class="">@ResourceKey("RE.websiteurl")</label>
+                    @TextBox(info, "genxml/merchant/websiteurl", "class='w3-input w3-border' maxlength='200' autocomplete='off' ", "")
+                </div>
+            </div>
+        </div>
+        <div class="w3-row ">
+            <div class="w3-half w3-padding">
+                <h2>@ResourceKey("RE.merchantcontacts")</h2>
+                @{
+                    var disablesmtpemail = "";
+                }
+                @if (!UserUtils.IsAdministrator())
+                {
+                    disablesmtpemail = " disabled ";
+                }
+                <label class="">@ResourceKey("RE.smtpfromemail")</label>
+                @TextBox(info, "genxml/merchant/fromemail", "class='w3-input w3-border' maxlength='200' autocomplete='new-password' " + disablesmtpemail + " placeholder='" + ResourceKey("RE.smtpfromemail") + "...' ", "")
+                <label class="">@ResourceKey("RE.contactemail")</label>
+                @TextBox(info, "genxml/merchant/contactemail", "class='w3-input w3-border' maxlength='200' autocomplete='new-password' placeholder='" + ResourceKey("RE.contactemail") + "...' ", "")
+                <label class="">@ResourceKey("RE.orderemail")</label>
+                @TextBox(info, "genxml/merchant/orderemail", "class='w3-input w3-border' maxlength='200' autocomplete='new-password' placeholder='" + ResourceKey("RE.orderemail") + "...' ", "")
+                <label class="">@ResourceKey("RE.phone")</label>
+                @TextBox(info, "genxml/merchant/phone", "class='w3-input w3-border' maxlength='200' autocomplete='off' ", "")
+                <label class="">@ResourceKey("RE.displayaddress")</label>
+                @TextArea(info, "genxml/merchant/displayaddress", "class='w3-input w3-border' rows='8'  ", "")
+            </div>
+            <div class="w3-half w3-padding">
+                <h2>@ResourceKey("RE.opentimes")</h2>
+                @{
+                    var lp = 0;
+                    var lp2 = 1;
+                    DateTime midnight = DateTime.Now.Date;
+                    var timeDictionary = new Dictionary<string, string>();
+                    timeDictionary.Add("", "");
+                    while (lp2 < 48)
+                    {
+                        timeDictionary.Add(midnight.ToString("HH:mm", new CultureInfo(DNNrocketUtils.GetCurrentCulture())), midnight.ToString("HH:mm", new CultureInfo(DNNrocketUtils.GetCurrentCulture())));
+                        midnight = midnight.AddMinutes(30);
+                        lp2 += 1;
+                    }
+
+                    DateTime dayDate = DateTime.MinValue;
+                    dayDate = dayDate.AddDays(6); // so we sytart on a sunday
+                }
+                <table>
+                    <tr>
+                        <th class="w3-padding"></th>
+                        <th class="" colspan="2">@ResourceKey("RE.morning")</th>
+                        <th class="" colspan="2">@ResourceKey("RE.afternoon")</th>
+                    </tr>
+                    <tr>
+                        <th class="w3-padding">@ResourceKey("RE.day")</th>
+                        <th>@ResourceKey("RE.open")</th>
+                        <th>@ResourceKey("RE.close")</th>
+                        <th>@ResourceKey("RE.open")</th>
+                        <th>@ResourceKey("RE.close")</th>
+                    </tr>
+
+                    @while (lp < 7)
+                    {
+                        string dayName = dayDate.ToString("dddd", new CultureInfo(DNNrocketUtils.GetCurrentCulture()));
+                        dayDate = dayDate.AddDays(1);
+                        <tr>
+                            <td class="w3-padding">
+                                @dayName
+                            </td>
+                            <td>
+                                @DropDownList(info, "genxml/textbox/open1-" + lp, timeDictionary, "class='w3-input w3-border' maxlength='10' ", "", false)
+                            </td>
+                            <td>
+                                @DropDownList(info, "genxml/textbox/close1-" + lp, timeDictionary, "class='w3-input w3-border' maxlength='10' ", "", false)
+                            </td>
+                            <td>
+                                @DropDownList(info, "genxml/textbox/open2-" + lp, timeDictionary, "class='w3-input w3-border' maxlength='10' ", "", false)
+                            </td>
+                            <td>
+                                @DropDownList(info, "genxml/textbox/close2-" + lp, timeDictionary, "class='w3-input w3-border' maxlength='10' ", "", false)
+                            </td>
+                        </tr>
+                        lp += 1;
+                    }
+
+                </table>
+            </div>
+        </div>
+        <div class="w3-row w3-margin-botom">
+            <div class="w3-half w3-padding">
+                <label class="">@ResourceKey("RE.taxnumber")</label>
+                @TextBox(info, "genxml/merchant/taxnumber", "class='w3-input w3-border' maxlength='200' ", "")
+            </div>
+            <div class="w3-half w3-padding">
+            </div>
+        </div>
+
+        <div class="w3-row w3-margin-botom">
+            <div class="w3-half w3-padding">
+                <label class="">IBAN</label>
+                @TextBox(info, "genxml/merchant/iban", "class='w3-input w3-border' maxlength='200' ", "")
+            </div>
+            <div class="w3-half w3-padding">
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        selectMenu('company');
+    });
+
+</script>

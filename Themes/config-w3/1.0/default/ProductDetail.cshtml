@@ -1,0 +1,270 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+
+
+@{
+    var info = new SimplisityInfo();
+    var productData = (ProductLimpet)Model.List.First();
+    if (productData.Info != null)
+    {
+        info = productData.Info;
+    }
+    var portalShop = new PortalShopLimpet(productData.PortalId, DNNrocketUtils.GetEditCulture());
+    var systemData = new SystemLimpet("rocketecommerceapi");
+    var appThemeSystem = new AppThemeSystemLimpet(productData.PortalId, systemData.SystemKey);
+    var sessionParams = Model.SessionParamsData;
+    var shopSettings = (ShopSettingsLimpet)Model.DataObjects["shopsettings"];
+
+    var productdetaailsdisplay = "display:none;";
+    if (productData.Exists)
+    {
+        productdetaailsdisplay = "";
+    }
+
+}
+
+@RenderLanguageSelector("productadmin_editproduct", "{\"productid\":\"" + productData.ProductId + "\"}", appThemeSystem, Model)
+
+<div class='w3-animate-opacity w3-padding w3-margin-top'>
+
+    <div class="w3-bar">
+        <button class="w3-button simplisity_click" s-cmd="productadmin_editproductlist" s-fields=''>@ButtonIcon(ButtonTypes.back)</button>
+        <button class="w3-button w3-theme-action simplisity_click saveproductbutton langchangesave" s-before="saveRichText" s-list=".modellist,.imagelist,.optionlist,.documentlist,.linklist" s-cmd="productadmin_savedata" s-post="#datasection" s-fields='{"productid":"@info.ItemID"}'>@ButtonText(ButtonTypes.save)</button>
+        <button class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.copy")&nbsp;?" s-cmd="productadmin_copy" s-fields='{"productid":"@info.ItemID"}' style="@productdetaailsdisplay">@ButtonText(ButtonTypes.copy)</button>
+        @if (Model.GetSettingBool("saved"))
+        {
+            <span class='simplisity_fadeout'>@ButtonIcon(ButtonTypes.save)</span>
+        }
+        <button class="w3-button w3-right w3-margin-right w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="productadmin_delete" s-fields='{"productid":"@info.ItemID"}' style="@productdetaailsdisplay">@ButtonText(ButtonTypes.delete)</button>
+    </div>
+
+    <div id="datasection">
+
+        <!-- base64 image upload populated and actioned by "ProductImageSelect.cshtml"-->
+        <div id="base64post" class="simplisity_click" s-return=".articlepopup" s-cmd="productadmin_addimage64" s-post="#datasection" s-list=".modellist,.imagelist,.optionlist,.documentlist,.linklist" s-fields='{"productid":"@productData.ProductId"}' style="display:none;">
+            @TextArea(new SimplisityInfo(), "genxml/base64image", " readonly='' ")
+        </div>
+
+
+        <!-- The Detail-->
+        <div id="detailDisplay" class="w3-container">
+            <div class="w3-col m2 w3-padding w3-margin-right" title="@productData.Name" style="width:180px;">
+                @if (productData.LogoRelPath != "")
+                {
+                    <img src="@ThumbnailImageUrl(productData.LogoRelPath, 172, 172)" style="height:172px;width:172px;" class="w3-round" />
+                }
+                else
+                {
+                    <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 72, 72)" style="height:172px;width:172px;" class="w3-round" />
+                }
+            </div>
+            <div class="w3-col m10">
+
+                <div class='w3-row'>
+                    <div class='w3-col m2 w3-padding'>
+                        <label>@ResourceKey("RE.ref")</label>
+                        @TextBox(info, "genxml/textbox/productref", " class='w3-input w3-border' autocomplete='off' ", "", false, 0)
+                    </div>
+                    <div class='w3-col m10  w3-padding'>
+                        <label>@ResourceKey("RE.productname")</label>		&nbsp;@EditFlag(sessionParams)
+                        @TextBox(info, "genxml/lang/genxml/textbox/productname", " class='w3-input w3-border' autocomplete='off' ", "", true, 0)
+                    </div>
+                </div>
+                <div class='w3-row'>
+                    <div class='w3-col m3 w3-padding'>
+                        <label>@ResourceKey("RE.brand")</label>
+                        @TextBox(info, "genxml/textbox/brand", " class='w3-input w3-border' autocomplete='off' ", "", false, 0)
+                    </div>
+                    @if (shopSettings.ManualOrderBy)
+                    {
+                        <div class='w3-col m2 w3-padding'>
+                            <label>@ResourceKey("RE.sortorder")</label>
+                            @TextBox(info, "genxml/sortorder", " class='w3-input w3-border w3-right-align'  min='0' step='5' autocomplete='off' ", info.SortOrder.ToString(), false, 0,"","number")
+                        </div>                        
+                    }
+                    <div class='w3-col m3 w3-padding'>
+                        <label>@ResourceKey("RE.hidden")</label><br/>
+                        @CheckBox(info, "genxml/checkbox/hidden", "", "class='w3-check'")
+                    </div>
+                </div>
+                <div class='w3-row w3-padding'>
+                    <label>@ResourceKey("RE.summary")</label>&nbsp;@EditFlag(sessionParams)
+                    @TextArea(info, "genxml/lang/genxml/textbox/productsummary", " class='w3-input w3-border' autocomplete='off' rows='3' ", "", true, 0)
+                </div>
+            </div>
+        </div>
+
+        <div class='w3-row w3-padding'>
+            <label>@ResourceKey("RE.keywords")</label>&nbsp;@EditFlag(sessionParams)
+            @TextArea(info, "genxml/lang/genxml/textbox/productkeywords", "class='w3-input w3-border' style='height:60px;' ", "", true)
+        </div>
+
+        <!-- Put category select here, so we pass back the cascade option with the srticle data -->
+        @RenderTemplate("ProductCategorySelect.cshtml", appThemeSystem, Model, false)
+
+    </div>
+
+    <div id="productsdetails" style="@productdetaailsdisplay">
+
+        <div class="">
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Models))
+            {
+                <div class="w3-bar-item w3-button tablink modelstabtablink" onclick="openSection('modelstab')">@ResourceKey("RE.models")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Images))
+            {
+                <div class="w3-bar-item w3-button tablink imgstablink" onclick="openSection('imgs')">@ResourceKey("DNNrocket.images")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Options))
+            {
+                <div class="w3-bar-item w3-button tablink optionstabtablink" onclick="openSection('optionstab')">@ResourceKey("RE.options")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Categories))
+            {
+                <div class="w3-bar-item w3-button tablink categoriestabtablink" onclick="openSection('categoriestab')">@ResourceKey("RE.categories")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Properties))
+            {
+                <div class="w3-bar-item w3-button tablink propertiestabtablink" onclick="openSection('propertiestab')">@ResourceKey("RE.properties")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Docs))
+            {
+                <div class="w3-bar-item w3-button tablink docstablink" onclick="openSection('docs')">@ResourceKey("DNNrocket.docs")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Links))
+            {
+                <div class="w3-bar-item w3-button tablink linkstablink" onclick="openSection('links')">@ResourceKey("DNNrocket.links")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Html))
+            {
+                <div class="w3-bar-item w3-button tablink htmltexttablink" onclick="openSection('htmltext')">@ResourceKey("RE.htmltext")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Extra))
+            {
+                <div class="w3-bar-item w3-button tablink othertablink" onclick="openSection('other')">@ResourceKey("RE.extra")</div>
+            }
+
+        </div>
+        <div id="modelstab" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding'>
+                @RenderTemplate("productmodels.cshtml", appThemeSystem, Model, false)
+            </div>
+        </div>
+        <div id="imgs" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding imagesection'>
+                @RenderTemplate("productimages.cshtml", appThemeSystem, Model, false)
+                @RenderTemplate("productImageSelect.cshtml", appThemeSystem, Model, false)
+            </div>
+        </div>
+        <div id="optionstab" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding'>
+                @RenderTemplate("productoptions.cshtml", appThemeSystem, Model, false)
+            </div>
+        </div>
+        <div id="categoriestab" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding a-articlecategorylist'>
+                @RenderTemplate("ProductCategoryList.cshtml", appThemeSystem, Model, false)
+            </div>
+        </div>
+        <div id="propertiestab" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding a-articlepropertylist'>
+                @RenderTemplate("productpropertylist.cshtml", appThemeSystem, Model, true)
+            </div>
+        </div>
+        <div id="docs" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding'>
+                @RenderTemplate("productdocuments.cshtml", appThemeSystem, Model, false)
+                @RenderTemplate("ProductDocumentSelect.cshtml", appThemeSystem, Model, true)
+            </div>
+        </div>
+        <div id="links" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding'>
+                @RenderTemplate("productlinks.cshtml", appThemeSystem, Model, false)
+            </div>
+        </div>
+        <div id="htmltext" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding'>
+                <div class="w3-bar">
+                    <div class="w3-bar-item">@EditFlag(sessionParams)</div>
+                    <div class="w3-bar-item" onclick="richtextsourceDialog();"><i class=" w3-button fas fa-code"></i></div>
+                </div>
+                @CKEditor4(info, "genxml/lang/genxml/textbox/richtext",true)
+            </div>
+        </div>
+        <div id="other" class='w3-row sectionname' style="display:none">
+            <div class='w3-col m12 w3-padding'>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="w3-padding">
+    @if (UserUtils.IsInRole("Administrator"))
+    {
+        <div class="w3-container">
+            <div class="w3-right">
+                @RenderXml(info)
+            </div>
+        </div>
+    }
+    <i>ID: </i> @info.ItemID <i> GuidKey:</i> @info.GUIDKey
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        var sectionName = simplisity_getCookieValue('sectionName');
+        if ((typeof sectionName === 'undefined') || sectionName === '') {
+            sectionName = 'modelstab';
+        }
+        openSection(sectionName);
+
+        $('#productkeywords').tagEditor({
+            delimiter: ', ', /* space and comma */
+            placeholder: '@ResourceKey("RE.keywords") ...',
+            removeDuplicates: false,
+        });
+
+        readmin.moveToTop('#articlemodal');
+        $('#articlemodal').show();
+
+    });
+
+    function openSection(sectionName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("sectionname");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        $(".tablink").each(function (index) {
+            $(this).removeClass('w3-bottombar');
+        });
+
+        document.getElementById(sectionName).style.display = "block";
+
+        $('.' + sectionName + 'tablink').addClass('w3-bottombar');
+
+        simplisity_setCookieValue('sectionName', sectionName);
+    }
+
+    function saveRichText() {
+        $('#datasection').append($('#richtext')); // we need to move the richtext to the save data area.
+        richtextSave(); // Copy editor data to the textarea
+    }
+
+</script>
+
+
+

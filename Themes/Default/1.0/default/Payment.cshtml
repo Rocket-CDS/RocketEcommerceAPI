@@ -1,0 +1,93 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var cartData = (CartLimpet)Model.List.First();
+    if (cartData.Record != null)
+    {
+        info = new SimplisityInfo(cartData.Record);
+    }
+    var sessionParams = (SessionParams)Model.SessionParamsData;
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var notificationData = (NotificationLimpet)Model.GetDataObject("notificationdata");
+    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var appThemeDefault = (AppThemeLimpet)Model.GetDataObject("appthemedefault");
+
+}
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+<div id="datasection">
+
+    <div id="contactdetails">
+
+        <h3>@ResourceKey("RE.payment", sessionParams.CultureCode)</h3>
+
+        <div class="w3-container w3-border w3-padding-32 w3-margin-bottom w3-center">
+            <div class="w3-row w3-xlarge">
+                <b>@ResourceKey("RE.total", sessionParams.CultureCode) :&nbsp; @(cartData.TotalDisplay)</b>
+            </div>
+        </div>
+
+
+        @{
+            var payList = portalShop.GetActivePaymentMethods();
+        }
+
+    <div class="w3-row-padding" style="margin:0 -16px">
+        @{
+            var showpayment = false;
+            var buttoncolor = "w3-green";
+        }
+        @foreach (var p in payList)
+        {
+            <div class="w3-row w3-padding">
+                <div style="min-height:100px; cursor:pointer;" class="w3-card-2 w3-margin-bottom w3-hover-light-grey simplisity_click " s-cmd="rocketecommerceapi_cartpayment" s-return="document" s-post="#datasection" s-fields='{"providerkey":"@(p.PaymentProvKey())","systemkey":"rocketecommerceapi","moduleref":"@(remoteModule.ModuleRef)"}'>
+                    <div class="w3-row">
+                        <div class="w3-col m2 w3-padding w3-hide-small" style="width:80px;">
+                            @HtmlOf(p.PayButtonText())
+                        </div>
+                        <div class="w3-col m9 w3-padding">
+                            @HtmlOf(p.PayMsg())
+                        </div>
+                    </div>
+                </div>
+            </div>
+            showpayment = true;
+            buttoncolor = "w3-pale-green";
+        }
+        @if (showpayment)
+        {
+            <p>
+                @notificationData.Message_BankPaymentButton
+            </p>
+        }
+    </div>
+
+    </div>
+
+</div>
+
+<div class="w3-row w3-margin-top w3-margin-bottom">
+    <div class="w3-button w3-border w3-left w3-margin-bottom simplisity_click" s-cmd="rocketecommerceapi_cartsummary" s-return='.ecommerce-container' s-fields='{"systemkey":"rocketecommerceapi","template":"cartsummary.cshtml","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonText(ButtonTypes.previous, sessionParams.CultureCode)</div>
+    <div class="w3-button w3-border w3-margin-left w3-light-grey" onclick="location.reload();return false;"><span class="material-icons">home</span>&nbsp;@ResourceKey("RE.continueshopping", sessionParams.CultureCode)</div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('html, body').stop().animate({
+            'scrollTop': $("#ecommerce-tag").offset().top
+        }, 400, 'swing', function () {
+            window.location.hash = "#ecommerce-tag";
+        });
+    });
+</script>

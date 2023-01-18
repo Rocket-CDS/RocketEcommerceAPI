@@ -1,0 +1,323 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using System.Globalization;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var orderData = (OrderLimpet)Model.List.First();
+    if (orderData.Record != null)
+    {
+        info = new SimplisityInfo(orderData.Record);
+    }
+
+    var portalShop = orderData.PortalShop;
+    var companyData = new CompanyLimpet(portalShop.PortalId, orderData.CultureCode);
+    var notificationData = new NotificationLimpet(orderData.PortalId, orderData.PreferedCultureCode);
+}
+
+<style type="text/css">
+    #outlook a {
+        padding: 0;
+    }
+    /* Force Outlook to provide a "view in browser" button. */
+    .ExternalClass {
+        width: 100%;
+        display: block !important;
+    }
+        /* Force Hotmail to display emails at full width */
+        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+            line-height: 100%;
+        }
+    /* Forces Hotmail to display normal line spacing */
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        -webkit-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+    }
+    /* Prevents Webkit and Windows Mobile platforms from changing default font sizes. */
+    body, .Normal, td, th {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: normal;
+        font-size: 13px;
+        color: #555555;
+    }
+
+    h1 {
+        color: inherit;
+        line-height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 0 12px 0;
+    }
+
+    h2 {
+        color: inherit;
+        line-height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: normal;
+        margin: 0 0 12px 0;
+    }
+
+    h3 {
+        color: inherit;
+        line-height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+        margin: 0 0 9px 0;
+    }
+
+    h4 {
+        color: inherit;
+        line-height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+        margin: 0 0 6px 0;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #999999;
+    }
+
+    p {
+        margin: 0 0 9px 0;
+        padding-bottom: 1px;
+    }
+
+    .orderemail a, .orderemail a:link, .orderemail a:visited {
+        color: #0586B1;
+        text-decoration: none;
+    }
+
+        .orderemail a:active, .orderemail a:hover {
+            color: #06B0E8;
+            text-decoration: underline;
+        }
+
+    .text-right {
+        text-align: right !important;
+    }
+</style>
+
+
+<table class="orderemail" width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0">
+    <tr>
+        <td width="100%" valign="top" bgcolor="#efefef">
+
+            <div style="height:32px">&nbsp;</div><!-- spacer -->
+            <!-- orderemailmessage.html -->
+            <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
+                <tr>
+                    <td width="67%" align="left" valign="top" style="line-height:150%">
+                        <h2>@(companyData.StoreName)</h2>
+                        @BreakOf(companyData.DisplayAddress)
+                    </td>
+                    <td width="33%" align="left" valign="top" style="line-height:150%">
+                        <p><b>@ResourceKey("RE.contactus", orderData.CultureCode)</b></p>
+                        <div>@(companyData.StoreName)</div>
+                        <div><a href="mailto:@(companyData.ContactEmail)">@(companyData.ContactEmail)</a></div>
+                        <div>@companyData.Phone</div>
+                        <div><a href="@(companyData.WebsiteUrl)" target="_blank">@(companyData.WebsiteUrl)</a></div>
+                        @if (@companyData.IBAN != "")
+                        {
+                            <div>IBAN: @companyData.IBAN</div>
+                        }
+                    </td>
+                </tr>
+            </table>
+
+
+            <div style="height:8px">&nbsp;</div><!-- spacer -->
+            <!-- Order Info -->
+            <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
+                <tr>
+                    <td width="50%" align="left" valign="top" style="line-height:150%">
+                        <div><b>@ResourceKey("RE.ordernumber", orderData.CultureCode): </b>@(orderData.OrderNumber)</div>
+                        <div><b>@ResourceKey("RE.orderdate", orderData.CultureCode): </b>@(orderData.OrderDate.ToShortDateString())</div>
+                        <div><b>@ResourceKey("RE.paymentmethod", orderData.CultureCode)</b></div>
+
+                        @if (orderData.TaxNumber != "")
+                        {
+                            <div class="address">
+                                <div><b>@ResourceKey("RE.taxnumber", orderData.CultureCode)</b></div>
+                                <div>@orderData.TaxNumber</div>
+                            </div>
+                        }
+                        @if (orderData.DiscountCode != "")
+                        {
+                            <div class="address">
+                                <div><b>@ResourceKey("RE.discountcode", orderData.CultureCode)</b></div>
+                                <div>@orderData.TaxNumber</div>
+                            </div>
+                        }
+                    </td>
+                    <td width="50%" align="left" valign="top" style="line-height:150%">
+
+                        <div><b>@ResourceKey("RE.firstname", orderData.CultureCode): </b>@orderData.FirstName</div>
+                        <div><b>@ResourceKey("RE.lastname", orderData.CultureCode): </b>@orderData.LastName</div>
+                        <div><b>@ResourceKey("RE.email", orderData.CultureCode): </b>@orderData.Email</div>
+                        @if (orderData.Phone != "")
+                        {
+                            <div><b>@ResourceKey("RE.phone", orderData.CultureCode): </b>@orderData.Phone</div>
+                        }
+                        @if (orderData.CollectionDateTime != DateTime.MinValue)
+                        {
+                            <div><b>@ResourceKey("RE.collectiontime", orderData.CultureCode): </b>@orderData.CollectionDateTime.ToString(new CultureInfo(orderData.CultureCode))</div>
+                        }
+
+                    </td>
+                </tr>
+            </table>
+
+
+            <!-- Items -->
+            <table width="800" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#ffffff">
+                <tr>
+                    <td>
+                        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                            <tr>
+                                <th style="border-bottom:1px solid #999999" align="left"><b>@ResourceKey("General.Item", orderData.CultureCode)</b></th>
+                                <th style="border-bottom:1px solid #999999" align="center"><b>@ResourceKey("General.Qty", orderData.CultureCode)</b></th>
+                                <th style="border-bottom:1px solid #999999" nowrap="nowrap" align="right"><b>@ResourceKey("General.Total", orderData.CultureCode)</b></th>
+                            </tr>
+
+                            @foreach (CartItemLimpet cartItemData in orderData.GetCartItemList())
+                            {
+                                <tr>
+                                    <td class="m-ticker">
+                                        <div>
+                                            <b> @cartItemData.ProductData.Name &nbsp; @cartItemData.Model.Name </b>
+                                        </div>
+
+                                        <div>
+
+                                            @{
+                                                var oLp = 1;
+                                            }
+                                            @foreach (var cartItemOption in cartItemData.GetSelectedOptions())
+                                            {
+                                                if (cartItemOption.SelectedText != "")
+                                                {
+                                                    <span class="w3-small">
+                                                        @cartItemOption.OptionName
+                                                        &nbsp;:&nbsp;
+                                                        @if (cartItemOption.SelectedText == "true")
+                                                        {
+                                                            <span>
+                                                                <i class="far fa-check-circle"></i>
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>
+                                                                @if (@cartItemOption.SelectedText.Length > 40)
+                                                                {
+                                                                    @cartItemOption.SelectedText.Substring(0, 40)
+                                                                }
+                                                                else
+                                                                {
+                                                                    @cartItemOption.SelectedText
+                                                                }
+                                                            </span>
+                                                        }
+                                                    </span>
+                                                    oLp += 1;
+                                                }
+                                                if (oLp == 3)
+                                                {
+                                                    <br />
+                                                }
+                                            }
+
+                                        </div>
+                                    </td>
+                                    <td class="text-center removecolumn">@(cartItemData.Qty)</td>
+                                    <td class="text-right">@(cartItemData.TotalWithOptionsDisplay)</td>
+                                </tr>
+                            }
+
+
+                            <tr>
+                                <td>
+                                </td>
+                                <td class="text-right removecolumn">@ResourceKey("RE.subtotal", orderData.CultureCode)</td>
+                                <td class="text-right">@(orderData.SubTotalDisplay)</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-right removecolumn">@ResourceKey("RE.discount", orderData.CultureCode)</td>
+                                <td class="text-right">@(orderData.DiscountTotalDisplay)</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-right removecolumn">@ResourceKey("RE.shipping", orderData.CultureCode)</td>
+                                <td class="text-right">@(orderData.ShippingTotalDisplay)</td>
+                            </tr>
+                            <tr class="active">
+                                <td></td>
+                                <td class="text-right removecolumn"><b>@ResourceKey("RE.total", orderData.CultureCode)</b></td>
+                                <td class="text-right"><b>@(orderData.TotalDisplay)</b></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+
+            <div style="height:8px">&nbsp;</div><!-- spacer -->
+            <!-- Addresses -->
+            <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
+                <tr>
+                    <td width="50%" align="left" valign="top" style="line-height:100%">
+                        <h4>@ResourceKey("RE.billingaddress", orderData.CultureCode)</h4>
+                        @HtmlOf(orderData.BillAddressHtml)
+                    </td>
+                    <td width="50%" align="left" valign="top" style="line-height:100%">
+                        @if (!orderData.CollectInStore)
+                        {
+                            <h4>@ResourceKey("RE.shippingaddress", orderData.CultureCode)</h4>
+                            @HtmlOf(orderData.ShipAddressHtml)
+                        }
+                        else
+                        {
+                            <h4>@ResourceKey("RE.collectinstore", orderData.CultureCode)</h4>
+                        }
+                    </td>
+                </tr>
+            </table>
+
+            <div style="height:8px">&nbsp;</div><!-- spacer -->
+            <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
+                <tr>
+                    <td width="50%" align="left" valign="top" style="line-height:100%">
+                        <h4>@ResourceKey("RE.specialinstructions", orderData.CultureCode)</h4>
+                        @BreakOf(orderData.ClientNotes)
+                    </td>
+                </tr>
+            </table>
+
+            <div style="height:8px">&nbsp;</div><!-- spacer -->
+            <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
+                <tr>
+                    <td width="50%" align="left" valign="top" style="line-height:100%">
+                        @BreakOf(notificationData.Message_BankInstructions)
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>

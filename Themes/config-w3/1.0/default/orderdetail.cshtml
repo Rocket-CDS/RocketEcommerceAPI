@@ -1,0 +1,531 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    var orderData = (OrderLimpet)Model.List.First();
+    if (orderData.Record != null)
+    {
+        info = new SimplisityInfo(orderData.Record);
+    }
+    var portalShop = new PortalShopLimpet(orderData.PortalId, DNNrocketUtils.GetEditCulture());
+    var passModel = new SimplisityRazor(portalShop, new Dictionary<string, string>());
+    var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
+}
+
+@RenderLanguageSelector("orderadmin_editlist", "", appThemeSystem, Model)
+
+<div class='w3-animate-opacity w3-padding'>
+
+    <div class="w3-row w3-padding">
+        <button class="w3-button simplisity_click" s-cmd="orderadmin_editlist">@ButtonIcon(ButtonTypes.back)</button>
+        <div class="w3-button w3-theme-action simplisity_click langchangesave" s-cmd="orderadmin_savedata" s-post="#datasection" s-fields='{"orderid":"@info.ItemID"}'>@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("RE.sendemail")&nbsp;?" s-cmd="orderadmin_sendemail" s-return="#emailsendrespone" s-post="#datasection" s-fields='{"orderid":"@info.ItemID"}'><i title="@ResourceKey("RE.sendemail")" class="far  fa-paper-plane fa-fw fa-lg"></i>&nbsp;@ResourceKey("RE.sendemail")</div>
+        @if (orderData.StatusCode == Convert.ToInt32(OrderStatus.Archived))
+        {
+            <div class="w3-button w3-right w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="orderadmin_delete" s-fields='{"orderid":"@info.ItemID"}'>@ButtonText(ButtonTypes.delete)</div>
+        }
+
+        <div class="w3-dropdown-hover">
+            <div class="w3-button" style="border-top: 6px solid #fff !important;">@ResourceKey("DNNrocket.more")...</div>
+            <div class="w3-dropdown-content w3-bar-block w3-card" style="width:340px;">
+                <a class="w3-bar-item w3-button" target="_blank" href="/DesktopModules/DNNrocketModules/RocketECommerce/htmlpages/PrintOrder.html?orderid=@(info.ItemID)">@ButtonText(ButtonTypes.print)</a>
+                <a class="w3-bar-item w3-button" target="_blank" href="/DesktopModules/DNNrocketModules/RocketECommerce/htmlpages/PrintShipLabel.html?orderid=@(info.ItemID)">@ButtonIcon(ButtonTypes.print)&nbsp;@ResourceKey("RE.printlabel")</a>
+                <div class="w3-bar-item w3-button" onclick="document.getElementById('orderhistorymodal').style.display = 'block';">@ButtonText(ButtonTypes.history)</div>
+                <div class="w3-bar-item w3-button" onclick="document.getElementById('ordernotesmodal').style.display = 'block';">@ButtonText(ButtonTypes.notes)</div>
+            </div>
+        </div>
+
+        @if (Model.GetSettingBool("saved"))
+        {
+            <span class='simplisity_fadeout'>@ButtonIcon(ButtonTypes.save)</span>
+        }
+
+    </div>
+
+    <div id="emailsendrespone" class="w3-row"></div>
+
+    <div id="datasection" class="">
+
+        @{
+            Model.SetSetting("xpathroot", "genxml/shipaddress");
+            Model.SetSetting("addresstype", "ship");
+        }
+
+        @RenderTemplate("orderaddress.cshtml", appThemeSystem, Model, true)
+        @{
+            Model.SetSetting("xpathroot", "genxml/billaddress");
+            Model.SetSetting("addresstype", "bill");
+        }
+        @RenderTemplate("orderaddress.cshtml", appThemeSystem, Model, true)
+
+        <div class="w3-container">
+
+            <div class="w3-row w3-padding ">
+                <div class="w3-third w3-padding">
+
+                    <div class="w3-dropdown-click w3-border " onclick="orderDropdownClick();" style="width:100%;">
+                        <div class="@("orderstatus" + orderData.StatusCode) w3-padding w3-round">
+                            @ResourceKey("RE.orderstatus" + orderData.StatusCode)
+                        </div>
+                        <div id="orderDropdownClick" class="w3-dropdown-content w3-bar-block  w3-card-4 w3-padding  w3-animate-opacity" style="width:100%;cursor:pointer;">
+                            <div class="w3-bar-item orderstatus20 w3-round w3-border-bottom" onclick="changestatus('20');">@ResourceKey("RE.orderstatus20")</div>
+                            <div class="w3-bar-item orderstatus40 w3-round w3-border-bottom" onclick="changestatus('40');">@ResourceKey("RE.orderstatus40")</div>
+                            <div class="w3-bar-item orderstatus200 w3-round w3-border-bottom" onclick="changestatus('200');">@ResourceKey("RE.orderstatus200")</div>
+                            <div class="w3-bar-item orderstatus210 w3-round w3-border-bottom" onclick="changestatus('210');">@ResourceKey("RE.orderstatus210")</div>
+                            <div class="w3-bar-item orderstatus70 w3-round w3-border-bottom" onclick="changestatus('70');">@ResourceKey("RE.orderstatus70")</div>
+                            <div class="w3-bar-item orderstatus80 w3-round w3-border-bottom" onclick="changestatus('80');">@ResourceKey("RE.orderstatus80")</div>
+                            <div class="w3-bar-item orderstatus130 w3-round w3-border-bottom" onclick="changestatus('130');">@ResourceKey("RE.orderstatus130")</div>
+                            <div class="w3-bar-item orderstatus90 w3-round w3-border-bottom" onclick="changestatus('90');">@ResourceKey("RE.orderstatus90")</div>
+                            <div class="w3-bar-item orderstatus100 w3-round w3-border-bottom" onclick="changestatus('100');">@ResourceKey("RE.orderstatus100")</div>
+                            <div class="w3-bar-item orderstatus110 w3-round w3-border-bottom" onclick="changestatus('110');">@ResourceKey("RE.orderstatus110")</div>
+                            <div class="w3-bar-item orderstatus120 w3-round w3-border-bottom" onclick="changestatus('120');">@ResourceKey("RE.orderstatus120")</div>
+                            <div class="w3-bar-item orderstatus140 w3-round w3-border-bottom" onclick="changestatus('140');">@ResourceKey("RE.orderstatus140")</div>
+                        </div>
+                    </div>
+
+                    @if (orderData.ParentItemId > 0)
+                    {
+                        var paymentLimpet = new PaymentLimpet(orderData.PortalId, orderData.ParentItemId);
+
+                        <div class="w3-dropdown-click" style="width:100%;">
+                            <div class="@("orderstatus" + paymentLimpet.StatusCode) w3-padding w3-round">
+                                @ResourceKey("RE.orderstatus" + paymentLimpet.StatusCode)
+                            </div>
+                        </div>
+                    }
+
+
+
+
+                    <label>@ResourceKey("RE.ordernumber")</label>
+                    <div class="w3-input w3-border w3-light-grey w3-padding">
+                        @if (orderData.OrderId > 0)
+                        {
+                            <b>@orderData.OrderNumber</b>
+                        }
+                        else
+                        {
+                            <span>.</span>
+                        }
+                    </div>
+                    <label>@ResourceKey("RE.orderdate")</label>
+                    <div class="w3-input w3-border w3-light-grey w3-padding">
+                        @if (orderData.OrderDate != DateTime.MinValue)
+                        {
+                            @orderData.OrderDate.ToString()
+                        }
+                        else
+                        {
+                            <span>.</span>
+                        }
+                    </div>
+                    @if (orderData.CollectInStore)
+                    {
+                        <label>@ResourceKey("RE.collectiontime")</label>
+                        <div class="w3-input w3-border w3-light-grey w3-padding">
+                            @ResourceKey("RE.collectinstore")
+                        </div>
+                        if (orderData.CollectionDateTime != DateTime.MinValue)
+                        {
+                            <label>@ResourceKey("RE.collectiontime")</label>
+                            <div class="w3-input w3-border w3-light-grey w3-padding">
+                                @orderData.CollectionDateTime.ToString(new System.Globalization.CultureInfo(DNNrocketUtils.GetCurrentCulture()))
+                            </div>
+                        }
+                    }
+
+                    <label>@ResourceKey("RE.firstname")</label>
+                    @TextBox(info, "genxml/textbox/firstname", " class='w3-input w3-border' autocomplete='off' ")
+                    <label>@ResourceKey("RE.lastname")</label>
+                    @TextBox(info, "genxml/textbox/lastname", " class='w3-input w3-border' autocomplete='off' ")
+                    <label>@ResourceKey("RE.email"):</label>
+                    @TextBox(info, "genxml/textbox/email", " class='w3-input w3-border' autocomplete='off' ")
+                    <label>@ResourceKey("RE.eventname"):</label>
+                    @TextBox(info, "genxml/textbox/eventname", " class='w3-input w3-border' autocomplete='off' ")
+                    <label>@ResourceKey("RE.phone"):</label>
+                    @TextBox(info, "genxml/textbox/phone", " class='w3-input w3-border' autocomplete='off' ")
+                    <label class="">@ResourceKey("RE.preferedculturecode")</label>
+                    @{
+                        var cultureCodes = new Dictionary<string, string>();
+                        var cultureList = DNNrocketUtils.GetCultureCodeList();
+                        foreach (var cc in cultureList)
+                        {
+                            cultureCodes.Add(cc, cc);
+                        }
+                    }
+                    @DropDownList(info, "genxml/textbox/preferedculturecode", cultureCodes, "class='w3-input w3-border'", DNNrocketUtils.GetEditCulture())
+
+
+                    @foreach (var p in orderData.GetPaymentList())
+                    {
+                        var color = "w3-blue";
+                        if (p.Status == PaymentStatus.PaymentFailed)
+                        {
+                            color = "w3-red";
+                        }
+                        if (p.Status == PaymentStatus.PaymentOK)
+                        {
+                            color = "w3-green";
+                        }
+                        <div class="w3-bar">
+                            <div class="w3-bar-item w3-col m12 w3-button w3-margin-top @color simplisity_click" s-cmd="paymentadmin_editpayment" s-fields='{"paymentid":"@(p.PaymentId)"}'><i title="@ResourceKey("RE.orderstatus" + p.StatusCode)" class="fa fas fa-money-bill-alt fa-fw fa-lg @("orderstatus" + p.StatusCode)"></i>&nbsp;@ResourceKey("RE.payment") : @p.AmountPaidDisplay</div>
+                        </div>
+                    }
+
+                </div>
+                <div class="w3-twothird w3-padding">
+
+                    <div class="w3-row">
+                        <span class="w3-button" onclick="document.getElementById('orderhistorymodal').style.display = 'block';">&nbsp;@ButtonIcon(ButtonTypes.history)</span>
+                        @if (orderData.Notes != "")
+                        {
+                            <span class="w3-button" onclick="document.getElementById('ordernotesmodal').style.display = 'block';">&nbsp;@ButtonIcon(ButtonTypes.notes)</span>
+                        }
+                    </div>
+
+                    <div class="w3-row">
+                        <div class="w3-half">
+                            <h4><b>@ResourceKey("RE.billingaddress")</b>&nbsp;<i class="w3-button" onclick="showAddressbill();" style="cursor: pointer;">@ButtonIcon(ButtonTypes.edit)</i></h4>
+                            <div>
+                                @HtmlOf(orderData.BillAddressHtml)
+                            </div>
+                        </div>
+                        <div class="w3-half">
+                            <h4><b>@ResourceKey("RE.shippingaddress")</b>&nbsp;<i class="w3-button" onclick="showAddressship();" style="cursor: pointer;">@ButtonIcon(ButtonTypes.edit)</i></h4>
+                            <div>
+                                @HtmlOf(orderData.ShipAddressHtml)
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="w3-row w3-padding w3-margin-top">
+                        <div class="w3-bar">
+                            <div class="w3-bar-item">
+                                <h4><b>@ResourceKey("RE.products")</b> @(orderData.Exists)</h4>
+                            </div>
+                            @if (orderData.Exists && (orderData.StatusCode == Convert.ToInt32(OrderStatus.Special) || orderData.StatusCode == Convert.ToInt32(OrderStatus.Incomplete)))
+                            {
+                                <div class="w3-bar-item w3-button w3-theme-action w3-right" onclick="selectarticles();" style="">@ButtonIcon(ButtonTypes.add)</div>
+                            }
+                        </div>
+
+                        <div class="w3-row">
+                            <div class="w3-border-top">
+                                @{
+                                    var lp1 = 0;
+                                }
+                                @foreach (var cItem in orderData.GetCartItemList())
+                                {
+                                    lp1 += 1;
+                                    var logoRelPath = cItem.ProductData.LogoRelPath;
+                                    if (cItem.ProductData.LogoRelPath == "")
+                                    {
+                                        logoRelPath = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+                                    }
+
+
+                                    var selectedModel = cItem.ProductData.GetModel(cItem.ModelId);
+                                    if (selectedModel != null)
+                                    {
+                                        <div class="w3-bar products w3-border-bottom">
+                                            @HiddenField(new SimplisityInfo(cItem.Record), "genxml/key", "", "", false, lp1)
+                                            <div class="w3-bar-item">
+                                                <div class="w3-container">
+                                                    <div class="w3-large">
+                                                        @cItem.ProductData.Name &nbsp;
+                                                        <span class="w3-tiny">@cItem.PriceWithOptionsDisplay</span>
+                                                        <input id="modelprice_@(lp1)" class="cartitemprice" idxrow="@(lp1)" value="@cItem.PriceWithOptions" type="hidden" />
+                                                    </div>
+                                                </div>
+                                                <div class="w3-bar">@selectedModel.Name</div>
+                                                @{
+                                                    var oLp = 1;
+                                                }
+                                                @foreach (var cartItemOption in cItem.GetSelectedOptions())
+                                                {
+                                                    if (cartItemOption.SelectedText != "")
+                                                    {
+                                                        <span class="w3-small">
+                                                            @cartItemOption.OptionName
+                                                            &nbsp;:&nbsp;
+                                                            @if (cartItemOption.SelectedText == "true")
+                                                            {
+                                                                <span>
+                                                                    <i class="far fa-check-circle"></i>
+                                                                </span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>
+                                                                    @if (@cartItemOption.SelectedText.Length > 40)
+                                                                    {
+                                                                        @cartItemOption.SelectedText.Substring(0, 40)
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @cartItemOption.SelectedText
+                                                                    }
+                                                                </span>
+                                                            }
+                                                        </span>
+                                                        oLp += 1;
+                                                    }
+                                                    if (oLp == 3)
+                                                    {
+                                                        <br />
+                                                    }
+                                                }
+
+                                            </div>
+                                            <div class="w3-bar-item w3-right">
+                                                @if (orderData.StatusCode == Convert.ToInt32(OrderStatus.Special) || orderData.StatusCode == Convert.ToInt32(OrderStatus.Incomplete))
+                                                {
+                                                    <div id="removecartitem_@(lp1)" class="w3-right simplisity_confirmclick" s-confirm="@ResourceKey("RE.removearticle", "", "confirm")" s-cmd="orderadmin_removearticle" s-fields='{"orderid":"@(orderData.OrderId)","cartitemkey":"@(cItem.Key)"}' style="cursor:pointer;">
+                                                        @ButtonIcon(ButtonTypes.remove)
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="w3-bar-item w3-right w3-hide-small w3-hide-medium " style="width:120px;">
+                                                <div class="" id="cartitemtotal@(lp1)">@(cItem.TotalWithOptionsDisplay)</div>
+                                            </div>
+                                            <div class="w3-bar-item w3-right">
+                                                <div>@cItem.Qty</div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                        </div>
+
+
+                        <div class="w3-row w3-margin-top">
+                            <div class="w3-twothird">
+                                &nbsp
+                            </div>
+                            <div class="w3-third">
+                                <table class="w3-right w3-table">
+                                    @if (orderData.SubTotal != orderData.Total)
+                                    {
+                                        <tr>
+                                            <td class="w3-right-align">
+                                                <div>@ResourceKey("RE.subtotal") : </div>
+                                            </td>
+                                            <td class="w3-right-align">
+                                                <div>@(orderData.SubTotalDisplay)</div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (portalShop.IsAdminMenuTurnOn("shippingmethods"))
+                                    {
+                                        <tr>
+                                            <td class="w3-right-align">
+                                                <div>@ResourceKey("RE.shipping") : </div>
+                                            </td>
+                                            <td class="w3-right-align">
+                                                <div>@(orderData.ShippingTotalDisplay)</div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (portalShop.IsAdminMenuTurnOn("discountmethods"))
+                                    {
+                                        <tr>
+                                            <td class="w3-right-align">
+                                                <div>@ResourceKey("RE.discount") : </div>
+                                            </td>
+                                            <td class="w3-right-align">
+                                                <div>@(orderData.DiscountTotalDisplay)</div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (portalShop.IsAdminMenuTurnOn("taxmethods"))
+                                    {
+                                        <tr>
+                                            <td class="w3-right-align">
+                                                <div>@ResourceKey("RE.tax") : </div>
+                                            </td>
+                                            <td class="w3-right-align">
+                                                <div>@(orderData.TaxTotalDisplay)</div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr class="">
+                                        <td class="w3-right-align">
+                                            <b>@ResourceKey("RE.total") :&nbsp; </b>
+                                        </td>
+                                        <td class="w3-right-align">
+                                            <b>@(orderData.TotalDisplay)</b>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <h4><b>@ResourceKey("RE.specialinstructions")</b></h4>
+                    @BreakOf(orderData.ClientNotes)
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- The Modal Noes -->
+        <div id="ordernotesmodal" class="w3-modal">
+            <div class="w3-modal-content" style="width:80%;">
+                <header class="w3-container w3-theme-d4" style="height:38px;">
+                    <span onclick="document.getElementById('ordernotesmodal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                </header>
+                <div class="w3-container w3-padding">
+                    <div class="w3-padding">
+                        <label>@ResourceKey("RE.notes")</label>
+                        @TextArea(info, "genxml/textbox/notes", " class='w3-input w3-border' rows='12' style='resize: none;' ", "", false, 0)
+                    </div>
+                </div>
+                <footer class="w3-container w3-padding">
+                    <div class="w3-button w3-theme-action w3-right" onclick="$('.langchangesave').trigger('click');">@ButtonText(ButtonTypes.save)</div>
+                </footer>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <!-- The Modal History -->
+    <div id="orderhistorymodal" class="w3-modal">
+        <div class="w3-modal-content" style="width:80%;">
+            <header class="w3-container w3-theme-d4" style="height:38px;">
+                <span onclick="document.getElementById('orderhistorymodal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <b>@ResourceKey("RE.history")</b>
+            </header>
+            <div class="w3-container w3-padding">
+
+
+                <table class="w3-table w3-bordered">
+                    <tr>
+                        <th></th>
+                        <th>@ResourceKey("RE.name")</th>
+                        <th>@ResourceKey("RE.email")</th>
+                        <th></th>
+                        <th></th>
+                        <th style="width:250px;">@ResourceKey("RE.orderstatus")</th>
+                    </tr>
+                    @foreach (var historyRec in orderData.GetHistory())
+                    {
+                        <tr class="history">
+                            <td>
+                                @historyRec.GetXmlPropertyDate("genxml/datetime")
+                            </td>
+                            <td>
+                                <b>@historyRec.GetXmlProperty("genxml/username")</b>
+                            </td>
+                            <td>
+                                <b>@historyRec.GetXmlProperty("genxml/email")</b>
+                            </td>
+                            <td>
+                                <b>@historyRec.GetXmlProperty("genxml/comment")</b>
+                            </td>
+                            <td>
+                                <b>@historyRec.GetXmlProperty("genxml/total")</b>
+                            </td>
+                            <td style="width:250px;">
+                                <div class="@("orderstatus" + historyRec.GetXmlProperty("genxml/statuscode")) w3-padding-small w3-round">
+                                    @ResourceKey("RE.orderstatus" + historyRec.GetXmlProperty("genxml/statuscode"))
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Product List -->
+    <div id="orderproductlistmodel" class="w3-modal">
+        <div class="w3-modal-content" style="width:90%;">
+            <header class="w3-container w3-theme-d4" style="height:38px;">
+                <div class="simplisity_click w3-button w3-display-topright" s-cmd="orderadmin_editorder" s-fields='{"orderid":"@orderData.OrderId"}'>&times;</div>
+            </header>
+            <div id="productlistreturn" class="w3-container w3-padding">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="articleselectmodal" class="w3-modal " style="top:-30px;">
+        <div class="w3-modal-content w3-animate-opacity" style="width:60%;">
+            <header class="w3-container w3-theme-d4" style="height:38px;">
+                <div class="w3-button w3-display-topright" onclick="$('#articleselectmodal').hide();">
+                    &times;
+                </div>
+            </header>
+            <div id="articleselectcontainer" class="w3-container articleselectpopup"></div>
+        </div>
+    </div>
+
+
+    <div>
+        @if (UserUtils.IsInRole("Administrator") && orderData.Exists)
+        {
+            <div class="w3-container">
+                <div class="w3-right">
+                    @RenderXml(info)
+                </div>
+            </div>
+        }
+        <i>ID: </i> @info.ItemID&nbsp;<i>GUID:</i> @orderData.OrderGuid
+    </div>
+
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        // On creation of new order/cart ensure we save the correct assigned statuscode
+        // The order record does not exist until we save, so we need to pass back the already assigned status.
+        simplisity_setParamField('statuscode', '@orderData.StatusCode');
+    });
+
+    function changestatus(scode) {
+        simplisity_setParamField('statuscode', scode)
+        $('.langchangesave').trigger('click');
+    }
+
+    function selectarticles() {
+        $('.simplisity_loader').show();
+        simplisity_setParamField('orderid', '@orderData.OrderId');
+        $('#productlistreturn').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'orderadmin_articleselectlist', '','')
+    }
+
+    function orderDropdownClick() {
+        var x = document.getElementById("orderDropdownClick");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+</script>
+
+
+

@@ -65,15 +65,15 @@
                     <div class="w3-row">
                         <div class="w3-col m5 w3-padding">
                             <div class="">AppTheme Project</div>
-                            @DropDownList(info, "genxml/select/selectedprojectname", projectData.ActiveList(), " name='selectedprojectnameadmin' class='w3-input w3-border simplisity_change' s-dropdownlist='#appthemeadmin' s-cmd='rocketapptheme_appthemejson' s-fields='{\"selectedsystemkey\":\"" + portalShop.SystemKey + "\",\"addempty\":\"true\"}' s-after='projectdropdownreturn'", selectedProject)
+                            @DropDownList(info, "genxml/select/selectedprojectname", projectData.ActiveList(), " name='selectedprojectname' class='w3-input w3-border simplisity_change' s-dropdownlist='#apptheme' s-cmd='rocketapptheme_appthemejson' s-fields='{\"selectedsystemkey\":\"" + portalShop.SystemKey + "\",\"addempty\":\"true\"}' s-after='projectdropdownreturn'", selectedProject)
                         </div>
                         <div class="w3-col m5 w3-padding">
                             <div class="">AppTheme</div>
-                            @DropDownList(info, "genxml/select/apptheme", appThemeList.NameListDict(), " name='selectedappthemeadmin' class='w3-input w3-border  simplisity_change' s-dropdownlist='#appthemeadminversion' s-cmd='rocketapptheme_versionjson' s-fields='{\"selectedsystemkey\":\"" + portalShop.SystemKey + "\"}'", "")
+                            @DropDownList(info, "genxml/select/apptheme", appThemeList.NameListDict(), " name='selectedapptheme' class='w3-input w3-border  simplisity_change' s-dropdownlist='#appthemeversion' s-cmd='rocketapptheme_versionjson' s-fields='{\"selectedsystemkey\":\"" + portalShop.SystemKey + "\"}'", "")
                         </div>
                         <div class="w3-col m2 w3-padding">
                             <div class="">@ResourceKey("DNNrocket.version")</div>
-                            @DropDownList(info, "genxml/select/appthemeadminversion", "1.0","1.0", " name='selectedversionadmin' class='w3-input w3-border'", "1.0")
+                            @DropDownList(info, "genxml/select/appthemeversion", "1.0","1.0", " name='selectedversion' class='w3-input w3-border'", "1.0")
                         </div>
                     </div>
                     <div class="w3-row w3-padding">
@@ -171,6 +171,14 @@
     $(document).ready(function () {
         rpadmin.moveToTop('#systemmodal');
 
+        @if (portalShop.AppThemeFolder == "")
+        {
+        <text>
+                $('#selectedprojectname').trigger('change');
+        </text>
+        }
+
+
         $("#checkouttype").change(function () {
             if ($(this).val() == '0') {
                 $('#checkouttemplate').val('0_CartDetails.cshtml');
@@ -190,5 +198,8 @@
         });
         
     });
+    function projectdropdownreturn() {
+        jQuery("#appthemeversion").html('');
+    }
 
 </script>

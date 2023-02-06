@@ -66,7 +66,7 @@
             </thead>
             @foreach (ProductLimpet productData in productDataList.GetArticleList())
             {
-                <tr class=" simplisity_click" s-cmd="productadmin_editproduct" s-fields='{"productid":"@productData.ProductId","track":"false"}' style="cursor:pointer;">
+                <tr class=" simplisity_click" s-cmd="productadmin_editproduct" s-fields='{"productid":"@productData.ProductId","track":"true"}' style="cursor:pointer;">
                     <td style="width:54px;">
                         @if (productData.GetImage(0) != null && productData.GetImage(0).RelPath != "")
                         {

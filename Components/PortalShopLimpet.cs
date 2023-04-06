@@ -144,14 +144,8 @@ namespace RocketEcommerceAPI.Components
         }
         public void Delete()
         {
-            _objCtrl.Delete(Record.ItemID, _tableName);
-
-            // remove all portal records.
-            var l = _objCtrl.GetList(_portalId, -1, "", "", "", "", 0, 0, 0, 0, _tableName);
-            foreach (var r in l)
-            {
-                _objCtrl.Delete(r.ItemID, _tableName);
-            }
+            var sql = " delete from " + _tableName + " where portalid = " + _portalId + " ";
+            _objCtrl.ExecSql(sql);
             RemoveCache();
         }
         public void RemoveCache()

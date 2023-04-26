@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI.Components;
+using DNNrocketAPI.Interfaces;
 using Newtonsoft.Json;
 using Rocket.AppThemes.Components;
 using RocketEcommerceAPI.Components;
@@ -11,7 +12,7 @@ using System.IO;
 
 namespace RocketEcommerceAPI.API
 {
-    public partial class StartConnect : DNNrocketAPI.APInterface
+    public partial class StartConnect : IProcessCommand
     {
         private const string _systemkey = "rocketecommerceapi";
 
@@ -36,7 +37,7 @@ namespace RocketEcommerceAPI.API
         private ShopSettingsLimpet _shopSettings;
         private int _defaultCategoryId;
 
-        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
             var jsonOut = "";

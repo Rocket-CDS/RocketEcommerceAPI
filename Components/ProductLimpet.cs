@@ -25,6 +25,9 @@ namespace RocketEcommerceAPI.Components
         private List<int> _catXrefListId;
         private List<string> _catXrefListRef;
         private string _cacheKey;
+        private SessionParams sessionParam;
+        private int aticleId;
+        private string systemKey;
 
         public ProductLimpet()
         {
@@ -60,6 +63,16 @@ namespace RocketEcommerceAPI.Components
 
             Populate(langRequired);
         }
+
+        public ProductLimpet(SessionParams sessionParam, int portalId, int aticleId, string cultureCode, string systemKey)
+        {
+            this.sessionParam = sessionParam;
+            PortalId = portalId;
+            this.aticleId = aticleId;
+            CultureCode = cultureCode;
+            this.systemKey = systemKey;
+        }
+
         private void Populate(string cultureCode)
         {
             _cacheKey = "ProductLimpet*" + PortalId + "*" + _productId + "*" + cultureCode + "*" + _tableName;

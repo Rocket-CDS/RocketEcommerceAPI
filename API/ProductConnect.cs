@@ -222,7 +222,7 @@ namespace RocketEcommerceAPI.API
 
         public String GetProductList()
         {
-            var articleDataList = new ProductLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
+            var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productlist.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
@@ -233,7 +233,7 @@ namespace RocketEcommerceAPI.API
             var orderid = _paramInfo.GetXmlProperty("genxml/hidden/orderid");
             _dataObject.Settings.Add("orderid", orderid);
             var portalShop = new PortalShopLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
-            var articleDataList = new ProductLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
+            var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ProductSelectList.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
@@ -282,7 +282,7 @@ namespace RocketEcommerceAPI.API
             var razorTempl = AssignRemoteTemplate();
             if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppThemeView.AppThemeFolder;
 
-            var articleDataList = new ProductLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCode, true, false, _dataObject.ShopSettings.DefaultCategoryId);
+            var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCode, true, false, _dataObject.ShopSettings.DefaultCategoryId);
 
             var cartData = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
             _dataObject.DataObjects.Add("cartdata", cartData);

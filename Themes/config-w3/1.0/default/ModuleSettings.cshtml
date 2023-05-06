@@ -1,0 +1,92 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources")
+
+@{
+    var sessionParams = Model.SessionParamsData;
+    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var appThemeDirectory = (AppThemeSystemLimpet)Model.GetDataObject("appthemedirectory");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var info = new SimplisityInfo(moduleData.Record);
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var categoryData = new CategoryLimpet(portalData.PortalId, moduleData.DefaultCategoryId, sessionParams.CultureCode);
+
+    var templateList = RocketEcommerceAPIUtils.ModuleTemples(appThemeView, moduleData.ModuleRef);
+}
+
+<div id="a-datasection" class="w3-container w3-margin w3-padding">
+
+    <div class="w3-row w3-padding">
+        <div class="w3-quarter">
+            @CheckBox(info,"genxml/settings/disablecache", ResourceKey("DNNrocket.disablecache").ToString(),"class='w3-check'")
+        </div>
+        <div class="w3-quarter">
+            @CheckBox(info,"genxml/settings/injectjquery", ResourceKey("DNNrocket.injectjquery").ToString(),"class='w3-check'")
+        </div>
+        <div class="w3-quarter">
+            @CheckBox(info,"genxml/settings/disableheader", ResourceKey("DNNrocket.disableheader").ToString(),"class='w3-check'")
+        </div>
+    </div>
+    <div class="w3-row ">
+        <div class="w3-half w3-padding">
+            <label>@ResourceKey("DNNrocket.name")</label>
+            @TextBox(info, "genxml/settings/name"," class='w3-input w3-border' ", "RocketContent: " + moduleData.ModuleRef)
+        </div>
+        <div class="w3-half w3-padding">
+            <label>@ResourceKey("RC.defaultcategory")&nbsp;</label>
+            <div class="w3-row">
+                <span id="defaultcategorydisplay" class="w3-col m9 w3-border w3-light-grey w3-padding" style="height:40px;">@categoryData.Name</span>
+                <span class="w3-col m3 w3-button w3-theme parentcategoryselect" onclick="$('#categoryselect').show();" style="width:64px;">@ButtonIcon(ButtonTypes.tree)</span>
+            </div>
+            @HiddenField(info,"genxml/settings/defaultcategory")
+            @RenderTemplate("ModuleSettingsCatSelect.cshtml", appThemeDirectory, Model, true)
+        </div>
+    </div>
+    <div class="w3-row ">
+        <div class="w3-half w3-padding">
+            <label>template</label>
+            @DropDownList(info,"genxml/settings/displaytemplate", templateList, " class='w3-input w3-border' ","")
+        </div>
+        <div class="w3-half w3-padding">
+            <label>cmd</label>
+            @DropDownList(info,"genxml/settings/displaycmd","list,catmenu","List, Category Menu"," class='w3-input w3-border' ","list")
+        </div>
+    </div>
+
+    <hr/>
+    <div class="w3-row">
+        @RenderTemplate("ThemeSettings.cshtml", appThemeView, Model, true)
+    </div>
+
+</div>
+
+<div class="w3-row w3-padding w3-tiny">
+    <span>ModuleRef: @moduleData.ModuleRef</span>
+</div>
+
+<!-- create element to update settings via API when the DNN update is clicked. -->
+<span id="postsettings" class="w3-hide" s-cmd="@(systemData.SystemKey)_savesettings" s-post="#a-datasection" s-fields='{"systemkey":"@(systemData.SystemKey)","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'></span>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: '@(systemData.SystemKey)', debug: false });
+        $('.simplisity_loader').hide();
+
+        $('a[id*="_cmdUpdate"]').off("click");
+        $('a[id*="_cmdUpdate"]').click(function () {
+            simplisity_callserver($('#postsettings'));
+        });
+
+    });
+</script>
+
+

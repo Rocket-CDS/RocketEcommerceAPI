@@ -67,7 +67,7 @@ namespace RocketEcommerceAPI.API
         {
             foreach (var l in DNNrocketUtils.GetCultureCodeList(_dataObject.PortalShop.PortalId))
             {
-                var articleDataList = new ProductLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
+                var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
                 articleDataList.Validate();
             }
             DNNrocketUtils.RecycleApplicationPool();

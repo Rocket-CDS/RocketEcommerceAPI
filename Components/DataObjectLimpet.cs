@@ -39,7 +39,7 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("portaldata", new PortalLimpet(portalid));
             SetDataObject("systemdata", systemData);
             SetDataObject("appthemeprojects", new AppThemeProjectLimpet());
-            SetDataObject("modulesettings", new ModuleEcommerceLimpet(portalid, moduleRef));
+            SetDataObject("modulesettings", new ModuleContentLimpet(portalid, moduleRef));
             SetDataObject("defaultdata", new DefaultsLimpet());
             SetDataObject("modulesettings", new ModuleContentLimpet(portalid, moduleRef, moduleId, tabId));
             SetDataObject("globalsettings", new SystemGlobalData());
@@ -81,6 +81,7 @@ namespace RocketEcommerceAPI.Components
         }
         public int PortalId { get { return PortalData.PortalId; } }
         public Dictionary<string, object> DataObjects { get { return _dataObjects; } }
+        public ModuleContentLimpet ModuleSettings { get { return (ModuleContentLimpet)GetDataObject("modulesettings"); } }
         public AppThemeSystemLimpet AppThemeSystem { get { return (AppThemeSystemLimpet)GetDataObject("appthemesystem"); } }
         public AppThemeLimpet AppThemeDefault { get { return (AppThemeLimpet)GetDataObject("appthemedefault"); } }
         public AppThemeLimpet AppThemeView { get { return (AppThemeLimpet)GetDataObject("appthemeview"); } set { SetDataObject("appthemeview", value); } }

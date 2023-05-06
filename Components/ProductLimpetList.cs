@@ -25,6 +25,7 @@ namespace RocketEcommerceAPI.Components
         private int _catidurl;        
         private string _systemKey;
         private string _propRef;
+        private int _catid;
 
         public ProductLimpetList(int categoryId, PortalShopLimpet portalShop, string langRequired, bool populate)
         {
@@ -42,36 +43,31 @@ namespace RocketEcommerceAPI.Components
 
             if (populate) Populate();
         }
-        public ProductLimpetList(SimplisityInfo paramInfo, PortalShopLimpet portalShop, string langRequired, bool populate, bool showHidden = true, int defaultCategoryId = 0)
+        public ProductLimpetList(SessionParams sessionParams, PortalShopLimpet portalShop, string langRequired, bool populate, bool showHidden = true, int defaultCategoryId = 0)
         {
+            InitArticleList(sessionParams, portalShop, langRequired, populate, showHidden, defaultCategoryId);
+        }
+        private void InitArticleList(SessionParams sessionParams, PortalShopLimpet portalShop, string langRequired, bool populate, bool showHidden = true, int defaultCategoryId = 0)
+        {
+            SessionParamData = sessionParams;
             PortalShop = portalShop;
-
+            _systemKey = portalShop.SystemKey;
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
 
-            SessionParamData = new SessionParams(paramInfo);
-            if (paramInfo.GetXmlPropertyInt("genxml/hidden/pagesize") != 0) SessionParamData.Page = paramInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
-            if (paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/pagesize") != 0) SessionParamData.PageSize = paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/pagesize");
-            if (paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/ps") != 0) SessionParamData.PageSize = paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/ps");
-            if (SessionParamData.PageSize == 0) SessionParamData.PageSize = 32;
+            if (sessionParams.PageSize == 0) sessionParams.PageSize = 24;
+            if (sessionParams.Page <= 0) sessionParams.Page = 1;
 
-            SessionParamData.Page = 1;
-            if (paramInfo.GetXmlPropertyInt("genxml/hidden/page") != 0) SessionParamData.Page = paramInfo.GetXmlPropertyInt("genxml/hidden/page");
-            if (paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/page") != 0) SessionParamData.Page = paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/page");
-            if (paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/p") != 0) SessionParamData.Page = paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/p");
+            _catid = sessionParams.GetInt("catid");
+            _catidurl = _catid;
+            if (_catid == 0) _catid = defaultCategoryId;
 
-            _searchcategoryid = paramInfo.GetXmlPropertyInt("genxml/hidden/catid");
-            if (_searchcategoryid == 0) _searchcategoryid = paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/catid");
-            if (_searchcategoryid == 0) _searchcategoryid = defaultCategoryId;
-
-            _catidurl = paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/catid");
-
-            _propRef = paramInfo.GetXmlProperty("genxml/hidden/propref");
-            if (_propRef == "") _propRef = paramInfo.GetXmlProperty("genxml/remote/urlparams/propref");
+            if (sessionParams.OrderByRef == "" && _catid == 0) sessionParams.OrderByRef = "sqlorderby-product-name";
 
             if (populate) Populate(showHidden);
         }
+
         public void Populate(bool showHidden = true)
         {
             ShopSettings = new ShopSettingsLimpet(PortalShop.PortalId, SessionParamData.CultureCode);

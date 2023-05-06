@@ -1,0 +1,94 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketPortal.Components;
+@using Rocket.AppThemes.Components;
+@using System.Web;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+
+@{
+    var sessionParams = Model.SessionParamsData;
+    var appThemeList = (AppThemeDataList)Model.GetDataObject("appthemedatalist");
+    var articleData = (ProductLimpet)Model.GetDataObject("productdata");
+    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var info = new SimplisityInfo(moduleData.Record);
+    var projectAppThemeData = new AppThemeProjectLimpet();
+}
+
+<div id="a-editbuttons-@(moduleData.ModuleId)" class=" " style="display: none; position: absolute; top: 0px; left:0px; z-index: 999;">
+    <div class="w3-container">
+        
+        @if (sessionParams.GetInt("articleid") > 0)
+        {
+            <a href="@sessionParams.Get("editurl")" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("DNNrocket.edit")">
+                <span class="material-icons ">
+                    edit_document
+                </span>
+            </a>            
+        }
+        <a href="/SysAdmin/@appThemeView.SystemKey" target="_blank" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("DNNrocket.edit")">
+            <span class="material-icons ">
+                edit
+            </span>
+        </a>            
+
+        <a href="?action=clearcache" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("RCT.clearcache")">
+            <span class="material-icons ">
+                sync
+            </span>
+        </a>
+
+        @if (UserUtils.IsAdministrator())
+        {
+            <a href="@sessionParams.Get("settingsurl")" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("DNNrocket.settings")">
+                <span class="material-icons ">
+                    settings
+                </span>
+            </a>
+
+            if (UserUtils.IsSuperUser())
+            {
+                <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(appThemeView.AppThemeFolder)&appversionfolder=@(appThemeView.AppVersionFolder)&project=@(appThemeView.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("RCT.editapptheme")">
+                    <span class="material-icons ">
+                        web_asset
+                    </span>
+                </a>
+
+                var editappthemeview = false;
+                if (appThemeView.AppThemeFolder != appThemeView.AppThemeFolder || appThemeView.AppVersionFolder != appThemeView.AppVersionFolder)
+                {
+                    editappthemeview = true;
+                }
+                if (editappthemeview)
+                {
+                    <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(appThemeView.AppThemeFolder)&appversionfolder=@(appThemeView.AppVersionFolder)&project=@(appThemeView.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("RCT.editappthemeview")">
+                        <span class="material-icons ">
+                            preview
+                        </span>
+                    </a>
+                }
+            }
+        }
+
+        <span onclick="$('#a-editbuttons-@(moduleData.ModuleId)').hide();" class="w3-button w3-round w3-border w3-text-black">
+            <span class="material-icons">
+                close
+            </span>
+        </span>
+
+    </div>
+</div>
+
+<script>
+    $(".DnnModule-@(moduleData.ModuleId)").hover(function(){
+          $("#a-editbuttons-@(moduleData.ModuleId)").show();
+      }, function(){
+          $("#a-editbuttons-@(moduleData.ModuleId)").hide();
+    });
+</script>

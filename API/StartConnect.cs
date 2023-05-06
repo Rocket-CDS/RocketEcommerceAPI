@@ -525,6 +525,14 @@ namespace RocketEcommerceAPI.API
                     break;
 
 
+                case "rocketecommerceapi_settings":
+                    strOut = DisplaySettings();
+                    break;
+                case "rocketecommerceapi_savesettings":
+                    strOut = SaveSettings();
+                    break;
+
+
                 case "remote_publicview":
                     strOut = GetPublicProductView();
                     break;
@@ -614,6 +622,13 @@ namespace RocketEcommerceAPI.API
             {
                 return ex.ToString();
             }
+        }
+        private string RenderSystemTemplate(string templateName)
+        {
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate(templateName);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
 
         #region "General Functionas"

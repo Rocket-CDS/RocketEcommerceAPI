@@ -1,0 +1,26 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using RocketEcommerceAPI.Components;
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketDirectoryAPI/App_LocalResources")
+
+@{
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+}
+
+<!-- create element to load settings. -->
+<span id="loadsettings" class="" s-cmd="@(systemData.SystemKey)_settings" s-fields='{"systemkey":"@(systemData.SystemKey)","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)","culturecode":"@(Model.SessionParamsData.CultureCode)"}'></span>
+
+<script>
+    $(document).ready(function () {
+        simplisity_callserver($('#loadsettings'), '/Desktopmodules/dnnrocket/api/rocket/action','',false);
+    });
+</script>
+
+

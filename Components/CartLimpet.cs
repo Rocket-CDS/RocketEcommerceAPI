@@ -19,17 +19,13 @@ namespace RocketEcommerceAPI.Components
         private const string _entityTypeCode = "CART";
         private const string _systemkey = "rocketecommerceapi";
         private DNNrocketController _objCtrl;
-        private int _productid;
         private string _browserid;
-        private SessionParams _sessionParams;
-        public CartLimpet(SimplisityInfo paramInfo, string langaugeRequired)
+        public CartLimpet(string browserid, string langaugeRequired)
         {
             CultureCode = langaugeRequired;
             if (CultureCode == "") CultureCode = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
-            _sessionParams = new SessionParams(paramInfo);
-            _productid = _sessionParams.GetInt("productid");
-            _browserid = _sessionParams.BrowserId;
+            _browserid = browserid;
 
             Record = _objCtrl.GetRecordByGuidKey(PortalUtils.GetCurrentPortalId(), -1, _entityTypeCode, _browserid, "", _tableName);
             populate();
@@ -73,9 +69,11 @@ namespace RocketEcommerceAPI.Components
         public void AddProduct(SimplisityInfo postInfo)
         {
             var productid = postInfo.GetXmlPropertyInt("genxml/hidden/productid");
-            if (productid == 0) productid = _productid;
-            Record = CartUtils.AddProduct(productid, Record, postInfo);
-            Update();
+            if (productid > 0)
+            {
+                Record = CartUtils.AddProduct(productid, Record, postInfo);
+                Update();
+            }
         }
         public void RemoveProduct(int cartItemIndex)
         {

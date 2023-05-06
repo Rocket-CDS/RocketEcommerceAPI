@@ -43,11 +43,10 @@ namespace RocketEcommerceAPI.API
                 if (portalShop.PortalId >= 0)
                 {
                     portalShop.Save(_postInfo);
-                    _portalData.Record.SetXmlProperty("genxml/systems/" + _systemData.SystemKey + "setup", "True");
-                    _portalData.Update();
+                    _dataObject.PortalData.Record.SetXmlProperty("genxml/systems/" + _systemkey + "setup", "True");
+                    _dataObject.PortalData.Update();
                 }
-                _portalShop.ClearPortalCache();
-                _portalShop = new PortalShopLimpet(portalId, _sessionParams.CultureCodeEdit); // reload portal data after save (for langauge change)
+                _dataObject.PortalShop.ClearPortalCache();
                 return "OK";
             }
             return "Invalid Portal SiteKey";
@@ -61,14 +60,14 @@ namespace RocketEcommerceAPI.API
                 PortalUtils.DeletePortal(portalId); // Delete base portal will crash install.
                 DNNrocketUtils.RecycleApplicationPool();
                 PortalShop.Delete();
-                _userParams.TrackClear(_systemData.SystemKey);
+                _userParams.TrackClear(_systemkey);
             }
         }
         public string ValidateShop()
         {
-            foreach (var l in DNNrocketUtils.GetCultureCodeList(_portalShop.PortalId))
+            foreach (var l in DNNrocketUtils.GetCultureCodeList(_dataObject.PortalShop.PortalId))
             {
-                var articleDataList = new ProductLimpetList(_paramInfo, _portalShop, _sessionParams.CultureCodeEdit, true);
+                var articleDataList = new ProductLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
                 articleDataList.Validate();
             }
             DNNrocketUtils.RecycleApplicationPool();
@@ -78,8 +77,8 @@ namespace RocketEcommerceAPI.API
         {
             try
             {
-                var razorTempl = _appThemeSystem.GetTemplate("CountrySettings.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("CountrySettings.cshtml");
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -98,7 +97,7 @@ namespace RocketEcommerceAPI.API
                 var objCtrl = new DNNrocketController();
 
                 // Products
-                var articleList = objCtrl.GetList(_portalShop.PortalId, -1, "PRD", "", sourcelanguage, "", 0, 0, 0, 0, "RocketEcommerceAPI");
+                var articleList = objCtrl.GetList(_dataObject.PortalShop.PortalId, -1, "PRD", "", sourcelanguage, "", 0, 0, 0, 0, "RocketEcommerceAPI");
                 foreach (var p in articleList)
                 {
                     var prdSource = new ProductLimpet(p.PortalId, p.ItemID, sourcelanguage);
@@ -151,7 +150,7 @@ namespace RocketEcommerceAPI.API
 
                 }
                 // Categories
-                var catList = objCtrl.GetList(_portalShop.PortalId, -1, "CAT", "", sourcelanguage, "", 0, 0, 0, 0, "RocketEcommerceAPI");
+                var catList = objCtrl.GetList(_dataObject.PortalShop.PortalId, -1, "CAT", "", sourcelanguage, "", 0, 0, 0, 0, "RocketEcommerceAPI");
                 foreach (var c in catList)
                 {
                     var catSource = new CategoryLimpet(c.PortalId, c.ItemID, sourcelanguage);
@@ -177,7 +176,7 @@ namespace RocketEcommerceAPI.API
         }
         private String CalculateStats()
         {
-            var portalStats = new PortalShopLimpetStats(_portalShop);
+            var portalStats = new PortalShopLimpetStats(_dataObject.PortalShop);
             portalStats.RunCalculation();
             return GetDashboard();
         }
@@ -188,17 +187,17 @@ namespace RocketEcommerceAPI.API
             foreach (var p in l)
             {
                 var pKey = p.GetXmlProperty("genxml/hidden/interfacekey");
-                var i = _portalShop.Record.GetRecordListItem("paymentprovidermethod", "genxml/hidden/paymentmethodkey", pKey);
+                var i = _dataObject.PortalShop.Record.GetRecordListItem("paymentprovidermethod", "genxml/hidden/paymentmethodkey", pKey);
                 if (i != null) iList.Add(i);
             }
             if (iList.Count > 0)
             {
-                _portalShop.Record.RemoveRecordList("paymentprovidermethod");
+                _dataObject.PortalShop.Record.RemoveRecordList("paymentprovidermethod");
                 foreach (var i in iList)
                 {
-                    _portalShop.Record.AddRecordListItem("paymentprovidermethod", i);
+                    _dataObject.PortalShop.Record.AddRecordListItem("paymentprovidermethod", i);
                 }
-                _portalShop.Update();
+                _dataObject.PortalShop.Update();
             }
             CacheUtils.ClearAllCache();
             return "OK";

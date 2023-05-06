@@ -11,14 +11,14 @@ namespace RocketEcommerceAPI.API
     {
         private OrderLimpet GetOrder(int orderid)
         {
-            return new OrderLimpet(_portalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
+            return new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
         }
         public string SendOrderEmail()
         {
             try
             {
                 var orderid = _paramInfo.GetXmlPropertyInt("genxml/hidden/orderid");
-                var orderData = new OrderLimpet(_portalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
+                var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
                 if (orderData.Exists)
                 {
                     if (orderData.SendEmail())
@@ -26,7 +26,7 @@ namespace RocketEcommerceAPI.API
                         var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent");
                         var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent", "Msg");
                         messageText = messageText.Replace("{email}", orderData.Email);
-                        var messageData = new MessageLimpet(_portalShop, messageTitle, messageText);
+                        var messageData = new MessageLimpet(_dataObject.PortalShop, messageTitle, messageText);
                         messageData.FadeModel = true;
                         return messageData.GetDisplayHelp();
                     }
@@ -35,11 +35,11 @@ namespace RocketEcommerceAPI.API
                         var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailfail");
                         var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailfail", "Msg");
                         messageText = messageText.Replace("{email}", orderData.Email);
-                        var messageData = new MessageLimpet(_portalShop, messageTitle, messageText);
+                        var messageData = new MessageLimpet(_dataObject.PortalShop, messageTitle, messageText);
                         return messageData.GetDisplayError();
                     }
                 }
-                LogUtils.LogTracking("SendOrderEmail() - Invalid Order OrderId:" + orderid, _systemData.SystemKey);
+                LogUtils.LogTracking("SendOrderEmail() - Invalid Order OrderId:" + orderid, _systemkey);
                 return "Invalid Order";
             }
             catch (Exception ex)
@@ -53,13 +53,13 @@ namespace RocketEcommerceAPI.API
             try
             {
                 var orderid = _paramInfo.GetXmlPropertyInt("genxml/hidden/orderid");
-                var orderData = new OrderLimpet(_portalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
+                var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
                 if (orderData.Exists)
                 {
                     var razorTempl = AssignRemoteTemplate("","PrintOrder.cshtml");
-                    return RenderRazorUtils.RazorObjectRender(razorTempl, orderData, _dataObjects, _passSettings, _sessionParams, true);
+                    return RenderRazorUtils.RazorObjectRender(razorTempl, orderData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 }
-                LogUtils.LogTracking("PrintOrder() - Invalid Order OrderId:" + orderid, _systemData.SystemKey);
+                LogUtils.LogTracking("PrintOrder() - Invalid Order OrderId:" + orderid, _systemkey);
                 return "Invalid Order";
             }
             catch (Exception ex)
@@ -72,13 +72,13 @@ namespace RocketEcommerceAPI.API
             try
             {
                 var orderid = _paramInfo.GetXmlPropertyInt("genxml/hidden/orderid");
-                var orderData = new OrderLimpet(_portalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
+                var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
                 if (orderData.Exists)
                 {
                     var razorTempl = AssignRemoteTemplate("", "PrintShipLabel.cshtml");
-                    return RenderRazorUtils.RazorObjectRender(razorTempl, orderData, _dataObjects, _passSettings, _sessionParams, true);
+                    return RenderRazorUtils.RazorObjectRender(razorTempl, orderData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 }
-                LogUtils.LogTracking("PrintShipLabel() - Invalid Order OrderId:" + orderid, _systemData.SystemKey);
+                LogUtils.LogTracking("PrintShipLabel() - Invalid Order OrderId:" + orderid, _systemkey);
                 return "Invalid Order";
             }
             catch (Exception ex)
@@ -89,8 +89,8 @@ namespace RocketEcommerceAPI.API
         public int SaveOrder()
         {
             var orderid = _paramInfo.GetXmlPropertyInt("genxml/hidden/orderid");
-            var orderData = new OrderLimpet(_portalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);  
-            _passSettings.Add("saved", "true");
+            var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);  
+            _dataObject.Settings.Add("saved", "true");
             orderData.Save(_postInfo);
 
             var scode = _paramInfo.GetXmlPropertyInt("genxml/hidden/statuscode");
@@ -108,7 +108,7 @@ namespace RocketEcommerceAPI.API
                 if (orderData != null && orderData.StatusCode == Convert.ToInt32(OrderStatus.Archived))
                 {
                     orderData.Delete();
-                    LogUtils.LogTracking("delete order: " + orderid + " - " + orderData.OrderNumber + " " + orderData.FullName, _systemData.SystemKey);
+                    LogUtils.LogTracking("delete order: " + orderid + " - " + orderData.OrderNumber + " " + orderData.FullName, _systemkey);
                 }
             }
         }
@@ -139,8 +139,8 @@ namespace RocketEcommerceAPI.API
         {
             try
             {
-                var razorTempl = _appThemeSystem.GetTemplate(templateName);
-                return RenderRazorUtils.RazorDetail(razorTempl, orderData, _passSettings, _sessionParams, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate(templateName);
+                return RenderRazorUtils.RazorDetail(razorTempl, orderData, _dataObject.Settings, _sessionParams, true);
             }
             catch (Exception ex)
             {
@@ -153,9 +153,9 @@ namespace RocketEcommerceAPI.API
 
             try
             {
-                var OrderDataList = new OrderLimpetList(_paramInfo, _portalShop, _sessionParams.CultureCodeEdit, true);
-                var razorTempl = _appThemeSystem.GetTemplate(templateName);
-                var strOut = RenderRazorUtils.RazorDetail(razorTempl, OrderDataList, _passSettings, _sessionParams, true);
+                var OrderDataList = new OrderLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate(templateName);
+                var strOut = RenderRazorUtils.RazorDetail(razorTempl, OrderDataList, _dataObject.Settings, _sessionParams, true);
                 return strOut;
             }
             catch (Exception ex)
@@ -181,7 +181,7 @@ namespace RocketEcommerceAPI.API
                     }
                     return true;
                 }
-                LogUtils.LogTracking("ERROR:  Invalid orderId or articleID on AddCartArticle()", _systemData.SystemKey);
+                LogUtils.LogTracking("ERROR:  Invalid orderId or articleID on AddCartArticle()", _systemkey);
                 return false;
             }
             catch (Exception ex)
@@ -205,7 +205,7 @@ namespace RocketEcommerceAPI.API
                         orderData.Update();
                     }
                 }
-                LogUtils.LogTracking("ERROR:  nvalid orderId or articleID on RemoveCartArticle()", _systemData.SystemKey);
+                LogUtils.LogTracking("ERROR:  nvalid orderId or articleID on RemoveCartArticle()", _systemkey);
                 return orderId;
             }
             catch (Exception ex)

@@ -13,9 +13,9 @@ namespace RocketEcommerceAPI.API
         {
             try
             {
-                var razorTempl = _appThemeSystem.GetTemplate("notification.cshtml");
-                var notificationData = new NotificationLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit);
-                return RenderRazorUtils.RazorDetail(razorTempl, notificationData, _passSettings, _sessionParams, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("notification.cshtml");
+                var notificationData = new NotificationLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
+                return RenderRazorUtils.RazorDetail(razorTempl, notificationData, _dataObject.Settings, _sessionParams, true);
             }
             catch (Exception ex)
             {
@@ -27,7 +27,7 @@ namespace RocketEcommerceAPI.API
         {
             try
             {
-                var notificationData = new NotificationLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit);
+                var notificationData = new NotificationLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
                 notificationData.Save(_postInfo);
                 return NotificationEdit();
             }
@@ -41,9 +41,9 @@ namespace RocketEcommerceAPI.API
         {
             try
             {
-                var notificationData = new NotificationLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit);
+                var notificationData = new NotificationLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
                 notificationData.Delete();
-                LogUtils.LogTracking("notification_reset", _systemData.SystemKey);
+                LogUtils.LogTracking("notification_reset", _systemkey);
                 return NotificationEdit();
             }
             catch (Exception ex)

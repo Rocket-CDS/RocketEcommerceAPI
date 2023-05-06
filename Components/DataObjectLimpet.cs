@@ -13,38 +13,47 @@ namespace RocketEcommerceAPI.Components
 {
     public class DataObjectLimpet
     {
+        private const string _systemkey = "rocketecommerceapi";
         private Dictionary<string, object> _dataObjects;
-        private Dictionary<string, string> _passSettings;
+        private Dictionary<string, string> _settings;
         public DataObjectLimpet(int portalid, string moduleRef, SessionParams sessionParams, bool editMode = true)
         {
             var cultureCode = sessionParams.CultureCodeEdit;
             if (!editMode) cultureCode = sessionParams.CultureCode;
-            Populate(portalid, moduleRef, cultureCode, sessionParams.ModuleId, sessionParams.TabId);
+            Populate(portalid, moduleRef, cultureCode, sessionParams.ModuleId, sessionParams.TabId, sessionParams.BrowserId);
         }
-        public DataObjectLimpet(int portalid, string moduleRef, string cultureCode, int moduleId, int tabId)
+        public DataObjectLimpet(int portalid, string moduleRef, string cultureCode, int moduleId, int tabId, string browserid)
         {
-            Populate(portalid, moduleRef,  cultureCode, moduleId, tabId);
+            Populate(portalid, moduleRef,  cultureCode, moduleId, tabId, browserid);
         }
-        public void Populate(int portalid, string moduleRef, string cultureCode, int moduleId, int tabId)
+        public void Populate(int portalid, string moduleRef, string cultureCode, int moduleId, int tabId, string browserid)
         {
-            _passSettings = new Dictionary<string, string>();
+            _settings = new Dictionary<string, string>();
             _dataObjects = new Dictionary<string, object>();
-            var systemData = new SystemLimpet(SystemKey);
+            var systemData = new SystemLimpet(_systemkey);
             var portalShop = new PortalShopLimpet(portalid, cultureCode);
+            var shopSettings = new ShopSettingsLimpet(portalid, cultureCode);
 
-            SetDataObject("appthemesystem", new AppThemeSystemLimpet(portalid, SystemKey));
+            SetDataObject("shopsettings", shopSettings);
+            SetDataObject("appthemesystem", new AppThemeSystemLimpet(portalid, _systemkey));
             SetDataObject("portaldata", new PortalLimpet(portalid));
             SetDataObject("systemdata", systemData);
             SetDataObject("appthemeprojects", new AppThemeProjectLimpet());
             SetDataObject("modulesettings", new ModuleEcommerceLimpet(portalid, moduleRef));
             SetDataObject("defaultdata", new DefaultsLimpet());
+            SetDataObject("modulesettings", new ModuleContentLimpet(portalid, moduleRef, moduleId, tabId));
             SetDataObject("globalsettings", new SystemGlobalData());
             SetDataObject("appthemedefault", new AppThemeLimpet(portalid, systemData, "Default", "1.0"));
             SetDataObject("appthemeview", new AppThemeLimpet(portalid, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName));
             SetDataObject("companydata", new CompanyLimpet(portalid, cultureCode));
             SetDataObject("portalshop", portalShop);
-            SetDataObject("appthemedatalist", new AppThemeDataList(portalShop.ProjectName, SystemKey));
+            SetDataObject("appthemedatalist", new AppThemeDataList(portalShop.ProjectName, _systemkey));
             SetDataObject("notificationdata", new NotificationLimpet(portalid,cultureCode));
+            SetDataObject("categorylist", new CategoryLimpetList(portalid, cultureCode, true));
+            SetDataObject("propertylist", new PropertyLimpetList(portalid, cultureCode));
+            SetDataObject("portalstats", new PortalShopLimpetStats(portalShop));
+            SetDataObject("cartdata", new CartLimpet(browserid, cultureCode));
+
         }
         public void SetDataObject(String key, object value)
         {
@@ -58,32 +67,32 @@ namespace RocketEcommerceAPI.Components
         }
         public void SetSetting(string key, string value)
         {
-            if (_passSettings.ContainsKey(key)) _passSettings.Remove(key);
-            _passSettings.Add(key, value);
+            if (_settings.ContainsKey(key)) _settings.Remove(key);
+            _settings.Add(key, value);
         }
         public string GetSetting(string key)
         {
-            if (!_passSettings.ContainsKey(key)) return "";
-            return _passSettings[key];
+            if (!_settings.ContainsKey(key)) return "";
+            return _settings[key];
         }
         public List<SimplisityRecord> GetAppThemeProjects()
         {
             return AppThemeProjects.List;
         }
-        public string SystemKey { get { return "rocketpayment"; } }
         public int PortalId { get { return PortalData.PortalId; } }
         public Dictionary<string, object> DataObjects { get { return _dataObjects; } }
         public AppThemeSystemLimpet AppThemeSystem { get { return (AppThemeSystemLimpet)GetDataObject("appthemesystem"); } }
-        public AppThemeSystemLimpet AppThemeSystemEcom { get { return (AppThemeSystemLimpet)GetDataObject("ecomappthemesystem"); } }
         public AppThemeLimpet AppThemeDefault { get { return (AppThemeLimpet)GetDataObject("appthemedefault"); } }
         public AppThemeLimpet AppThemeView { get { return (AppThemeLimpet)GetDataObject("appthemeview"); } set { SetDataObject("appthemeview", value); } }
         public PortalLimpet PortalData { get { return (PortalLimpet)GetDataObject("portaldata"); } }
         public SystemLimpet SystemData { get { return (SystemLimpet)GetDataObject("systemdata"); } }
-        public SystemLimpet SystemDataEcom { get { return (SystemLimpet)GetDataObject("ecomsystemdata"); } }
         public PortalShopLimpet PortalShop { get { return (PortalShopLimpet)GetDataObject("portalshop"); } }
         public AppThemeProjectLimpet AppThemeProjects { get { return (AppThemeProjectLimpet)GetDataObject("appthemeprojects"); } }
         public CompanyLimpet CompanyData { get { return (CompanyLimpet)GetDataObject("companydata"); } }
-        public Dictionary<string, string> Settings { get { return _passSettings; } }
+        public ShopSettingsLimpet ShopSettings { get { return (ShopSettingsLimpet)GetDataObject("shopsettings"); } }
+        public CartLimpet CartData { get { return (CartLimpet)GetDataObject("cartdata"); } }
+        public CategoryLimpetList CategoryList { get { return (CategoryLimpetList)GetDataObject("categorylist"); } }
+        public Dictionary<string, string> Settings { get { return _settings; } }
 
     }
 }

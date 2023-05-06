@@ -15,20 +15,20 @@ namespace RocketEcommerceAPI.API
 
         public string SaveCatalogSettings()
         {
-            _shopSettings.Save(_postInfo);
+            _dataObject.ShopSettings.Save(_postInfo);
             return GetCatalogSettings();
         }
 
         public string GetCatalogSettings()
         {
-            var razorTempl = _appThemeSystem.GetTemplate("ShopSettings.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _shopSettings, _dataObjects, _passSettings, _sessionParams, true);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ShopSettings.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.ShopSettings, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.ErrorMsg != "") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         public string DeleteCatalogSettings()
         {
-            _shopSettings.Delete();
+            _dataObject.ShopSettings.Delete();
             return GetCatalogSettings();
         }
 

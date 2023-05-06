@@ -11,38 +11,24 @@ namespace RocketEcommerceAPI.API
     {
         public String CompanyEdit()
         {
-            try
-            {
-                var razorTempl = _appThemeSystem.GetTemplate("company.cshtml");
-                var companyData = new CompanyLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit);
-                return RenderRazorUtils.RazorDetail(razorTempl, companyData, _passSettings, _sessionParams, true);
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("company.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CompanyData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String CompanySave()
         {
-            try
-            {
-                var companyData = new CompanyLimpet(_portalShop.PortalId, _sessionParams.CultureCode);
-                companyData.Save(_postInfo);
-                return CompanyEdit();
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            var companyData = new CompanyLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCode);
+            companyData.Save(_postInfo);
+            return CompanyEdit();
         }
         public string AddCompanyImage()
         {
-            var companyData = new CompanyLimpet(_portalShop.PortalId, _sessionParams.CultureCode);
-            var imgList = ImgUtils.MoveImageToFolder(_postInfo, _portalShop.ImageFolderMapPath, 1);
+            var companyData = new CompanyLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCode);
+            var imgList = ImgUtils.MoveImageToFolder(_postInfo, _dataObject.PortalShop.ImageFolderMapPath, 1);
             foreach (var nam in imgList)
             {
-                companyData.Info.SetXmlProperty("genxml/hidden/imagepathlogo", _portalShop.ImageFolderRel.TrimEnd('/') + "/" +  nam);
+                companyData.Info.SetXmlProperty("genxml/hidden/imagepathlogo", _dataObject.PortalShop.ImageFolderRel.TrimEnd('/') + "/" +  nam);
             }
             companyData.Update();
             return CompanyEdit();

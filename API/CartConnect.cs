@@ -12,31 +12,21 @@ namespace RocketEcommerceAPI.API
     {
         public string GetMiniCartDisplay()
         {
-            try
-            {
-                var razorTempl = _appTheme.GetTemplate("minicart.cshtml");
-                if (razorTempl == "") razorTempl = _appThemeDefault.GetTemplate("minicart.cshtml");
-                if (razorTempl == "") return "No MiniCart.cshtml Template ";
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                _dataObjects.Add("cartdata", cartData);
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            var razorTempl = _dataObject.AppThemeView.GetTemplate("minicart.cshtml");
+            if (razorTempl == "") razorTempl = _dataObject.AppThemeDefault.GetTemplate("minicart.cshtml");
+            if (razorTempl == "") return "No MiniCart.cshtml Template ";
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public string GetMiniCartJson()
         {
-            var cartData3 = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
             var dictionary = new Dictionary<string, string>();
-            dictionary.Add("qty", cartData3.QtyCount.ToString());
-            dictionary.Add("total", cartData3.TotalDisplay);
-            dictionary.Add("subtotal", cartData3.SubTotalDisplay);
-            dictionary.Add("taxtotal", cartData3.TaxTotalDisplay);
-            dictionary.Add("shiptotal", cartData3.ShippingTotalDisplay);
+            dictionary.Add("qty", _dataObject.CartData.QtyCount.ToString());
+            dictionary.Add("total", _dataObject.CartData.TotalDisplay);
+            dictionary.Add("subtotal", _dataObject.CartData.SubTotalDisplay);
+            dictionary.Add("taxtotal", _dataObject.CartData.TaxTotalDisplay);
+            dictionary.Add("shiptotal", _dataObject.CartData.ShippingTotalDisplay);
             var s = "{";
             foreach (var d in dictionary)
             {
@@ -46,240 +36,110 @@ namespace RocketEcommerceAPI.API
         }
         public string AddToCart(string returntype = "")
         {
-            try
-            {
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                cartData.AddProduct(_postInfo);
-                if (returntype == "json")
-                    return GetMiniCartJson();
-                else
-                    return GetMiniCartDisplay();
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return "Error: check log";
-            }
+            _dataObject.CartData.AddProduct(_postInfo);
+            if (returntype == "json")
+                return GetMiniCartJson();
+            else
+                return GetMiniCartDisplay();
         }
         public string RemoveCartItem()
         {
-            try
-            {
-                var cartitemindex = _paramInfo.GetXmlPropertyInt("genxml/hidden/cartitemindex");
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                cartData.RemoveProduct(cartitemindex);
-
-                return "";
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return "FAIL!!!";
-            }
+            var cartitemindex = _paramInfo.GetXmlPropertyInt("genxml/hidden/cartitemindex");
+            _dataObject.CartData.RemoveProduct(cartitemindex);
+            return "";
         }
         public string ValidateCart()
         {
-            try
-            {
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                cartData.ValidateCart();
-                cartData.Update();
-                return "";
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return "FAIL!!!";
-            }
+            _dataObject.CartData.ValidateCart();
+            _dataObject.CartData.Update();
+            return "";
         }
         public string SaveCartList()
         {
-            try
-            {
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                cartData.UpdateProductList(_postInfo);
-                return GetPublicCartContact();
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return "FAIL!!!";
-            }
+            _dataObject.CartData.UpdateProductList(_postInfo);
+            return GetPublicCartContact();
         }
         public string SaveCartContact()
         {
-            try
-            {
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                cartData.UpdateContact(_postInfo);
-                return GetPublicCartBillAddress();
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return "FAIL!!!";
-            }
+            _dataObject.CartData.UpdateContact(_postInfo);
+            return GetPublicCartBillAddress();
         }
         public string SaveCartBill()
         {
-            try
-            {
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                cartData.UpdateBillAddress(_postInfo);
-                return GetPublicCartShipAddress();
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return "FAIL!!!";
-            }
+            _dataObject.CartData.UpdateBillAddress(_postInfo);
+            return GetPublicCartShipAddress();
         }
         public string SaveCartShip()
         {
-            try
-            {
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                cartData.UpdateShipAddress(_postInfo);
-                return GetPublicCartSummary();
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return "FAIL!!!";
-            }
+            _dataObject.CartData.UpdateShipAddress(_postInfo);
+            return GetPublicCartSummary();
         }
         public string SaveCartDetails()
         {
-            try
-            {
-                SaveCartContact();
-                SaveCartBill();
-                SaveCartShip();
-                return GetPublicCartSummary();
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return "FAIL!!!";
-            }
+            SaveCartContact();
+            SaveCartBill();
+            SaveCartShip();
+            return GetPublicCartSummary();
         }
 
         public String GetPublicCartListHeader()
         {
-            try
-            {
-                var razorTempl = AssignRemoteHeaderTemplate();
-                if (razorTempl == "") return "";
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            var razorTempl = AssignRemoteHeaderTemplate();
+            if (razorTempl == "") return "";
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetPublicCartDelete()
         {
-            try
-            {
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                cartData.Delete();
-                return GetPublicCartList();
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            _dataObject.CartData.Delete();
+            return GetPublicCartList();
         }
         public String GetPublicCartList()
         {
-            try
-            {
-                var razorTempl = AssignRemoteTemplate();
-                if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, cartData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            var razorTempl = AssignRemoteTemplate();
+            if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CartData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetPublicCartContact()
         {
-            try
-            {
-                var razorTempl = AssignRemoteTemplate();
-                if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, cartData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            var razorTempl = AssignRemoteTemplate();
+            if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CartData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetPublicCartBillAddress()
         {
-            try
-            {
-                var razorTempl = AssignRemoteTemplate();
-                if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, cartData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            var razorTempl = AssignRemoteTemplate();
+            if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CartData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetPublicCartShipAddress()
         {
-            try
-            {
-                var razorTempl = AssignRemoteTemplate();
-                if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, cartData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            var razorTempl = AssignRemoteTemplate();
+            if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CartData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetPublicCartSummary()
         {
-            try
-            {
-                var razorTempl = AssignRemoteTemplate();
-                if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, cartData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            var razorTempl = AssignRemoteTemplate();
+            if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CartData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetPublicCartPayment()
         {
-            try
-            {
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                var orderData = cartData.ConvertToOrder();                
+                var orderData = _dataObject.CartData.ConvertToOrder();                
                 // create payment and link to order
-                var paymentData = new PaymentLimpet(_portalShop.PortalId, -1, _sessionParams.CultureCode);
+                var paymentData = new PaymentLimpet(_dataObject.PortalId, -1, _sessionParams.CultureCode);
                 paymentData.Load(orderData, _paramInfo.GetXmlProperty("genxml/hidden/providerkey"));
                 
                 // we need to session data to get the remote return page.
@@ -292,37 +152,24 @@ namespace RocketEcommerceAPI.API
                 orderData.ChangeStaus(OrderStatus.WaitingForPayment);
                 orderData.Update();
                 return paymentData.RedirectedToBankHtml();
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
         }
         public string CartBankReturnDisplay()
         {
             var paymentData = CartUtils.CartBankReturn(_paramInfo);
             var razorTempl = AssignRemoteTemplate("", "bankreturn.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentData, _dataObjects, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
 
         public String GetPublicPaymentOptions()
         {
-            try
-            {
-                var razorTempl = _appTheme.GetTemplate("payment.cshtml");
-                if (razorTempl == "") razorTempl = _appThemeDefault.GetTemplate("payment.cshtml");
-                if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
-                var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, cartData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            var razorTempl = _dataObject.AppThemeView.GetTemplate("payment.cshtml");
+            if (razorTempl == "") razorTempl = _dataObject.AppThemeDefault.GetTemplate("payment.cshtml");
+            if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CartData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
 
 

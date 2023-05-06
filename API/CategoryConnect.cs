@@ -12,13 +12,15 @@ namespace RocketEcommerceAPI.API
     {
         private CategoryLimpet GetActiveCategory(int categoryid)
         {
-            return new CategoryLimpet(_portalShop.PortalId, categoryid, _sessionParams.CultureCodeEdit);
+            return new CategoryLimpet(_dataObject.PortalShop.PortalId, categoryid, _sessionParams.CultureCodeEdit);
         }
         public String GetCategory(int categoryId)
         {
-            var razorTempl = _appThemeSystem.GetTemplate("categorydetail.cshtml");
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("categorydetail.cshtml");
             var categoryData = GetActiveCategory(categoryId);
-            return RenderRazorUtils.RazorDetail(razorTempl, categoryData, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, categoryData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public string MoveCategory()
         {
@@ -26,14 +28,14 @@ namespace RocketEcommerceAPI.API
             var sourceid = _paramInfo.GetXmlPropertyInt("genxml/hidden/sourceid");
             if (sourceid > 0)
             {
-                var sourceData = new CategoryLimpet(_portalShop.PortalId, sourceid, _sessionParams.CultureCodeEdit);
+                var sourceData = new CategoryLimpet(_dataObject.PortalShop.PortalId, sourceid, _sessionParams.CultureCodeEdit);
                 if (sourceData.Exists)
                 {
                     parentid = sourceData.ParentItemId;
                     var destparentid = _paramInfo.GetXmlPropertyInt("genxml/hidden/destid");
                     if (destparentid > 0)
                     {
-                        var destData = new CategoryLimpet(_portalShop.PortalId, destparentid, _sessionParams.CultureCodeEdit);
+                        var destData = new CategoryLimpet(_dataObject.PortalShop.PortalId, destparentid, _sessionParams.CultureCodeEdit);
                         sourceData.SortOrder = destData.SortOrder + 1;
                     }
                     else
@@ -48,9 +50,7 @@ namespace RocketEcommerceAPI.API
         }
         private void SortCategoryList(int parentid)
         {
-            var categoryDataList = new CategoryLimpetList(PortalUtils.GetCurrentPortalId(), _sessionParams.CultureCodeEdit, false);
-            categoryDataList.Reload();
-            var l = categoryDataList.GetCategoryList(parentid);
+            var l = _dataObject.CategoryList.GetCategoryList(parentid);
             var lp = 1;
             foreach (var c in l)
             {
@@ -58,15 +58,16 @@ namespace RocketEcommerceAPI.API
                 c.Update();
                 lp += 1;
             }
-            categoryDataList.Validate(); // clear cache
+            _dataObject.CategoryList.Validate(); // clear cache
         }
         public string GetCategoryList(int categoryid)
         {
             if (categoryid < 0) categoryid = 0;
-            var categoryDataList = new CategoryLimpetList(PortalUtils.GetCurrentPortalId(), _sessionParams.CultureCodeEdit, true);
-            categoryDataList.SelectedParentId = categoryid;
-            var razorTempl = _appThemeSystem.GetTemplate("CategoryList.cshtml");
-            return RenderRazorUtils.RazorDetail(razorTempl, categoryDataList, _passSettings, _sessionParams, true);
+            _dataObject.CategoryList.SelectedParentId = categoryid;
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("CategoryList.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CategoryList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public string GetCategoryList()
         {
@@ -74,25 +75,26 @@ namespace RocketEcommerceAPI.API
         }
         public String AddCategory()
         {
-            var categoryDataList = new CategoryLimpetList(PortalUtils.GetCurrentPortalId(), _sessionParams.CultureCodeEdit, true);
             var parentid = _paramInfo.GetXmlPropertyInt("genxml/hidden/parentid");
-            var razorTempl = _appThemeSystem.GetTemplate("CategoryDetail.cshtml");
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("CategoryDetail.cshtml");
             var categoryData = GetActiveCategory(-1);
-            var catcount = categoryDataList.GetCategoryList(parentid).Count;
+            var catcount = _dataObject.CategoryList.GetCategoryList(parentid).Count;
 
             categoryData.ParentItemId = parentid;
             categoryData.SortOrder = (5 * catcount);
             categoryData.ValidateAndUpdate();
 
-            categoryDataList.Validate();  // clear cache
+            _dataObject.CategoryList.Validate();  // clear cache
 
-            return RenderRazorUtils.RazorDetail(razorTempl, categoryData, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, categoryData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
 
         public int SaveCategory()
         {
             var categoryId = _paramInfo.GetXmlPropertyInt("genxml/hidden/categoryid");
-            _passSettings.Add("saved", "true");
+            _dataObject.Settings.Add("saved", "true");
             var categoryData = GetActiveCategory(categoryId);
             return categoryData.Save(_postInfo);
         }
@@ -113,11 +115,11 @@ namespace RocketEcommerceAPI.API
             {
                 var categoryData = GetActiveCategory(categoryid);
                 categoryData.Save(_postInfo);
-                var imgList = ImgUtils.MoveImageToFolder(_postInfo, _portalShop.ImageFolderMapPath);
+                var imgList = ImgUtils.MoveImageToFolder(_postInfo, _dataObject.PortalShop.ImageFolderMapPath);
                 categoryData.RemoveImageList();
                 foreach (var nam in imgList)
                 {
-                    categoryData.AddImage(_portalShop.ImageFolderRel, nam);
+                    categoryData.AddImage(_dataObject.PortalShop.ImageFolderRel, nam);
                 }
                 return GetCategory(categoryData.CategoryId);
             }
@@ -129,7 +131,7 @@ namespace RocketEcommerceAPI.API
             var categoryid = _paramInfo.GetXmlPropertyInt("genxml/hidden/categoryid");
             if (categoryid > 0 && parentid != categoryid) // check we don't move to itself
             {
-                var sourceData = new CategoryLimpet(_portalShop.PortalId, categoryid, _sessionParams.CultureCodeEdit);
+                var sourceData = new CategoryLimpet(_dataObject.PortalShop.PortalId, categoryid, _sessionParams.CultureCodeEdit);
                 if (sourceData.Exists)                
                 {
                     if (!sourceData.HasChild(parentid))  // check we don't move to a child category
@@ -146,8 +148,8 @@ namespace RocketEcommerceAPI.API
         public string AssignDefaultCategory()
         {
             var categoryid = _paramInfo.GetXmlPropertyInt("genxml/hidden/categoryid");
-            _shopSettings.DefaultCategoryId = categoryid;
-            _shopSettings.Update();
+            _dataObject.ShopSettings.DefaultCategoryId = categoryid;
+            _dataObject.ShopSettings.Update();
             return GetCatalogSettings();
         }
         public string RemoveCategoryArticle()

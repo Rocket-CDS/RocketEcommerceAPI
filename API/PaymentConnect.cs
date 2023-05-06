@@ -11,13 +11,13 @@ namespace RocketEcommerceAPI.API
     {
         private PaymentLimpet GetPayment(int paymentid)
         {
-            return new PaymentLimpet(_portalShop.PortalId, paymentid, _sessionParams.CultureCodeEdit);
+            return new PaymentLimpet(_dataObject.PortalShop.PortalId, paymentid, _sessionParams.CultureCodeEdit);
         }
         public int SavePayment()
         {
             var paymentid = _paramInfo.GetXmlPropertyInt("genxml/hidden/paymentid");
-            var paymentData = new PaymentLimpet(_portalShop.PortalId, paymentid, _sessionParams.CultureCodeEdit);
-            _passSettings.Add("saved", "true");
+            var paymentData = new PaymentLimpet(_dataObject.PortalShop.PortalId, paymentid, _sessionParams.CultureCodeEdit);
+            _dataObject.Settings.Add("saved", "true");
             paymentid = paymentData.Save(_postInfo);
 
             var scode = _paramInfo.GetXmlPropertyInt("genxml/hidden/statuscode");
@@ -62,7 +62,7 @@ namespace RocketEcommerceAPI.API
             var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailfail");
             var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailfail", "Msg");
             messageText = messageText.Replace("{email}", paymentData.Email);
-            var messageData = new MessageLimpet(_portalShop, messageTitle, messageText);
+            var messageData = new MessageLimpet(_dataObject.PortalShop, messageTitle, messageText);
             return messageData.GetDisplayError();
         }
         private string EmailSent(PaymentLimpet paymentData)
@@ -70,7 +70,7 @@ namespace RocketEcommerceAPI.API
             var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent");
             var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent", "Msg");
             messageText = messageText.Replace("{email}", paymentData.Email);
-            var messageData = new MessageLimpet(_portalShop, messageTitle, messageText);
+            var messageData = new MessageLimpet(_dataObject.PortalShop, messageTitle, messageText);
             messageData.FadeModel = true;
             return messageData.GetDisplayMessage();
         }
@@ -110,8 +110,8 @@ namespace RocketEcommerceAPI.API
             {
                 paymentLimpet.AmountPayReset(); // reset amountpay, this is a transitional amount for payment. 
                 paymentLimpet.Update();
-                var razorTempl = _appThemeSystem.GetTemplate("paymentdetail.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentLimpet, _dataObjects, _passSettings, _sessionParams, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("paymentdetail.cshtml");
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentLimpet, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -133,7 +133,7 @@ namespace RocketEcommerceAPI.API
                 {
                     paymentLimpet = new PaymentLimpet(PortalUtils.GetPortalId(), guidkey);  // if we have a "key" param, we should have a payment record.
                 }
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentLimpet, _dataObjects, _passSettings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentLimpet, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -155,7 +155,7 @@ namespace RocketEcommerceAPI.API
                 if (guidkey != "") paymentLimpet = new PaymentLimpet(PortalUtils.GetPortalId(), guidkey);  // if we have a "key" param, we should have a payment record.
                 if (paymentLimpet.BankAction == PaymentAction.BankPost)
                 {
-                    var rocketInterface = _systemData.GetProvider(paymentLimpet.PaymentProvider);
+                    var rocketInterface = _dataObject.SystemData.GetProvider(paymentLimpet.PaymentProvider);
                     if (rocketInterface != null)
                     {
                         if (rocketInterface.Assembly != "")
@@ -169,7 +169,7 @@ namespace RocketEcommerceAPI.API
                     paymentLimpet.Update();
                 }
                 paymentLimpet.AmountPayCents = paymentLimpet.AmountDueCents;
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentLimpet, _dataObjects, _passSettings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentLimpet, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -183,9 +183,9 @@ namespace RocketEcommerceAPI.API
 
             try
             {
-                var PaymentLimpetList = new PaymentLimpetList(_paramInfo, _portalShop, _sessionParams.CultureCodeEdit, true);
-                var razorTempl = _appThemeSystem.GetTemplate("paymentlist.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, PaymentLimpetList, _dataObjects, _passSettings, _sessionParams, true);
+                var PaymentLimpetList = new PaymentLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("paymentlist.cshtml");
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, PaymentLimpetList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -198,49 +198,24 @@ namespace RocketEcommerceAPI.API
 
         public String GetShippingMethodsList()
         {
-            try
-            {
-                _portalShop = new PortalShopLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit); // may be change of language.
-                var razorTempl = _appThemeSystem.GetTemplate("shippingmethods.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("shippingmethods.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetTaxMethodsList()
         {
-            try
-            {
-                _portalShop = new PortalShopLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit); // may be change of language.
-                var razorTempl = _appThemeSystem.GetTemplate("taxmethods.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("taxmethods.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetDiscountMethodsList()
         {
-            try
-            {
-                _portalShop = new PortalShopLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit); // may be change of language.
-                var razorTempl = _appThemeSystem.GetTemplate("discountmethods.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("discountmethods.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
 
 
@@ -248,81 +223,58 @@ namespace RocketEcommerceAPI.API
 
         public String GetPaymentMethodsList()
         {
-            _portalShop.ClearPortalCache();
-            _portalShop = new PortalShopLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit); // may be change of language.
-            var razorTempl = _appThemeSystem.GetTemplate("paymentmethods.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
+            _dataObject.PortalShop.ClearPortalCache();
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("paymentmethods.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         public string RedirectPaymentFormToBank()
         {
-            try
-            {
-                var paymentid = 0;
-                var strOut = "PAYMENT ERROR";
-                var guidkey = _paramInfo.GetXmlProperty("genxml/remote/urlparams/key"); // Use remote key if passed from module.
-                if (guidkey == "") guidkey = _paramInfo.GetXmlProperty("genxml/urlparams/key");
-                if (guidkey == "") guidkey = _paramInfo.GetXmlProperty("genxml/hidden/key");
-                var paymentData = new PaymentLimpet(_portalData.PortalId, guidkey, _sessionParams.CultureCode);
-                if (paymentData.PaymentId <= 0)
-                    paymentid = SavePayment();
-                else
-                    paymentid = paymentData.PaymentId;
+            var paymentid = 0;
+            var strOut = "PAYMENT ERROR";
+            var guidkey = _paramInfo.GetXmlProperty("genxml/remote/urlparams/key"); // Use remote key if passed from module.
+            if (guidkey == "") guidkey = _paramInfo.GetXmlProperty("genxml/urlparams/key");
+            if (guidkey == "") guidkey = _paramInfo.GetXmlProperty("genxml/hidden/key");
+            var paymentData = new PaymentLimpet(_dataObject.PortalId, guidkey, _sessionParams.CultureCode);
+            if (paymentData.PaymentId <= 0)
+                paymentid = SavePayment();
+            else
+                paymentid = paymentData.PaymentId;
 
-                if (paymentid > 0)
-                {               
-                    var paymentLimpet = GetPayment(paymentid);
-                    paymentLimpet.Load(_postInfo, _paramInfo);
-                    paymentLimpet.SessionData = _sessionParams;
-                    strOut = paymentLimpet.RedirectedToBankHtml();
-                }
-                return strOut;
+            if (paymentid > 0)
+            {               
+                var paymentLimpet = GetPayment(paymentid);
+                paymentLimpet.Load(_postInfo, _paramInfo);
+                paymentLimpet.SessionData = _sessionParams;
+                strOut = paymentLimpet.RedirectedToBankHtml();
             }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            return strOut;
         }
         public string PaymentFormReset()
         {
-            try
+            var paymentid = _paramInfo.GetXmlPropertyInt("genxml/hidden/paymentid");
+            var paymentLimpet = GetPayment(paymentid);
+            if (paymentLimpet.Exists)
             {
-                var paymentid = _paramInfo.GetXmlPropertyInt("genxml/hidden/paymentid");
-                var paymentLimpet = GetPayment(paymentid);
-                if (paymentLimpet.Exists)
-                {
-                    paymentLimpet.ResetBankAction();
-                }
-                return "";
+                paymentLimpet.ResetBankAction();
             }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            return "";
         }
         public string BankIPN()
         {
             var rtn = "";
-            try
-            {
-                var paymentprovider = _paramInfo.GetXmlProperty("genxml/urlparams/paymentprovider");
-                if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/urlparams/p"); // reduce chars for PayBox.  (150 chars limit)
-                // if the payment provider is not in the url, it may have been passed by using the TempStorage.
-                if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/genxml/paymentprovider");
-                if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/genxml/p");
+            var paymentprovider = _paramInfo.GetXmlProperty("genxml/urlparams/paymentprovider");
+            if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/urlparams/p"); // reduce chars for PayBox.  (150 chars limit)
+            // if the payment provider is not in the url, it may have been passed by using the TempStorage.
+            if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/genxml/paymentprovider");
+            if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/genxml/p");
 
-                var rocketInterface = _systemData.GetProvider(paymentprovider);
-                if (rocketInterface != null && rocketInterface.Assembly != "")
-                {
-                    var bankprov = PaymentInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                    rtn = bankprov.NotifyEvent(_paramInfo);
-                }
-                return rtn;
-            }
-            catch (Exception ex)
+            var rocketInterface = _dataObject.SystemData.GetProvider(paymentprovider);
+            if (rocketInterface != null && rocketInterface.Assembly != "")
             {
-                LogUtils.LogException(ex);
+                var bankprov = PaymentInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                rtn = bankprov.NotifyEvent(_paramInfo);
             }
             return rtn;
         }

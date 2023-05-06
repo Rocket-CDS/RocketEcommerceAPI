@@ -12,30 +12,30 @@ namespace RocketEcommerceAPI.API
     {
         private PropertyLimpet GetActiveProperty(int propertyid)
         {
-            return new PropertyLimpet(_portalShop.PortalId, propertyid, _sessionParams.CultureCodeEdit);
+            return new PropertyLimpet(_dataObject.PortalShop.PortalId, propertyid, _sessionParams.CultureCodeEdit);
         }
         public String GetProperty(int propertyId)
         {
-            var razorTempl = _appThemeSystem.GetTemplate("propertydetail.cshtml");
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("propertydetail.cshtml");
             var propertyData = GetActiveProperty(propertyId);
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, propertyData, _dataObjects, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, propertyData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.ErrorMsg != "") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         public string GetPropertyList()
         {
-            var propertyDataList = new PropertyLimpetList(PortalUtils.GetCurrentPortalId(), _sessionParams, _sessionParams.CultureCodeEdit);
-            var razorTempl = _appThemeSystem.GetTemplate("PropertyList.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, propertyDataList, _dataObjects, _passSettings, _sessionParams, true);
+            var propertyDataList = new PropertyLimpetList(PortalUtils.GetCurrentPortalId(), _sessionParams.CultureCodeEdit);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("PropertyList.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, propertyDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.ErrorMsg != "") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         public String AddProperty()
         {
             var parentid = _paramInfo.GetXmlPropertyInt("genxml/hidden/parentid");
-            var razorTempl = _appThemeSystem.GetTemplate("propertydetail.cshtml");
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("propertydetail.cshtml");
             var propertyData = GetActiveProperty(-1);
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, propertyData, _dataObjects, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, propertyData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.ErrorMsg != "") return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -43,10 +43,10 @@ namespace RocketEcommerceAPI.API
         public string SaveProperty()
         {
             var propertyId = _paramInfo.GetXmlPropertyInt("genxml/hidden/propertyid");
-            _passSettings.Add("saved", "true");
+            _dataObject.Settings.Add("saved", "true");
             var propertyData = GetActiveProperty(propertyId);
             var r = propertyData.Save(_postInfo);
-            if ( r == -1) _passSettings.Add("duplicateref", "true");
+            if ( r == -1) _dataObject.Settings.Add("duplicateref", "true");
             return GetProperty(r);
         }
         public string DeleteProperty()

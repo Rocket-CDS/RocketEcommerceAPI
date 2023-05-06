@@ -12,13 +12,13 @@ namespace RocketEcommerceAPI.API
     {
         private ProductLimpet GetActiveProduct(int productid)
         {
-            return new ProductLimpet(_portalShop.PortalId, productid, _sessionParams.CultureCodeEdit);
+            return new ProductLimpet(_dataObject.PortalShop.PortalId, productid, _sessionParams.CultureCodeEdit);
         }
         public int SaveArticle()
         {
             var productId = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
-            _passSettings.Add("saved", "true");
-            var productData = new ProductLimpet(_portalShop.PortalId, productId, _sessionParams.CultureCodeEdit);
+            _dataObject.Settings.Add("saved", "true");
+            var productData = new ProductLimpet(_dataObject.PortalShop.PortalId, productId, _sessionParams.CultureCodeEdit);
             return productData.Save(_postInfo);
         }
         public void DeleteArticle()
@@ -36,15 +36,15 @@ namespace RocketEcommerceAPI.API
             var l = DNNrocketUtils.GetCultureCodeList();
             foreach (var c in l)
             {
-                productData = new ProductLimpet(_portalShop.PortalId, productId, c);
-                var newproductData = new ProductLimpet(_portalShop.PortalId, newProductId, c);
+                productData = new ProductLimpet(_dataObject.PortalShop.PortalId, productId, c);
+                var newproductData = new ProductLimpet(_dataObject.PortalShop.PortalId, newProductId, c);
                 newproductData.Info.XMLData = productData.Info.XMLData;
                 newproductData.Name += " - " + LocalUtils.ResourceKey("RE.copy", "Text", c);
                 newproductData.Update();
             }
             // add categories
-            productData = new ProductLimpet(_portalShop.PortalId, productId, _sessionParams.CultureCodeEdit);
-            var newproductData2 = new ProductLimpet(_portalShop.PortalId, newProductId, _sessionParams.CultureCodeEdit);
+            productData = new ProductLimpet(_dataObject.PortalShop.PortalId, productId, _sessionParams.CultureCodeEdit);
+            var newproductData2 = new ProductLimpet(_dataObject.PortalShop.PortalId, newProductId, _sessionParams.CultureCodeEdit);
             foreach (var c in productData.GetCategories())
             {
                 newproductData2.AddCategory(c.CategoryId);
@@ -146,12 +146,12 @@ namespace RocketEcommerceAPI.API
         }
         public String GetOptionsField()
         {
-            var razorTempl = _appThemeSystem.GetTemplate("productoptionsfield.cshtml");
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productoptionsfield.cshtml");
             var productId = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
             var optionkey = _paramInfo.GetXmlProperty("genxml/hidden/optionkey");
             var productData = GetActiveProduct(productId);
             var productOption = productData.GetOption(optionkey);
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, productOption, _dataObjects, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, productOption, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -179,7 +179,7 @@ namespace RocketEcommerceAPI.API
             {
                 var filenameList = fileuploadlist.Split('*');
                 var filebase64List = fileuploadbase64.Split('*');
-                var fileList = DocUtils.UploadBase64file(filenameList, filebase64List, _portalShop.DocFolderMapPath);
+                var fileList = DocUtils.UploadBase64file(filenameList, filebase64List, _dataObject.PortalShop.DocFolderMapPath);
                 foreach (var imgFileMapPath in fileList)
                 {
                     productData.AddDoc(Path.GetFileName(imgFileMapPath));
@@ -201,11 +201,11 @@ namespace RocketEcommerceAPI.API
         }
         public String AddArticle()
         {
-            if (_portalShop.ProductCount < _portalShop.ProductLimit)
+            if (_dataObject.PortalShop.ProductCount < _dataObject.PortalShop.ProductLimit)
             {
-                var razorTempl = _appThemeSystem.GetTemplate("productdetail.cshtml");
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productdetail.cshtml");
                 var articleData = GetActiveProduct(-1);
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObjects, _passSettings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -213,41 +213,41 @@ namespace RocketEcommerceAPI.API
         }
         public String GetProduct(int productId)
         {
-            var razorTempl = _appThemeSystem.GetTemplate("productdetail.cshtml");
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productdetail.cshtml");
             var articleData = GetActiveProduct(productId);
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObjects, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
 
         public String GetProductList()
         {
-            var articleDataList = new ProductLimpetList(_paramInfo, _portalShop, _sessionParams.CultureCodeEdit, true);
-            var razorTempl = _appThemeSystem.GetTemplate("productlist.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleDataList, _dataObjects, _passSettings, _sessionParams, true);
+            var articleDataList = new ProductLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productlist.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         public String GetProductSelectList()
         {
             var orderid = _paramInfo.GetXmlProperty("genxml/hidden/orderid");
-            _passSettings.Add("orderid", orderid);
-            var portalShop = new PortalShopLimpet(_portalShop.PortalId, _sessionParams.CultureCodeEdit);
-            var articleDataList = new ProductLimpetList(_paramInfo, _portalShop, _sessionParams.CultureCodeEdit, true);
-            var razorTempl = _appThemeSystem.GetTemplate("ProductSelectList.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleDataList, _dataObjects, _passSettings, _sessionParams, true);
+            _dataObject.Settings.Add("orderid", orderid);
+            var portalShop = new PortalShopLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
+            var articleDataList = new ProductLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ProductSelectList.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         public String GetProductSelectDetail()
         {
             var orderid = _paramInfo.GetXmlProperty("genxml/hidden/orderid");
-            _passSettings.Add("orderid", orderid);
+            _dataObject.Settings.Add("orderid", orderid);
             var itemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
             if (itemid <= 0) return "Invalid productId.";
-            var articleData = new ProductLimpet(_portalShop.PortalId, itemid, _sessionParams.CultureCodeEdit);
-            var razorTempl = _appThemeSystem.GetTemplate("ProductSelectDetail.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObjects, _passSettings, _sessionParams, true);
+            var articleData = new ProductLimpet(_dataObject.PortalShop.PortalId, itemid, _sessionParams.CultureCodeEdit);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ProductSelectDetail.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -258,13 +258,13 @@ namespace RocketEcommerceAPI.API
             if (productid == 0) productid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/productid");
             if (productid > 0)
             {
-                var articleData = new ProductLimpet(_portalShop.PortalId, productid, _sessionParams.CultureCode);
-                _dataObjects.Add("productdata", articleData);
+                var articleData = new ProductLimpet(_dataObject.PortalShop.PortalId, productid, _sessionParams.CultureCode);
+                _dataObject.DataObjects.Add("productdata", articleData);
             }
 
             var razorTempl = AssignRemoteTemplate(appendix);
             if (razorTempl == "") return "";
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, _portalShop.DebugMode);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, _dataObject.PortalShop.DebugMode);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -280,22 +280,22 @@ namespace RocketEcommerceAPI.API
 
             // Do product list
             var razorTempl = AssignRemoteTemplate();
-            if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _appTheme.AppThemeFolder;
+            if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppThemeView.AppThemeFolder;
 
-            var articleDataList = new ProductLimpetList(_paramInfo, _portalShop, _sessionParams.CultureCode, true, false, _defaultCategoryId);
+            var articleDataList = new ProductLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCode, true, false, _dataObject.ShopSettings.DefaultCategoryId);
 
-            var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-            _dataObjects.Add("cartdata", cartData);
-            _dataObjects.Add("productlist", articleDataList);
+            var cartData = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
+            _dataObject.DataObjects.Add("cartdata", cartData);
+            _dataObject.DataObjects.Add("productlist", articleDataList);
 
-            var categoryDataList = new CategoryLimpetList(_portalShop.PortalId, _sessionParams.CultureCode, true);
-            _dataObjects.Add("categorydatalist", categoryDataList);
+            var categoryDataList = new CategoryLimpetList(_dataObject.PortalShop.PortalId, _sessionParams.CultureCode, true);
+            _dataObject.DataObjects.Add("categorydatalist", categoryDataList);
 
             // Get page url from remote setting (populated in init method)
             articleDataList.SessionParamData.PageDetailUrl = _sessionParams.PageDetailUrl;
             articleDataList.SessionParamData.PageListUrl = _sessionParams.PageListUrl;
 
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, _passSettings, articleDataList.SessionParamData, _portalShop.DebugMode);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, articleDataList.SessionParamData, _dataObject.PortalShop.DebugMode);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -303,21 +303,21 @@ namespace RocketEcommerceAPI.API
         {
             var productid = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
             if (productid == 0) productid = _paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/productid");
-            var articleData = new ProductLimpet(_portalShop.PortalId, productid, _sessionParams.CultureCodeEdit);
+            var articleData = new ProductLimpet(_dataObject.PortalShop.PortalId, productid, _sessionParams.CultureCodeEdit);
 
             if (!articleData.Exists) return "404";
 
             var razorTempl = AssignRemoteTemplate();
-            if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _appTheme.AppThemeFolder;
+            if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppThemeView.AppThemeFolder;
 
-            var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
-            _dataObjects.Add("cartdata", cartData);
-            _dataObjects.Add("productdata", articleData);
+            var cartData = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
+            _dataObject.DataObjects.Add("cartdata", cartData);
+            _dataObject.DataObjects.Add("productdata", articleData);
 
-            var categoryDataList = new CategoryLimpetList(_portalShop.PortalId, _sessionParams.CultureCodeEdit, true);
-            _dataObjects.Add("categorydatalist", categoryDataList);
+            var categoryDataList = new CategoryLimpetList(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit, true);
+            _dataObject.DataObjects.Add("categorydatalist", categoryDataList);
 
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, _passSettings, _sessionParams, _portalShop.DebugMode);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, _dataObject.PortalShop.DebugMode);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -338,7 +338,7 @@ namespace RocketEcommerceAPI.API
             if (productid == 0) productid = _paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/productid");
             if (productid > 0)
             {
-                var articleData = new ProductLimpet(_portalShop.PortalId, productid, _sessionParams.CultureCodeEdit);
+                var articleData = new ProductLimpet(_dataObject.PortalShop.PortalId, productid, _sessionParams.CultureCodeEdit);
                 // do detail
                 sRec.SetXmlProperty("genxml/title", articleData.Name);
                 sRec.SetXmlProperty("genxml/description", articleData.Summary);
@@ -350,11 +350,11 @@ namespace RocketEcommerceAPI.API
         {
             var productid = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
             var docList = new List<object>();
-            foreach (var i in DNNrocketUtils.GetFiles(DNNrocketUtils.MapPath(_portalShop.DocFolderRel)))
+            foreach (var i in DNNrocketUtils.GetFiles(DNNrocketUtils.MapPath(_dataObject.PortalShop.DocFolderRel)))
             {
                 var sInfo = new SimplisityInfo();
                 sInfo.SetXmlProperty("genxml/name", i.Name);
-                sInfo.SetXmlProperty("genxml/relname", _portalShop.DocFolderRel + "/" + i.Name);
+                sInfo.SetXmlProperty("genxml/relname", _dataObject.PortalShop.DocFolderRel + "/" + i.Name);
                 sInfo.SetXmlProperty("genxml/fullname", i.FullName);
                 sInfo.SetXmlProperty("genxml/extension", i.Extension);
                 sInfo.SetXmlProperty("genxml/directoryname", i.DirectoryName);
@@ -362,19 +362,19 @@ namespace RocketEcommerceAPI.API
                 docList.Add(sInfo);
             }
 
-            _passSettings.Add("uploadcmd", "productadmin_docupload");
-            _passSettings.Add("deletecmd", "productadmin_docdelete");
-            _passSettings.Add("productid", productid.ToString());
+            _dataObject.Settings.Add("uploadcmd", "productadmin_docupload");
+            _dataObject.Settings.Add("deletecmd", "productadmin_docdelete");
+            _dataObject.Settings.Add("productid", productid.ToString());
 
-            var razorTempl = _appThemeSystem.GetTemplate("DocumentSelect.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, docList, new Dictionary<string, object>(), _passSettings, _sessionParams, true);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("DocumentSelect.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, docList, new Dictionary<string, object>(), _dataObject.Settings, _sessionParams, true);
             return pr.RenderedText;
 
         }
         public void ProductDocumentUploadToFolder()
         {
             var userid = UserUtils.GetCurrentUserId(); // prefix to filename on upload.
-            if (!Directory.Exists(_portalShop.DocFolderMapPath)) Directory.CreateDirectory(_portalShop.DocFolderMapPath);
+            if (!Directory.Exists(_dataObject.PortalShop.DocFolderMapPath)) Directory.CreateDirectory(_dataObject.PortalShop.DocFolderMapPath);
             var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
@@ -384,7 +384,7 @@ namespace RocketEcommerceAPI.API
                     {
                         var friendlyname = GeneralUtils.DeCode(f);
                         var userfilename = userid + "_" + friendlyname;
-                        File.Copy(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, _portalShop.DocFolderMapPath + "\\" + friendlyname, true);
+                        File.Copy(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, _dataObject.PortalShop.DocFolderMapPath + "\\" + friendlyname, true);
                         File.Delete(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename);
                     }
                 }
@@ -457,14 +457,14 @@ namespace RocketEcommerceAPI.API
         }
         public String GetArticleCategoryList(ProductLimpet articleData)
         {
-            var razorTempl = _appThemeSystem.GetTemplate("ProductCategoryList.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObjects, _passSettings, _sessionParams, true);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ProductCategoryList.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             return pr.RenderedText;
         }
         public String GetProductPropertyList(ProductLimpet articleData)
         {
-            var razorTempl = _appThemeSystem.GetTemplate("ProductPropertyList.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObjects, _passSettings, _sessionParams, true);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ProductPropertyList.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             return pr.RenderedText;
         }
 

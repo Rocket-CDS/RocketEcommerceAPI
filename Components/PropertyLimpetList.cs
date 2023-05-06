@@ -17,16 +17,15 @@ namespace RocketEcommerceAPI.Components
         private const string _tableName = "RocketEcommerceAPI";
         private List<PropertyLimpet> _propertyList;
         private DNNrocketController _objCtrl;
-        private SessionParams _sessionParams;
+        private string _searchText;
 
-        public PropertyLimpetList(int portalId, SessionParams sessionParams, string langRequired, RemoteModule remoteModule = null)
+        public PropertyLimpetList(int portalId, string langRequired, string searchText = "")
         {
+            _searchText = searchText;
             PortalId = portalId;
             CultureCode = langRequired;
-            EntityTypeCode = "PROP";
+            EntityTypeCode = "rocketecommerceapiPROP";
             TableName = _tableName;
-            RemoteModule = remoteModule;
-            _sessionParams = sessionParams;
 
             if (CultureCode == "") CultureCode = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
@@ -36,9 +35,8 @@ namespace RocketEcommerceAPI.Components
         public void Populate()
         {
             var filter = "";
-            if (_sessionParams.Info.GetXmlProperty("r/propertysearchtext") != "") filter = " and [XMLData].value('(genxml/lang/genxml/textbox/name)[1]','nvarchar(max)') like '%" + _sessionParams.Info.GetXmlProperty("r/propertysearchtext") + "%' ";
-            _sessionParams.RowCount = _objCtrl.GetListCount(PortalId, -1, EntityTypeCode, filter, CultureCode, _tableName);
-            DataList = _objCtrl.GetList(PortalId, -1, EntityTypeCode, filter, CultureCode, " order by [XMLData].value('(genxml/textbox/ref)[1]','nvarchar(max)') ", 0, _sessionParams.Page, _sessionParams.PageSize, _sessionParams.RowCount, TableName);
+            if (_searchText != "") filter = " and [XMLData].value('(genxml/lang/genxml/textbox/name)[1]','nvarchar(max)') like '%" + _searchText + "%' ";
+            DataList = _objCtrl.GetList(PortalId, -1, EntityTypeCode, filter, CultureCode, " order by [XMLData].value('(genxml/textbox/ref)[1]','nvarchar(max)') ", 0, 0, 0, 0, TableName);
             PopulatePropertyList();
         }
         public void DeleteAll()
@@ -48,7 +46,6 @@ namespace RocketEcommerceAPI.Components
                 _objCtrl.Delete(r.ItemID);
             }
         }
-        public RemoteModule RemoteModule { get; set; }
         public List<SimplisityInfo> DataList { get; private set; }
         public int PortalId { get; set; }
         public string TableName { get; set; }

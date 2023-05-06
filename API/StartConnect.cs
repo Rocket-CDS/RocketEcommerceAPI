@@ -9,33 +9,23 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace RocketEcommerceAPI.API
 {
     public partial class StartConnect : IProcessCommand
     {
         private const string _systemkey = "rocketecommerceapi";
-
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private RocketInterface _rocketInterface;
-        private SystemLimpet _systemData;
-        private PortalShopLimpet _portalShop;
-        private Dictionary<string, string> _passSettings;
         private SessionParams _sessionParams;
-        private UserParams _userParams;
-        private AppThemeSystemLimpet _appThemeSystem;
+        private DataObjectLimpet _dataObject;
         private string _moduleRef;
-        private AppThemeLimpet _appTheme;
-        private AppThemeLimpet _appThemeDefault;
-        private RemoteModule _remoteModule;
-        private Dictionary<string, object> _dataObjects;
-        private PortalLimpet _portalData;
-        private string _org;
-        private AppThemeProjectLimpet _orgData;
-        private CompanyLimpet _companyData;
-        private ShopSettingsLimpet _shopSettings;
-        private int _defaultCategoryId;
+        private int _moduleId;
+        private int _tabId;
+        private UserParams _userParams;
+        private string _storeParamCmd;
 
         public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -94,8 +84,8 @@ namespace RocketEcommerceAPI.API
                     strOut = RocketSystem();
                     break;
                 case "portalshops_addsetting":
-                    _portalShop.Record.AddListItem("settingsdata");
-                    _portalShop.Update();
+                    _dataObject.PortalShop.Info.AddListItem("settingsdata");
+                    _dataObject.PortalShop.Update();
                     strOut = RocketSystem();
                     break;
                 case "portalshops_reset":
@@ -392,7 +382,7 @@ namespace RocketEcommerceAPI.API
 
 
                 case "remote_login":
-                    strOut = Components.LocalUtils.ReloadPage(_portalData.PortalId);
+                    strOut = Components.LocalUtils.ReloadPage(_dataObject.PortalData.PortalId);
                     break;
                 case "remote_productlist":
                     strOut = GetPublicProductList();
@@ -442,11 +432,11 @@ namespace RocketEcommerceAPI.API
 
 
                 case "rocketecommerceapi_minicartqty":
-                    var cartData = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
+                    var cartData = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
                     strOut = cartData.QtyCount.ToString();
                     break;
                 case "rocketecommerceapi_minicarttotal":
-                    var cartData2 = new CartLimpet(_paramInfo, _sessionParams.CultureCode);
+                    var cartData2 = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
                     strOut = cartData2.TotalDisplay;
                     break;
                 case "rocketecommerceapi_minicartjson":
@@ -533,18 +523,6 @@ namespace RocketEcommerceAPI.API
                 case "remote_editoption":
                     strOut = "false";
                     break;
-                case "remote_settings":
-                    strOut = RemoteSettings();
-                    break;
-                case "remote_settingssave":
-                    strOut = SaveSettings();
-                    break;
-                case "remote_clearsettings":
-                    strOut = ClearSettings();
-                    break;                    
-                case "remote_getappthemeversions":
-                    strOut = AppThemeVersions();
-                    break;
 
 
                 case "remote_publicview":
@@ -559,12 +537,8 @@ namespace RocketEcommerceAPI.API
                 rtnDic.Add("remote-lastheader", GetPublicProductListHeader("header"));        
                 rtnDic.Add("remote-cache", "True");
             }
-            _remoteModule.AppThemeFolder = _remoteModule.AppThemeViewFolder; // We do not have a edit AppTheme in the module. (Part of hte catalog edit)
-            _remoteModule.AppThemeVersion = _remoteModule.AppThemeViewVersion;
-            if (!rtnDic.ContainsKey("remote-settingsxml")) rtnDic.Add("remote-settingsxml", _remoteModule.Record.ToXmlItem());
-            // if we have a searchtext we do not want to cache.
-            if (_sessionParams.SearchText != "") rtnDic.Remove("remote-cache");
 
+            if (_sessionParams.SearchText != "") rtnDic.Remove("remote-cache");
             if (!rtnDic.ContainsKey("outputjson")) rtnDic.Add("outputhtml", strOut);
             return rtnDic;
         }
@@ -572,8 +546,8 @@ namespace RocketEcommerceAPI.API
         {
             try
             {
-                var razorTempl = _appThemeSystem.GetTemplate("RocketSystem.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("RocketSystem.cshtml");
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -589,9 +563,10 @@ namespace RocketEcommerceAPI.API
                 var newportalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/newportalid");
                 if (newportalId > 0)
                 {
-                    _portalShop = new PortalShopLimpet(newportalId, _sessionParams.CultureCodeEdit);
-                    _portalShop.Validate();
-                    _portalShop.Update();
+                    var portalShop = new PortalShopLimpet(newportalId, _sessionParams.CultureCodeEdit);
+                    portalShop.Validate();
+                    portalShop.Update();
+                    _dataObject.Populate(newportalId, _moduleRef, _sessionParams.CultureCodeEdit, _moduleId, _tabId, _sessionParams.BrowserId);
                 }
                 return "";
             }
@@ -607,8 +582,8 @@ namespace RocketEcommerceAPI.API
                 var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
                 if (portalId > 0)
                 {
-                    _portalShop = new PortalShopLimpet(portalId, _sessionParams.CultureCodeEdit);
-                    _portalShop.Delete();
+                    var portalShop = new PortalShopLimpet(portalId, _sessionParams.CultureCodeEdit);
+                    portalShop.Delete();
                 }
                 return "";
             }
@@ -624,11 +599,10 @@ namespace RocketEcommerceAPI.API
                 var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
                 if (portalId > 0)
                 {
-                    _portalShop = new PortalShopLimpet(portalId, _sessionParams.CultureCodeEdit);
-                    if (!_portalShop.ValidShop)
+                    if (!_dataObject.PortalShop.ValidShop)
                     {
-                        var razorTempl = _appThemeSystem.GetTemplate("InvalidSystem.cshtml");
-                        var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
+                        var razorTempl = _dataObject.AppThemeSystem.GetTemplate("InvalidSystem.cshtml");
+                        var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                         if (pr.StatusCode != "00") return pr.ErrorMsg;
                         return pr.RenderedText;
 
@@ -647,107 +621,31 @@ namespace RocketEcommerceAPI.API
         {
             _postInfo = postInfo;
             _paramInfo = paramInfo;
-            _systemData = new SystemLimpet(_systemkey);
-            _appThemeSystem = new AppThemeSystemLimpet(PortalUtils.GetPortalId(), _systemData.SystemKey);
+
+            var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            if (portalid == 0) portalid = PortalUtils.GetCurrentPortalId();
+
             _rocketInterface = new RocketInterface(interfaceInfo);
             _sessionParams = new SessionParams(_paramInfo);
             _userParams = new UserParams(_sessionParams.BrowserSessionId);
-            _passSettings = new Dictionary<string, string>();
-            _orgData = new AppThemeProjectLimpet();
             _moduleRef = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
-            if (_moduleRef == "") _moduleRef = _paramInfo.GetXmlProperty("genxml/remote/moduleref");
+            _tabId = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid");
+            _moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
 
             // Assign Langauge
-            DNNrocketUtils.SetCurrentCulture();
             if (_sessionParams.CultureCode == "") _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();
             if (_sessionParams.CultureCodeEdit == "") _sessionParams.CultureCodeEdit = DNNrocketUtils.GetEditCulture();
             DNNrocketUtils.SetCurrentCulture(_sessionParams.CultureCode);
             DNNrocketUtils.SetEditCulture(_sessionParams.CultureCodeEdit);
 
-            var rtnCultureCode = _sessionParams.CultureCodeEdit;
-            if (paramCmd.StartsWith("remote_")) rtnCultureCode = _sessionParams.CultureCode;
+            _dataObject = new DataObjectLimpet(portalid, _sessionParams.ModuleRef, _sessionParams);
 
-            // Users should only have access to their own services.
-            var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
-            if (portalid >= 0 && PortalUtils.GetPortalId() == 0)
-            {
-                _remoteModule = new RemoteModule(portalid, _moduleRef);
-                _portalShop = new PortalShopLimpet(portalid, rtnCultureCode); // Portal 0 is admin, editing portal setup
-            }
-            else
-            {
-                _remoteModule = new RemoteModule(PortalUtils.GetPortalId(), _moduleRef);
-                _portalShop = new PortalShopLimpet(PortalUtils.GetPortalId(), rtnCultureCode); // editing current portal
-                if (!_portalShop.Active) return "";
-            }
+            if (paramCmd.StartsWith("rocketsystem_") && UserUtils.IsSuperUser()) return paramCmd;
+            if (_dataObject.PortalShop.PortalId != 0 && !_dataObject.PortalShop.Active) return "";
+            if (paramCmd.StartsWith("remote_public")) return paramCmd;
 
-            _portalData = new PortalLimpet(_portalShop.PortalId);
-            _appThemeDefault = new AppThemeLimpet(_portalShop.PortalId, _systemData, "Default", "1.0");
-            _shopSettings = new ShopSettingsLimpet(_portalShop.PortalId, rtnCultureCode);
-
-            // If the module is not on the display page, we need to create alink to the detail page.  This setting providers the new page url.
-            var detailpageurl = _remoteModule.Record.GetXmlProperty("genxml/remote/detailpageurl" + _sessionParams.CultureCode);
-            if (detailpageurl != "") _sessionParams.PageDetailUrl = detailpageurl;
-            var listpageurl = _remoteModule.Record.GetXmlProperty("genxml/remote/listpageurl" + _sessionParams.CultureCode);
-            if (listpageurl != "") _sessionParams.PageListUrl = listpageurl;
-
-            //deaful pagesize
-            if (_sessionParams.PageSize == 0) _paramInfo.SetXmlPropertyInt("genxml/hidden/pagesize", _remoteModule.Record.GetXmlPropertyInt("genxml/remote/pagesize"));
-
-            // set default category
-            _defaultCategoryId = _remoteModule.Record.GetXmlPropertyInt("genxml/remote/categoryid");
-            if (_defaultCategoryId <= 0) _defaultCategoryId = _shopSettings.DefaultCategoryId;
-
-            _org = _remoteModule.ProjectName;
-            if (_org == "") _org = _orgData.DefaultProjectName();
-            if (_postInfo.GetXmlProperty("genxml/select/selectedproject") != "") _portalShop.ProjectName = _postInfo.GetXmlProperty("genxml/select/selectedproject");
-            if (_portalShop.ProjectName == "") _portalShop.ProjectName = _orgData.DefaultProjectName();
-
-            _appTheme = new AppThemeLimpet(_portalShop.PortalId, _remoteModule.AppThemeViewFolder, _remoteModule.AppThemeViewVersion, _org);
-            _companyData = new CompanyLimpet(_portalShop.PortalId, rtnCultureCode);
-            var securityData = new SecurityLimpet(_portalShop.PortalId, _systemData.SystemKey, _rocketInterface, -1, -1);
-
-            _dataObjects = new Dictionary<string, object>();
-            _dataObjects.Add("remotemodule", _remoteModule);
-            _dataObjects.Add("apptheme", _appTheme);
-            _dataObjects.Add("appthemesystem", _appThemeSystem);
-            _dataObjects.Add("appthemedefault", _appThemeDefault);
-            _dataObjects.Add("portalshop", _portalShop);
-            _dataObjects.Add("portaldata", _portalData);
-            _dataObjects.Add("shopsettings", _shopSettings);
-            _dataObjects.Add("systemdata", _systemData);
-            _dataObjects.Add("companydata", _companyData);
-            _dataObjects.Add("securitydata", securityData);
-            var categoryDataList = new CategoryLimpetList(_portalShop.PortalId, rtnCultureCode, true, _remoteModule);
-            _dataObjects.Add("categorylist", categoryDataList);
-            var propertyList = new PropertyLimpetList(_portalShop.PortalId, _sessionParams, rtnCultureCode, _remoteModule);
-            _dataObjects.Add("propertylist", propertyList);
-            _dataObjects.Add("notificationdata",new NotificationLimpet(_portalShop.PortalId, _sessionParams.CultureCode));
-
-            // if we have a remote_view, find the required cmd from module settings.
-            if (paramCmd.StartsWith("remote_"))
-            {
-                var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykey");
-                if (!UserUtils.IsEditor() && !paramCmd.StartsWith("remote_public"))
-                {
-                    if (paramCmd == "remote_pay") return paramCmd; // legacy cmd
-                    if (_portalData.SecurityKey != sk) paramCmd = "";
-                }
-                else
-                {
-                    var convertCmd = _paramInfo.GetXmlProperty("genxml/remote/urlparams/cmd"); // use the remote URL param "cmd" if it exists.
-                    if (convertCmd == "") convertCmd = _remoteModule.Record.GetXmlProperty("genxml/select/cmd"); // use remote selected cmd.
-                    if (paramCmd == "remote_publicview") paramCmd = convertCmd;
-                    if (paramCmd == "remote_publicviewheader") paramCmd = convertCmd + "header";
-                    if (paramCmd == "remote_publicviewbeforeheader") paramCmd = convertCmd + "beforeheader";
-                    if (paramCmd == "remote_publicseo") paramCmd = convertCmd + "seo";                    
-                }
-            }
-            else
-            {
-                paramCmd = securityData.HasSecurityAccess(paramCmd, "remote_login");
-            }
-
+            var securityData = new SecurityLimpet(portalid, _systemkey, _rocketInterface, -1, -1);
+            paramCmd = securityData.HasSecurityAccess(paramCmd, "rocketecommerceapi_login");
             return paramCmd;
         }
 
@@ -755,10 +653,8 @@ namespace RocketEcommerceAPI.API
         {
             try
             {
-                var portalStats = new PortalShopLimpetStats(_portalShop);
-                _dataObjects.Add("portalstats", portalStats);
-                var razorTempl = _appThemeSystem.GetTemplate("Dashboard.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("Dashboard.cshtml");
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -772,8 +668,8 @@ namespace RocketEcommerceAPI.API
         {
             try
             {
-                var razorTempl = _appThemeSystem.GetTemplate("AdminPanel.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalShop, _dataObjects, _passSettings, _sessionParams, true);
+                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("AdminPanel.cshtml");
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
@@ -802,11 +698,10 @@ namespace RocketEcommerceAPI.API
             if (template == "") template = _paramInfo.GetXmlProperty("genxml/remote/template");
             if (template == "") template = _paramInfo.GetXmlProperty("genxml/hidden/remotetemplate");
             if (template == "") template = _paramInfo.GetXmlProperty("genxml/remote/remotetemplate");
-            if (template == "") template = _remoteModule.Record.GetXmlProperty("genxml/hidden/template");
             if (template == "") template = "view.cshtml";
-            var templateRtn = _appTheme.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
-            if (templateRtn == "") templateRtn = _appThemeDefault.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
-            if (templateRtn == "") templateRtn = _appThemeSystem.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
+            var templateRtn = _dataObject.AppThemeView.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
+            if (templateRtn == "") templateRtn = _dataObject.AppThemeDefault.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
+            if (templateRtn == "") templateRtn = _dataObject.AppThemeSystem.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
             return templateRtn;
         }
 

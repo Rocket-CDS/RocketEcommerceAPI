@@ -11,7 +11,7 @@
 @{
     var sessionParams = Model.SessionParamsData;
     var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
-    var appThemeDirectory = (AppThemeSystemLimpet)Model.GetDataObject("appthemedirectory");
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
     var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
     var info = new SimplisityInfo(moduleData.Record);
@@ -37,7 +37,7 @@
     <div class="w3-row ">
         <div class="w3-half w3-padding">
             <label>@ResourceKey("DNNrocket.name")</label>
-            @TextBox(info, "genxml/settings/name"," class='w3-input w3-border' ", "RocketContent: " + moduleData.ModuleRef)
+            @TextBox(info, "genxml/settings/name"," class='w3-input w3-border' ", "RocketEcom: " + moduleData.ModuleRef)
         </div>
         <div class="w3-half w3-padding">
             <label>@ResourceKey("RC.defaultcategory")&nbsp;</label>
@@ -46,7 +46,7 @@
                 <span class="w3-col m3 w3-button w3-theme parentcategoryselect" onclick="$('#categoryselect').show();" style="width:64px;">@ButtonIcon(ButtonTypes.tree)</span>
             </div>
             @HiddenField(info,"genxml/settings/defaultcategory")
-            @RenderTemplate("ModuleSettingsCatSelect.cshtml", appThemeDirectory, Model, true)
+            @RenderTemplate("ModuleSettingsCatSelect.cshtml", appThemeSystem, Model, true)
         </div>
     </div>
     <div class="w3-row ">
@@ -55,8 +55,6 @@
             @DropDownList(info,"genxml/settings/displaytemplate", templateList, " class='w3-input w3-border' ","")
         </div>
         <div class="w3-half w3-padding">
-            <label>cmd</label>
-            @DropDownList(info,"genxml/settings/displaycmd","list,catmenu","List, Category Menu"," class='w3-input w3-border' ","list")
         </div>
     </div>
 

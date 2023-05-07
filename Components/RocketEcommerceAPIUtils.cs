@@ -34,6 +34,22 @@ namespace RocketEcommerceAPI.Components
             }
             return rtn;
         }
+        public static SimplisityRecord GetSelectedModuleTemple(AppThemeLimpet appThemeView, string moduleRef, string templateFileName)
+        {
+            var rtn = new SimplisityRecord();
+            if (appThemeView != null)
+            {
+                foreach (var tfile in appThemeView.GetModuleTemples())
+                {
+                    var t = appThemeView.GetModT(tfile.Key, moduleRef);
+                    foreach (var r in t.GetRecordList("moduletemplates"))
+                    {
+                        if (r.GetXmlProperty("genxml/file") == templateFileName) return r;
+                    }
+                }
+            }
+            return rtn;
+        }
         public static List<SimplisityRecord> DependanciesList(int portalId, string moduleRef, SessionParams sessionParam)
         {
             var rtn = new List<SimplisityRecord>();
@@ -97,11 +113,11 @@ namespace RocketEcommerceAPI.Components
             var dataObject = new DataObjectLimpet(portalId, moduleRef, sessionParam, false);
             var aticleId = sessionParam.GetInt("articleid");
             var template = moduleSettings.GetSetting("displaytemplate");
-            var paramCmd = moduleSettings.GetSetting("displaycmd");
             if (template == "") template = "view.cshtml";
-            if (paramCmd == "") paramCmd = "list";
-
-            if (paramCmd == "" || paramCmd == "list")
+            var paramCmd = "list";
+            var modt = RocketEcommerceAPIUtils.GetSelectedModuleTemple(dataObject.AppThemeView, moduleRef, template);
+            if (modt != null && modt.GetXmlProperty("genxml/cmd") != "") paramCmd = modt.GetXmlProperty("genxml/cmd");
+            if (paramCmd == "list")
             {
                 if (aticleId > 0)
                 {
@@ -123,7 +139,6 @@ namespace RocketEcommerceAPI.Components
             }
             if (paramCmd == "catmenu")
             {
-
             }
 
             var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);

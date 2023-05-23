@@ -44,7 +44,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m12">
             <div class="w3-row">
-                <div class="w3-half">
+                <div class="w3-twothird">
                     <div class="w3-row w3-padding">
                         <label class="">@ResourceKey("RE.securitykey")</label><br />
                         @TextBox(info, "genxml/securitykey", "class='w3-input w3-border' ", GeneralUtils.GetGuidKey(), false)
@@ -81,16 +81,57 @@
                     <div class="w3-row w3-padding">
                         @CheckBox(info,"genxml/checkbox/manualcategoryorderby","&nbsp;" + ResourceKey("RE.manualcategoryorderby").ToString()," class='w3-check' ", true)
                     </div>
-                </div>
-                <div class="w3-half w3-padding">
+
+
+                    <div class="w3-row">
                         <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("RE.maxproducts")</label>
+                                @TextBox(info, "genxml/maxproducts", "class='w3-input w3-border ' style='width:64px;' ", "100", false)
+                            </div>
+                        <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("RE.productimagelimit")</label>
+                                @TextBox(info, "genxml/productimagelimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
+                            </div>
+                        <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("RE.productdocumentlimit")</label>
+                                @TextBox(info, "genxml/productdocumentlimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
+                            </div>
+                        <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("RE.productmodellimit")</label>
+                                @TextBox(info, "genxml/productmodellimit", "class='w3-bar-item w3-input w3-border' style='width:64px;' ", "10", false)
+                            </div>
+                        <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("RE.productoptionlimit")</label>
+                                @TextBox(info, "genxml/productoptionlimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
+                            </div>
+                        <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("RE.productlinklimit")</label>
+                                @TextBox(info, "genxml/productlinklimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
+                            </div>
+                        <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("DNNrocket.active")</label>
+                                @CheckBox(info, "genxml/active", "", "class='w3-input w3-border w3-check'", true)
+                            </div>
+                        <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("DNNrocket.emailon")</label>
+                                @CheckBox(info, "genxml/emailon", "", "class='w3-input w3-border w3-check'", true)
+                            </div>
+                        <div class="w3-half w3-padding">
+                                <label class="">Debug Mode</label>
+                                @CheckBox(info, "genxml/debugmode", "", "class='w3-input w3-border w3-check'", false)
+                            </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="w3-third w3-padding">
+                        <div class="w3-row w3-padding">
                             <label class="">@ResourceKey("RE.productdata")</label><br />
-                            <i>
-                                @ResourceKey("RE.productdata", "", "Help")
-                            </i>
                             @CheckBoxList(info, "genxml/productdata", "0,1,2,3,4,5,6,7,9,8", ResourceKey("RE.productdatasection").ToString(), "class='checkboxlist'", true)
                         </div>
-                        <div class="w3-half w3-padding">
+                        <div class="w3-row w3-padding">
                             @{
                                 var datadictionary = new Dictionary<string, string>();
                             }
@@ -107,9 +148,6 @@
                                 }
                             }
                             <label class="">@ResourceKey("RE.activeadminmenu")</label><br />
-                            <i>
-                                @ResourceKey("RE.activeadminmenu", "", "Help")
-                            </i>
                             @CheckBoxList(info, "genxml/activeadminmenu", datadictionary, "class='checkboxlist'", true)
                         </div>
                     </div>
@@ -120,79 +158,6 @@
         </div>
     </div>
 
-    <div class="w3-row">
-        <div class="w3-row">
-            <div class="w3-third w3-padding">
-                <label class="">@ResourceKey("RE.maxproducts")</label>
-                @TextBox(info, "genxml/maxproducts", "class='w3-input w3-border ' style='width:64px;' ", "100", false)
-            </div>
-            <div class="w3-third w3-padding">
-                <label class="">@ResourceKey("RE.productimagelimit")</label>
-                @TextBox(info, "genxml/productimagelimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
-            </div>
-            <div class="w3-third w3-padding">
-                <label class="">@ResourceKey("RE.productdocumentlimit")</label>
-                @TextBox(info, "genxml/productdocumentlimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
-            </div>
-        </div>
-        <div class="w3-row">
-            <div class="w3-third w3-padding">
-                <label class="">@ResourceKey("RE.productmodellimit")</label>
-                @TextBox(info, "genxml/productmodellimit", "class='w3-bar-item w3-input w3-border' style='width:64px;' ", "10", false)
-            </div>
-            <div class="w3-third w3-padding">
-                <label class="">@ResourceKey("RE.productoptionlimit")</label>
-                @TextBox(info, "genxml/productoptionlimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
-            </div>
-            <div class="w3-third w3-padding">
-                <label class="">@ResourceKey("RE.productlinklimit")</label>
-                @TextBox(info, "genxml/productlinklimit", "class='w3-input w3-border ' style='width:64px;' ", "10", false)
-            </div>
-        </div>
-        <div class="w3-row">
-            <div class="w3-quarter w3-padding">
-                <label class="">@ResourceKey("DNNrocket.active")</label>
-                @CheckBox(info, "genxml/active", "", "class='w3-input w3-border w3-check'", true)
-            </div>
-            <div class="w3-quarter w3-padding">
-                <label class="">@ResourceKey("DNNrocket.emailon")</label>
-                @CheckBox(info, "genxml/emailon", "", "class='w3-input w3-border w3-check'", true)
-            </div>
-            <div class="w3-quarter w3-padding">
-                <label class="">Debug Mode</label>
-                @CheckBox(info, "genxml/debugmode", "", "class='w3-input w3-border w3-check'", false)
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<div class="w3-row w3-padding">
-    <label>Standard HTML code</label>
-    <div class="w3-row w3-code w3-margin-bottom">
-        &lt;link rel="stylesheet" href="@(portalData.EngineUrlWithProtocol)/DesktopModules/DNNrocket/Simplisity/css/simplisity.css" charset="utf-8"&gt;<br />
-        &lt;script type="text/javascript" src="@(portalData.EngineUrlWithProtocol)/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"&gt;&lt;/script&gt;<br />
-        <br />
-        &lt;div id="simplisity_startpanel" class="w3-row simplisity_panel" s-cmd="remote_publicview"&gt;<br />
-        &nbsp;&lt;div class="simplisity_loader"&gt;<br />
-        &nbsp;&nbsp;&lt;span class=" simplisity_loader_inner"&gt;&lt;/span&gt;<br />
-        &nbsp;&lt;/div&gt;<br />
-        &lt;/div&gt;<br />
-        &lt;script&gt;<br />
-        $(document).ready(function () {<br />
-        &nbsp;$(document).simplisityStartUp('@(portalData.EngineUrlWithProtocol)/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: '@(systemData.SystemKey)', debug: false });<br />
-        });<br />
-        &lt;/script&gt;<br />
-    </div>
-    <label>Minimum HTML code <i>(If simplisity.js is already included on the page.)</i></label>
-    <div class="w3-row w3-code">
-        &lt;div id="simplisity_startpanel" class="w3-row simplisity_panel" s-cmd="remote_publicview" &gt;&lt;/div&gt;<br />
-        &lt;script&gt;<br />
-        $(document).ready(function () {<br />
-        &nbsp;$(document).simplisityStartUp('@(portalData.EngineUrlWithProtocol)/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: '@(systemData.SystemKey)', debug: false });<br />
-        });<br />
-        &lt;/script&gt;<br />
-    </div>
 </div>
 
 

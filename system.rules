@@ -318,7 +318,36 @@
         </radio>
       </genxml>
 
-      <genxml>
+		<genxml>
+			<textbox>
+				<interfacekey>rocketecommerceadmin</interfacekey>
+				<namespaceclass>RocketEcommerceAPI.API.StartConnect</namespaceclass>
+				<assembly>RocketEcommerceAPI</assembly>
+				<interfaceicon>phonelink_setup</interfaceicon>
+				<defaultcommand>rocketsystem_edit</defaultcommand>
+				<relpath>/DesktopModules/DNNrocketModules/RocketEcommerceAPI</relpath>
+			</textbox>
+			<providertype></providertype>
+			<dropdownlist>
+				<group></group>
+			</dropdownlist>
+			<checkbox>
+				<onmenu>true</onmenu>
+				<active>true</active>
+			</checkbox>
+			<radio>
+				<securityrolesadministrators>1</securityrolesadministrators>
+				<securityrolesmanager>0</securityrolesmanager>
+				<securityroleseditor>0</securityroleseditor>
+				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolesregisteredusers>0</securityrolesregisteredusers>
+				<securityrolessubscribers>0</securityrolessubscribers>
+				<securityrolesall>0</securityrolesall>
+			</radio>
+		</genxml>
+
+
+		<genxml>
         <textbox>
           <interfacekey>notification</interfacekey>
           <namespaceclass>RocketEcommerceAPI.API.StartConnect</namespaceclass>

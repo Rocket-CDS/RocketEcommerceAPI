@@ -171,4 +171,7 @@
   <data name="propertyadmin.Text" xml:space="preserve">
     <value>Properties</value>
   </data>
+  <data name="rocketecommerceadmin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
 </root>

@@ -601,7 +601,7 @@ namespace RocketEcommerceAPI.Components
         public string ProductListURL { get { return Record.GetXmlProperty("genxml/textbox/producturl"); } }
         public string ProductDetailURL { get { if (Record.GetXmlProperty("genxml/textbox/productdetailurl") == "") return ProductListPageUrl; else return Record.GetXmlProperty("genxml/textbox/productdetailurl"); } }
         public int ImageResize { get { if (Record.GetXmlPropertyInt("genxml/imageresize") > 0) return Record.GetXmlPropertyInt("genxml/imageresize"); else return 640; } }
-        public string ProjectName { get { return Record.GetXmlProperty("genxml/select/selectedproject"); } set { Record.SetXmlProperty("genxml/select/selectedproject", value); } }
+        public string ProjectName { get { return Record.GetXmlProperty("genxml/select/selectedprojectname"); } set { Record.SetXmlProperty("genxml/select/selectedprojectname", value); } }
         public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/select/apptheme"); } }
         public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/select/appthemeversion"); } }
         public int CartLimit { get { return 50; } }

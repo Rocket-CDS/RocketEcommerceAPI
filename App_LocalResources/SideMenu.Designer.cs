@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RocketEcommerceAPIAPI.App_LocalResources {
+namespace RocketEcommerceAPI.App_LocalResources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace RocketEcommerceAPIAPI.App_LocalResources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RocketEcommerceAPIAPI.App_LocalResources.SideMenu", typeof(SideMenu).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RocketEcommerceAPI.App_LocalResources.SideMenu", typeof(SideMenu).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -165,6 +165,15 @@ namespace RocketEcommerceAPIAPI.App_LocalResources {
         internal static string propertyadmin_Text {
             get {
                 return ResourceManager.GetString("propertyadmin.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Admin.
+        /// </summary>
+        internal static string rocketecommerceadmin_Text {
+            get {
+                return ResourceManager.GetString("rocketecommerceadmin.Text", resourceCulture);
             }
         }
         

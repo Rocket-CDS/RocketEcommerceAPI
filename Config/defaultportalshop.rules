@@ -27,7 +27,6 @@
 		<textbox>
 			<productlisturl>?catid={catid}&amp;{categoryname}</productlisturl>
 			<productlistpagingurl>?catid={catid}&amp;p={page}&amp;ps={pagesize}&amp;{categoryname}</productlistpagingurl>
-			<productdetailurl>?productid={productid}&amp;{productname}</productdetailurl>
 			<paymentpageurl />
 		</textbox>
 		<sqlfilterproduct>

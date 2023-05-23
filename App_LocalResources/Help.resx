@@ -301,41 +301,20 @@ Are you Sure ?</value>
   <data name="notificationreset.Text" xml:space="preserve">
     <value>Notification Reset</value>
   </data>
-  <data name="pageslinks_paymentpageurl.Help" xml:space="preserve">
-    <value>The Payment Page URL is the full URL where payment can be made.  This creates a button in the payment admin and can also be used to create a link.</value>
+  <data name="pageslinks_cart.Text" xml:space="preserve">
+    <value>Cart Page</value>
   </data>
-  <data name="pageslinks_paymentpageurl.Text" xml:space="preserve">
-    <value>Payment Page URL</value>
+  <data name="pageslinks_checkout.Text" xml:space="preserve">
+    <value>Checkout Page</value>
   </data>
-  <data name="pageslinks_productdetail.Help" xml:space="preserve">
-    <value>Product detail URL is used to create SEO urls on the website.  It uses product tokens to build a relative URL for the product detail page.</value>
+  <data name="pageslinks_paymentpage.Text" xml:space="preserve">
+    <value>Payment Page</value>
   </data>
   <data name="pageslinks_productdetail.Text" xml:space="preserve">
-    <value>Product detail URL</value>
-  </data>
-  <data name="pageslinks_productdetailurl.Help" xml:space="preserve">
-    <value>The Product Detail URL is the full URL where the products as displayed.  This is used to create a links back to the product list.</value>
-  </data>
-  <data name="pageslinks_productdetailurl.Text" xml:space="preserve">
-    <value>Product Detail URL</value>
-  </data>
-  <data name="pageslinks_productlist.Help" xml:space="preserve">
-    <value>Product list URL is used to create SEO urls on the website.  It uses product and category tokens to build a relative URL for the product list page.</value>
+    <value>Product Detail Page</value>
   </data>
   <data name="pageslinks_productlist.Text" xml:space="preserve">
-    <value>Product list URL</value>
-  </data>
-  <data name="pageslinks_productlistpaging.Help" xml:space="preserve">
-    <value>Used to create a URL for the product list which contains the page ("p") and pagesize ("ps") params.  The "catid" will also be included if categories are required.</value>
-  </data>
-  <data name="pageslinks_productlistpaging.Text" xml:space="preserve">
-    <value>Product List Paging URL</value>
-  </data>
-  <data name="pageslinks_producturl.Help" xml:space="preserve">
-    <value>The Product List URL is the full URL where the products as displayed.  This is used to create a links back to the product list.</value>
-  </data>
-  <data name="pageslinks_producturl.Text" xml:space="preserve">
-    <value>Product List URL</value>
+    <value>Product List Page</value>
   </data>
   <data name="resetportalshop.Help" xml:space="preserve">
     <value>Reseting the shop will restore all shop settings back to the default for the system.  (Usually created by the Export PortalShop)</value>

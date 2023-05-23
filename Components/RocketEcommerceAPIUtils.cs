@@ -23,12 +23,12 @@ namespace RocketEcommerceAPI.Components
             var rtn = new Dictionary<string,string>();
             if (appThemeView != null)
             {
-                foreach (var depfile in appThemeView.GetTemplatesDep())
+                foreach (var tfile in appThemeView.GetModuleTemples())
                 {
-                    var dep = appThemeView.GetDep(depfile.Key, moduleRef);
-                    foreach (var r in dep.GetRecordList("moduletemplates"))
+                    var t = appThemeView.GetModT(tfile.Key, moduleRef);
+                    foreach (var r in t.GetRecordList("moduletemplates"))
                     {
-                        rtn.Add(r.GetXmlProperty("genxml/file"),r.GetXmlProperty("genxml/name"));
+                        if (!rtn.ContainsKey(r.GetXmlProperty("genxml/file"))) rtn.Add(r.GetXmlProperty("genxml/file"), r.GetXmlProperty("genxml/name"));
                     }
                 }
             }
@@ -76,12 +76,16 @@ namespace RocketEcommerceAPI.Components
             }
             return rtn;
         }
+        public static string AdminHeader(int portalId, string systemKey, string moduleRef, SessionParams sessionParam, string template)
+        {
+            return ViewHeader(portalId, systemKey, moduleRef, sessionParam, template);
+        }
         public static string ViewHeader(int portalId, string systemKey, string moduleRef, SessionParams sessionParam, string template)
         {
             var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, sessionParam.ModuleId, sessionParam.TabId);
             if (moduleSettings.DisableHeader) return "";
 
-            var articleId = sessionParam.GetInt("articleid");
+            var articleId = sessionParam.GetInt("pid");
             var cacheKey = moduleRef + "*" + articleId + "*" + template;
             var rtn = (string)CacheUtils.GetCache(cacheKey, "portal" + portalId);
             if (rtn != null && !moduleSettings.DisableCache) return rtn;
@@ -111,7 +115,7 @@ namespace RocketEcommerceAPI.Components
             }
 
             var dataObject = new DataObjectLimpet(portalId, moduleRef, sessionParam, false);
-            var aticleId = sessionParam.GetInt("articleid");
+            var aticleId = sessionParam.GetInt("pid");
             var template = moduleSettings.GetSetting("displaytemplate");
             if (template == "") template = "view.cshtml";
             var paramCmd = "list";
@@ -122,7 +126,7 @@ namespace RocketEcommerceAPI.Components
                 if (aticleId > 0)
                 {
                     var articleData = new ProductLimpet(dataObject.PortalId, aticleId, sessionParam.CultureCode);
-                    dataObject.SetDataObject("articledata", articleData);
+                    dataObject.SetDataObject("productdata", articleData);
                     var categoryData = new CategoryLimpet(dataObject.PortalId, articleData.DefaultCategory(), sessionParam.CultureCode);
                     dataObject.SetDataObject("categorydata", categoryData);
                 }
@@ -132,12 +136,18 @@ namespace RocketEcommerceAPI.Components
                     if (defaultCat == 0) defaultCat = moduleSettings.DefaultCategoryId;
                     if (defaultCat == 0) defaultCat = dataObject.ShopSettings.DefaultCategoryId;
                     var articleDataList = new ProductLimpetList(sessionParam, dataObject.PortalShop, sessionParam.CultureCode, true, false, defaultCat);
-                    dataObject.SetDataObject("articlelist", articleDataList);
+                    dataObject.SetDataObject("productlist", articleDataList);
                     var categoryData = new CategoryLimpet(dataObject.PortalId, articleDataList.CategoryId, sessionParam.CultureCode) ;
                     dataObject.SetDataObject("categorydata", categoryData);
                 }
             }
             if (paramCmd == "catmenu")
+            {
+            }
+            if (paramCmd == "minicart")
+            {
+            }
+            if (paramCmd == "checkout")
             {
             }
 

@@ -576,9 +576,6 @@
   <data name="open.Text" xml:space="preserve">
     <value>Open</value>
   </data>
-  <data name="pageandlinks.Text" xml:space="preserve">
-    <value>Pages and Links</value>
-  </data>
   <data name="payment.Text" xml:space="preserve">
     <value>Payment</value>
   </data>
@@ -983,5 +980,11 @@
   </data>
   <data name="eventlist.Text" xml:space="preserve">
     <value>Event List</value>
+  </data>
+  <data name="productdocumentlimit.Text" xml:space="preserve">
+    <value>Document Limit</value>
+  </data>
+  <data name="productimagelimit.Text" xml:space="preserve">
+    <value>Image Limit</value>
   </data>
 </root>

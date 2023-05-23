@@ -20,7 +20,8 @@
     }
 }
 
-<div id="sidemenuconfigdata" class="w3-container a-panelsidemenu" style="display:none;">
+
+<div id="sidemenuconfigdata" class="w3-container a-panelsidemenu">
 
     @if (!UserUtils.IsSuperUser())
     {
@@ -28,6 +29,35 @@
             @ResourceKey("DNNrocket.suonly")
         </div>
     }
+
+
+    <div class="w3-row linklistdatasection  w3-margin-bottom">
+
+        <div class="w3-padding">
+            <div class="w3-row w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_productlist")</label>
+                    @TabSelectListOnTabId(info, "genxml/textbox/productlisttabid", " class='w3-input w3-border' autocomplete='off'",true,false,0,"",true)
+            </div>
+            <div class="w3-row w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_productdetail", "", "Text")</label>
+                    @TabSelectListOnTabId(info, "genxml/textbox/productdetailtabid", " class='w3-input w3-border' autocomplete='off'",true,false,0,"",true)
+            </div>
+            <div class="w3-row w3-padding">
+                <label>@ResourceKey("Help.pageslinks_cart", "", "Text")</label>
+                @TabSelectListOnTabId(info, "genxml/textbox/carttabid", " class='w3-input w3-border' autocomplete='off'",true,false,0,"",true)
+            </div>
+            <div class="w3-row w3-padding">
+                <label>@ResourceKey("Help.pageslinks_checkout", "", "Text")</label>
+                @TabSelectListOnTabId(info, "genxml/textbox/checkouttabid", " class='w3-input w3-border' autocomplete='off'",true,false,0,"",true)
+            </div>
+            <div class="w3-row w3-padding">
+                    <label>@ResourceKey("Help.pageslinks_paymentpage", "", "Text")</label>
+                    @TabSelectListOnTabId(info, "genxml/textbox/paymentpagetabid", " class='w3-input w3-border' autocomplete='off'",true,false,0,"",true)
+            </div>
+        </div>
+
+    </div>
+
 
     <div class="w3-row  w3-padding">
         <label class=""><b>@ResourceKey("RE.sqlfilter")</b></label>

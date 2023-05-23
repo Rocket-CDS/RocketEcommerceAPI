@@ -434,7 +434,7 @@ namespace RocketEcommerceAPI.Components
             if (GetImageList().Count < PortalShop.ProductImageLimit)
             {
                 if (Info.ItemID < 0) Update(); // blank record, not on DB.  Create now.
-                articleImage.RelPath = PortalShop.ImageFolderRel.TrimEnd('/') + "/" + uniqueName;
+                articleImage.RelPath = PortalShop.ImageFolderRel.TrimEnd('/') + "/" + uniqueName.Trim('\\');
                 Info.AddListItem("imagelist", articleImage.Info);
                 Update();
             }
@@ -444,6 +444,14 @@ namespace RocketEcommerceAPI.Components
         {
             Info.RemoveListItem("imagelist", "genxml/hidden/imagekey", articleImage.ImageKey);
             Info.AddListItem("imagelist", articleImage.Info);
+        }
+        public string DefaultImageUrl()
+        {
+            var i = GetImage(0);
+            if (i == null)
+                return "/DesktopModules/DNNrocket/api/images/noimage2.png";
+            else
+                return "/" + i.RelPath.Trim('/');
         }
         public ArticleImage GetImage(int idx)
         {
@@ -844,6 +852,7 @@ namespace RocketEcommerceAPI.Components
         public bool DebugMode { get; set; }
         public int PortalId { get; set; }
         public bool Exists { get {if (Info.ItemID  <= 0) { return false; } else { return true; }; } }
+        [Obsolete("Use DefaultImageUrl() or GetImage(0) ")]
         public string LogoRelPath
         {
             get

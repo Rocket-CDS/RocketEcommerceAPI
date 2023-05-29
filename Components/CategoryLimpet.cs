@@ -211,12 +211,9 @@ namespace RocketEcommerceAPI.Components
             url = LocalUtils.TokenReplacementCultureCode(url, CultureCode.ToLower());
             return url;
         }
-        public string CategoryUrl(SessionParams sessionParamData, RemoteModule remoteModule)
+        public string CategoryUrl(SessionParams sessionParamData)
         {
-            if (remoteModule.PageUrlList(sessionParamData.CultureCode) == "")
-                return UrlTokens(sessionParamData.PageListUrl + PortalShop.ProductListPageUrl, sessionParamData.Page, sessionParamData.PageSize);
-            else
-                return UrlTokens(remoteModule.PageUrlList(sessionParamData.CultureCode) + PortalShop.ProductListPageUrl, sessionParamData.Page, sessionParamData.PageSize);
+            return UrlTokens(sessionParamData.PageListUrl + PortalShop.ProductListPageUrl, sessionParamData.Page, sessionParamData.PageSize);
         }
 
         #region "images"

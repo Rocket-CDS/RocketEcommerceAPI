@@ -607,6 +607,7 @@ namespace RocketEcommerceAPI.Components
         public int CartLimit { get { return 50; } }
         public int CartDays { get { return 7; } }
         public bool ManualCategoryOrderby { get { return Info.GetXmlPropertyBool("genxml/checkbox/manualcategoryorderby"); } }
+        public string ApiUrl { get { return "/Desktopmodules/dnnrocket/api/rocket/action"; } }
 
 
         #endregion

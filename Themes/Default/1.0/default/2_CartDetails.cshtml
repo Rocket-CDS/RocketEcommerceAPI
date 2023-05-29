@@ -21,10 +21,10 @@
     var sessionParams = (SessionParams)Model.SessionParamsData;
     var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
     var companyData = (CompanyLimpet)Model.GetDataObject("companydata");
-    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
     var appThemeDefault = (AppThemeLimpet)Model.GetDataObject("appthemedefault");
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("appthemeview");
 }
-@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+@AddProcessDataResx(appTheme, true)
 
 <div id="datasection" class="w3-container">
 

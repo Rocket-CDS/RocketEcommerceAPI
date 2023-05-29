@@ -15,13 +15,14 @@
     var companyData = (CompanyLimpet)Model.GetDataObject("companydata");
     var sessionParams = (SessionParams)Model.SessionParamsData;
     var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
-
     var cartitemList = cartData.CartItemList;
     var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
-    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
     var appThemeDefault = (AppThemeLimpet)Model.GetDataObject("appthemedefault");
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("appthemeview");
 }
-@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+
+@AddProcessDataResx(appTheme, true)
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerceAPI/App_LocalResources/")
 
 <div id="datasection" class="w3-row">
 
@@ -31,7 +32,7 @@
         <div class="w3-button w3-border w3-left w3-margin-bottom w3-light-grey" onclick="location.reload();return false;"><span class="material-icons">home</span>&nbsp;@ResourceKey("RE.continueshopping", sessionParams.CultureCode)</div>
         @if (cartitemList.Count > 0)
         {
-            <div class="w3-button w3-border w3-right w3-margin-left w3-margin-bottom simplisity_click" s-cmd="rocketecommerceapi_savecartlist" s-post='#datasection' s-return='.ecommerce-container' s-list=".products" s-fields='{"systemkey":"rocketecommerceapi","template":"@(portalShop.Record.GetXmlProperty("genxml/checkouttemplate"))","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonText(ButtonTypes.next, sessionParams.CultureCode)</div>
+            <div class="w3-button w3-border w3-right w3-margin-left w3-margin-bottom simplisity_click" s-cmd="rocketecommerceapi_savecartlist" s-post='#datasection' s-return='.ecommerce-container' s-list=".products" s-fields='{"systemkey":"rocketecommerceapi","template":"@(portalShop.Record.GetXmlProperty("genxml/checkouttemplate"))","moduleref":"@(sessionParams.ModuleRef)"}'>@ButtonText(ButtonTypes.next, sessionParams.CultureCode)</div>
         }
     </div>
 
@@ -39,7 +40,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#ecommerce-tag').activateSimplisityPanel('@(sessionParams.ApiUrl)')
+        $('#ecommerce-tag').activateSimplisityPanel('@(portalShop.ApiUrl)')
         $('html, body').stop().animate({
             'scrollTop': $("#ecommerce-tag").offset().top
         }, 400, 'swing', function () {

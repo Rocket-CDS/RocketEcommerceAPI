@@ -18,12 +18,12 @@
     }
     var sessionParams = (SessionParams)Model.SessionParamsData;
     var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
-    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
     var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
     var appThemeDefault = (AppThemeLimpet)Model.GetDataObject("appthemedefault");
-
+    var moduleSettings = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("appthemeview");
 }
-@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + remoteModule.AppThemeViewFolder + "/" + remoteModule.AppThemeViewVersion + "/resx/")
+@AddProcessDataResx(appTheme, true)
 
 <div id="datasection">
 
@@ -162,10 +162,10 @@
         </div>
 
         <div class="w3-row w3-margin-top w3-margin-bottom">
-            <div class="w3-button w3-border w3-left simplisity_click" s-cmd="rocketecommerceapi_cartship" s-return='.ecommerce-container' s-fields='{"systemkey":"rocketecommerceapi","template":"@(portalShop.Record.GetXmlProperty("genxml/checkouttemplate"))","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonText(ButtonTypes.previous, sessionParams.CultureCode)</div>
+            <div class="w3-button w3-border w3-left simplisity_click" s-cmd="rocketecommerceapi_cartship" s-return='.ecommerce-container' s-fields='{"systemkey":"rocketecommerceapi","template":"@(portalShop.Record.GetXmlProperty("genxml/checkouttemplate"))","moduleref":"@(moduleSettings.ModuleRef)"}'>@ButtonText(ButtonTypes.previous, sessionParams.CultureCode)</div>
             <div class="w3-button w3-border w3-left w3-margin-left w3-light-grey w3-hide-small" onclick="location.reload();return false;"><span class="material-icons">home</span>&nbsp;@ResourceKey("RE.continueshopping", sessionParams.CultureCode)</div>
-            <div class="w3-button w3-border w3-left w3-margin-left w3-hide-small simplisity_click " s-cmd="rocketecommerceapi_cartsummary" s-return='.ecommerce-container' s-fields='{"systemkey":"rocketecommerceapi","template":"cartsummary.cshtml","moduleref":"@(remoteModule.ModuleRef)"}'>@ButtonIcon(ButtonTypes.refresh, sessionParams.CultureCode)</div>
-            <div class="w3-button w3-border w3-right w3-margin-left w3-pale-green dovalidate simplisity_click" s-cmd="rocketecommerceapi_paymentoptions" s-return='#ecommerce-tag' s-fields='{"moduleref":"@(remoteModule.ModuleRef)"}'>@ResourceKey("RE.pay").ToString().ToUpper()&nbsp;@ButtonIcon(ButtonTypes.next, sessionParams.CultureCode)</div>
+            <div class="w3-button w3-border w3-left w3-margin-left w3-hide-small simplisity_click " s-cmd="rocketecommerceapi_cartsummary" s-return='.ecommerce-container' s-fields='{"systemkey":"rocketecommerceapi","template":"cartsummary.cshtml","moduleref":"@(moduleSettings.ModuleRef)"}'>@ButtonIcon(ButtonTypes.refresh, sessionParams.CultureCode)</div>
+            <div class="w3-button w3-border w3-right w3-margin-left w3-pale-green dovalidate simplisity_click" s-cmd="rocketecommerceapi_paymentoptions" s-return='#ecommerce-tag' s-fields='{"moduleref":"@(moduleSettings.ModuleRef)"}'>@ResourceKey("RE.pay").ToString().ToUpper()&nbsp;@ButtonIcon(ButtonTypes.next, sessionParams.CultureCode)</div>
         </div>
 
     </div>

@@ -12,7 +12,6 @@
     var sessionParams = (SessionParams)Model.SessionParamsData;
     var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
     var productDataList = (ProductLimpetList)Model.GetDataObject("productlist");
-    var remoteModule = (RemoteModule)Model.GetDataObject("remotemodule");
     var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
     var categoryData = new CategoryLimpet(portalShop.PortalId, sessionParams.GetInt("searchcategoryid"), sessionParams.CultureCode);
 }
@@ -26,7 +25,7 @@
                 <span class="material-icons dosearch" style="cursor: pointer;" onclick="$('.triggersearch').trigger('click');">
                     search
                 </span>
-                <span class="material-icons w3-small clearsearch" onclick="$('.triggersearch').trigger('click');" style="vertical-align: top; display: none; cursor: pointer; ">
+                <span class="material-icons w3-small clearsearch" onclick="$('#searchtext').val('');$('.triggersearch').trigger('click');" style="vertical-align: top; display: none; cursor: pointer; ">
                     cancel
                 </span>
             </span>

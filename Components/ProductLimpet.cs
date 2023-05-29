@@ -286,7 +286,7 @@ namespace RocketEcommerceAPI.Components
             url = LocalUtils.TokenReplacementCultureCode(url, CultureCode.ToLower());
             return url;
         }
-        public string ListReturnUrl(SessionParams sessionParamData, RemoteModule remoteModule)
+        public string ListReturnUrl(SessionParams sessionParamData)
         {
             var url = "";
             if (sessionParamData.PageListUrl == "")
@@ -297,7 +297,7 @@ namespace RocketEcommerceAPI.Components
             if (catid > 0)
             {
                 var categoryData = new CategoryLimpet(PortalId, catid, CultureCode);
-                return categoryData.CategoryUrl(sessionParamData, remoteModule);
+                return categoryData.CategoryUrl(sessionParamData);
             }
             else
             {

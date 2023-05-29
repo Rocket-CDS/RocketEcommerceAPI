@@ -57,6 +57,13 @@ namespace RocketEcommerceAPI.Components
         public void Save(SimplisityInfo info)
         {
             Record.XMLData = info.XMLData;
+
+            var checkouttype = Record.GetXmlPropertyInt("genxml/checkouttype");
+            if (checkouttype < 3)
+            {
+                Record.SetXmlProperty("genxml/checkouttemplate", checkouttype + "_CartDetails.cshtml");
+            }
+
             UpdateCurrencyCode(CurrencyCultureCode);
             Update();
         }

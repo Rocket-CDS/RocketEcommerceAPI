@@ -1,6 +1,7 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
 using RocketEcommerceAPI.Components;
+using RocketPortal.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,8 @@ namespace RocketEcommerceAPI.API
                     _dataObject.PortalData.Update();
                 }
                 _dataObject.PortalShop.ClearPortalCache();
+                _dataObject.SetDataObject("portaldata", new PortalLimpet(portalId));
+
                 return "OK";
             }
             return "Invalid Portal SiteKey";

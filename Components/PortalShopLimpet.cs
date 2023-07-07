@@ -598,15 +598,19 @@ namespace RocketEcommerceAPI.Components
         {
             get
             {
-                return new AppThemeDataList("rocketecommerceapi");
+                return new AppThemeDataList(PortalId, "rocketecommerceapi");
             }
         }
-        public string ProductListPageUrl { get { return Record.GetXmlProperty("genxml/textbox/productlisturl"); } }
-        public string ProductListPagingUrl { get { return Record.GetXmlProperty("genxml/textbox/productlistpagingurl"); } }
-        public string ProductDetailPageUrl { get { return Record.GetXmlProperty("genxml/textbox/productdetailurl"); } }
-        public string PaymentPageUrl { get { return Record.GetXmlProperty("genxml/textbox/paymentpageurl"); } }
-        public string ProductListURL { get { return Record.GetXmlProperty("genxml/textbox/producturl"); } }
-        public string ProductDetailURL { get { if (Record.GetXmlProperty("genxml/textbox/productdetailurl") == "") return ProductListPageUrl; else return Record.GetXmlProperty("genxml/textbox/productdetailurl"); } }
+        public int PaymentPageId { get { return Record.GetXmlPropertyInt("genxml/textbox/paymentpagetabid"); } }
+        public string PaymentPageUrl { get { return PagesUtils.GetPageURL(PaymentPageId); } }
+        public int ProductListPageId { get { return Record.GetXmlPropertyInt("genxml/textbox/productlisttabid"); } }
+        public string ProductListURL { get { return PagesUtils.GetPageURL(ProductListPageId); } }
+        public int ProductDetailPageId { get { return Record.GetXmlPropertyInt("genxml/textbox/productdetailtabid"); } }
+        public string ProductDetailURL { get { return PagesUtils.GetPageURL(ProductDetailPageId); } }
+        public int CartPageId { get { return Record.GetXmlPropertyInt("genxml/textbox/carttabid"); } }
+        public string CartURL { get { return PagesUtils.GetPageURL(CartPageId); } }
+        public int CheckOutPageId { get { return Record.GetXmlPropertyInt("genxml/textbox/checkouttabid"); } }
+        public string CheckOutURL { get { return PagesUtils.GetPageURL(CheckOutPageId); } }
         public int ImageResize { get { if (Record.GetXmlPropertyInt("genxml/imageresize") > 0) return Record.GetXmlPropertyInt("genxml/imageresize"); else return 640; } }
         public string ProjectName { get { return Record.GetXmlProperty("genxml/select/selectedprojectname"); } set { Record.SetXmlProperty("genxml/select/selectedprojectname", value); } }
         public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/select/apptheme"); } }

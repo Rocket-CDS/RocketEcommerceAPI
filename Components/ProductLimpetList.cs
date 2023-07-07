@@ -228,7 +228,7 @@ namespace RocketEcommerceAPI.Components
         public string PagingUrl(int page)
         {
             var categoryData = new CategoryLimpet(PortalShop.PortalId, CategoryId, _langRequired);
-            var url = SessionParamData.PageUrl.TrimEnd('/') + PortalShop.ProductListPagingUrl;
+            var url = SessionParamData.PageUrl.TrimEnd('/') + PortalShop.ProductListURL;
             url = url.Replace("{page}", page.ToString());
             url = url.Replace("{pagesize}", SessionParamData.PageSize.ToString());
             url = url.Replace("{catid}", categoryData.CategoryId.ToString());

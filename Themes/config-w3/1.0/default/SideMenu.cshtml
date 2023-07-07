@@ -15,8 +15,8 @@
     var sessionParams = Model.SessionParamsData;
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
     var appThemeSystem = new AppThemeSystemLimpet(systemData.SystemKey);
+    var rtnUrl = DNNrocketUtils.NavigateURL(sessionParams.TabId,  new string[0]);
 }
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/@(portalData.ColorAdminTheme)">
 
 
 @functions
@@ -125,6 +125,10 @@
 
     </div>
 
+    <hr>
+    <a class="w3-bar-item w3-button w3-padding"" href="@rtnUrl" ><strong><span class='material-icons'>arrow_back</span>&nbsp;@ResourceKey("DNNrocket.back")</strong></a>
+
+
     <!-- Admin Menu -->
     <div class="w3-bottom w3-theme-l5" style="width:280px;">
         <div class="w3-bar-block">
@@ -200,6 +204,12 @@
         $('#sidebarplaceholder').activateSimplisityPanel();
 
     });
+
+    function selectMenu(interfacekey) {
+        $('.sidemenubutton').removeClass("w3-theme-d2");
+        $('.sidemenu' + interfacekey).addClass("w3-theme-d2");
+    }
+
 
 </script>
 

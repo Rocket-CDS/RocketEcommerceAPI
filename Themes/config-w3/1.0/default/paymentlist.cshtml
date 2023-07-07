@@ -13,10 +13,13 @@
     var paymentLimpetList = (PaymentLimpetList)Model.List.First();
     var lp1 = 0;
     var passModel = new SimplisityRazor(paymentLimpetList.PortalShop, new Dictionary<string, string>());
-    var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
+    var appThemeSystem = new AppThemeSystemLimpet(paymentLimpetList.PortalShop.PortalId, "rocketecommerceapi");
 }
 
-@RenderLanguageSelector("paymentadmin_editlist", "", appThemeSystem, Model)
+@{
+    var sFieldDict = new Dictionary<string, string>();
+}
+@RenderLanguageSelector("paymentadmin_editlist", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
 

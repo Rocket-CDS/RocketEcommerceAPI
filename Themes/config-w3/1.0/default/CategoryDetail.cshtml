@@ -24,7 +24,11 @@
     var sessionParams = Model.SessionParamsData;
 }
 
-@RenderLanguageSelector("categoryadmin_edit", "{\"categoryid\":\"" + categoryData.CategoryId + "\"}", appThemeSystem, Model)
+@{
+    var sFieldDict = new Dictionary<string, string>();
+    sFieldDict.Add("categoryid", categoryData.CategoryId.ToString());
+}
+@RenderLanguageSelector("categoryadmin_edit", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
 

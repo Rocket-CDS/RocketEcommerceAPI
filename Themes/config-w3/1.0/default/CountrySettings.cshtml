@@ -2,6 +2,8 @@
 @using DNNrocketAPI;
 @using Simplisity;
 @using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Components;
+@using RocketPortal.Components
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Country/App_LocalResources/")
@@ -13,9 +15,10 @@
     {
         clist.Add(i.GetXmlProperty("genxml/hidden/countrycode"));
     }
+    var appThemeSystem = new AppThemeSystemLimpet(info.PortalId, "rocketecommerceapi");
+    var sFieldDict = new Dictionary<string, string>();
 }
-
-@RenderLanguageSelector("settingcountry_get", "", "rocketecommerceapi", Model)
+@RenderLanguageSelector("settingcountry_get", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
     <div class="w3-row w3-padding">

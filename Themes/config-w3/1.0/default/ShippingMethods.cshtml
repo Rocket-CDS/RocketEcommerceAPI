@@ -14,9 +14,10 @@
 @{
     var portalShop = (PortalShopLimpet)Model.List.First();
     var systemData = new SystemLimpet("rocketecommerceapi");
+    var appThemeSystem = new AppThemeSystemLimpet(portalShop.PortalId, systemData.SystemKey);
+    var sFieldDict = new Dictionary<string, string>();
 }
-
-@RenderLanguageSelector("shippingmethods_list", "", "rocketecommerceapi", Model)
+@RenderLanguageSelector("shippingmethods_list", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
 

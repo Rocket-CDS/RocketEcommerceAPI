@@ -269,7 +269,7 @@ namespace RocketEcommerceAPI.Components
         {
             var pageUrl = remoteModule.PageUrlDetail(CultureCode);
             if (String.IsNullOrEmpty(pageUrl)) pageUrl = sessionParams.PageDetailUrl;
-            var url = pageUrl.TrimEnd('/') + PortalShop.ProductDetailPageUrl;
+            var url = pageUrl.TrimEnd('/') + PortalShop.ProductDetailURL;
             url = url.Replace("{page}", sessionParams.Page.ToString());
             url = url.Replace("{pagesize}", sessionParams.PageSize.ToString());
             url = url.Replace("{productid}", ProductId.ToString());
@@ -290,9 +290,9 @@ namespace RocketEcommerceAPI.Components
         {
             var url = "";
             if (sessionParamData.PageListUrl == "")
-                url = sessionParamData.PageUrl + PortalShop.ProductListPagingUrl;
+                url = sessionParamData.PageUrl + PortalShop.ProductListURL;
             else
-                url = sessionParamData.PageListUrl + PortalShop.ProductListPagingUrl;
+                url = sessionParamData.PageListUrl + PortalShop.ProductListURL;
             var catid = sessionParamData.GetInt("catid");
             if (catid > 0)
             {

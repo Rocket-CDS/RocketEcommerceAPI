@@ -32,7 +32,11 @@
 
 }
 
-@RenderLanguageSelector("productadmin_editproduct", "{\"productid\":\"" + productData.ProductId + "\"}", appThemeSystem, Model)
+@{
+    var sFieldDict = new Dictionary<string, string>();
+    sFieldDict.Add("productid", productData.ProductId.ToString());
+}
+@RenderLanguageSelector("productadmin_editproduct", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding w3-margin-top'>
 

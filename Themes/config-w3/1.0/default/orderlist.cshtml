@@ -16,7 +16,10 @@
     var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
 }
 
-@RenderLanguageSelector("orderadmin_editlist", "", appThemeSystem, Model)
+@{
+    var sFieldDict = new Dictionary<string, string>();
+}
+@RenderLanguageSelector("orderadmin_editlist", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
 

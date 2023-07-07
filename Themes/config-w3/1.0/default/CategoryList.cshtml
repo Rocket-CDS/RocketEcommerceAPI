@@ -20,7 +20,11 @@
     var appThemeSystem = new AppThemeSystemLimpet(systemData.SystemKey);
 }
 
-@RenderLanguageSelector("categoryadmin_editlist", "{\"categoryid\":\"" + categoryDataList.SelectedParentId + "\"}", appThemeSystem, Model)
+@{
+    var sFieldDict = new Dictionary<string, string>();
+    sFieldDict.Add("categoryid", categoryDataList.SelectedParentId.ToString());
+}
+@RenderLanguageSelector("categoryadmin_editlist", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
 

@@ -18,9 +18,10 @@
     var passModel = new SimplisityRazor(portalShop, new Dictionary<string, string>());
     var editlang = notificationData.CultureCode;
     var sessionParams = Model.SessionParamsData;
+    var appThemeSystem = new AppThemeSystemLimpet(portalShop.PortalId, systemData.SystemKey);
+    var sFieldDict = new Dictionary<string, string>();
 }
-
-@RenderLanguageSelector("notification_edit", "", portalShop.SystemKey, Model)
+@RenderLanguageSelector("notification_edit", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
 

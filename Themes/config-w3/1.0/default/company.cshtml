@@ -18,7 +18,10 @@
     var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
 }
 
-@RenderLanguageSelector("company_edit", "", portalShop.SystemKey, Model)
+@{
+    var sFieldDict = new Dictionary<string, string>();
+}
+@RenderLanguageSelector("company_edit", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
 

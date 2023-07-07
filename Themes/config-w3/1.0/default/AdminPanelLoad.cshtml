@@ -1,0 +1,34 @@
+@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketEcommerceAPI.Components;
+@using RocketPortal.Components;
+@using Rocket.AppThemes.Components;
+@using System.Web;
+
+@{
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var articleId = Model.SessionParamsData.GetInt("articleid");
+    var sessionParams = Model.SessionParamsData;    
+}
+
+    <div id="adminpanel">
+        <div class="simplisity_loader">
+            <span class=" simplisity_loader_inner">
+            </span>
+        </div>
+    </div>
+    
+	
+    <script>
+
+        $(document).ready(function () {
+            $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', '@(systemData.SystemKey)_adminpanel', '{"systemkey":"@(systemData.SystemKey)","tabid":"@(sessionParams.TabId)","articleid":"@(articleId)"}', '')
+        });
+
+    </script>
+   

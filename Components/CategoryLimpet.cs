@@ -213,7 +213,7 @@ namespace RocketEcommerceAPI.Components
         }
         public string CategoryUrl(SessionParams sessionParamData)
         {
-            return UrlTokens(sessionParamData.PageListUrl + PortalShop.ProductListPageUrl, sessionParamData.Page, sessionParamData.PageSize);
+            return UrlTokens(sessionParamData.PageListUrl + PortalShop.ProductListURL, sessionParamData.Page, sessionParamData.PageSize);
         }
 
         #region "images"

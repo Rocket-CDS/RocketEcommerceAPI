@@ -150,6 +150,10 @@ namespace RocketEcommerceAPI.Components
             if (paramCmd == "checkout")
             {
             }
+            if (paramCmd == "pay")
+            {
+
+            }
 
             var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);

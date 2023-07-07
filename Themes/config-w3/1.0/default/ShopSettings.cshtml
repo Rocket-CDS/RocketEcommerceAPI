@@ -19,7 +19,10 @@
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");    
 }
 
-@RenderLanguageSelector("settingsadmin_edit", "", appThemeSystem, Model)
+@{
+    var sFieldDict = new Dictionary<string, string>();
+}
+@RenderLanguageSelector("settingsadmin_edit", sFieldDict, appThemeSystem, Model)
 
 <div id="" class="w3-display-container w3-animate-opacity">
 

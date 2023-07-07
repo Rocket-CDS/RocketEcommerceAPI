@@ -547,7 +547,7 @@ namespace RocketEcommerceAPI.Components
                             var url = (string)o.SelectToken("genxml.remotemodule.genxml.remote.detailpageurl" + cultureCode);
                             if (String.IsNullOrEmpty(url)) url = (string)o.SelectToken("genxml.sessionparams.r.pagedetailurl");
                             if (String.IsNullOrEmpty(url)) url = (string)o.SelectToken("genxml.sessionparams.r.pageurl");
-                            url = url.TrimEnd('/') + productData.PortalShop.ProductDetailPageUrl;
+                            url = url.TrimEnd('/') + productData.PortalShop.ProductDetailURL;
                             url = url.Replace("{productid}", productData.ProductId.ToString());
                             url = url.Replace("{productname}", GeneralUtils.UrlFriendly(productData.Name));
                             // Remove to stop duplicate content

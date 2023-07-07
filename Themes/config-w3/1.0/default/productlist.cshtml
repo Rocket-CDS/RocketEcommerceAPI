@@ -15,7 +15,10 @@
     var appThemeSystem = new AppThemeSystemLimpet(productDataList.PortalShop.PortalId, "rocketecommerceapi");
 }
 
-@RenderLanguageSelector("productadmin_editproductlist", "", appThemeSystem, Model)
+@{
+    var sFieldDict = new Dictionary<string, string>();
+}
+@RenderLanguageSelector("productadmin_editproductlist", sFieldDict, appThemeSystem, Model)
 
 <div class='w3-animate-opacity w3-padding'>
 

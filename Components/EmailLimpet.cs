@@ -31,7 +31,7 @@ namespace RocketEcommerceAPI.Components
         /// <returns>true if email sent, fail is failed.  [If shop emails are off, then no email is sent. In that case, if in debug mode we still return true, in not in debug module we return false.]</returns>
         public bool SendEmail(string toEmail, string templateName, string subject = "")
         {
-            var appThemeDefault = new AppThemeLimpet(SystemData, "Default", "1.0");
+            var appThemeDefault = new AppThemeLimpet(PortalId, SystemData, "Default", "1.0");
 
             _emailData.ToEmail = toEmail;
             _emailData.FromEmail = CompanyData.FromEmail;

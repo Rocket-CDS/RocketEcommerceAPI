@@ -16,8 +16,8 @@
     var info = portalShop.Info;
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
     var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
-    var appThemeList = new AppThemeDataList(portalShop.ProjectName, systemData.SystemKey);
-
+    var appThemeList = (AppThemeDataList)Model.GetDataObject("appthemedatalist");
+    
     var projectData = new AppThemeProjectLimpet();
     var selectedProject = portalShop.ProjectName;
     if (selectedProject == "" && projectData.ActiveList().Count > 0)

@@ -211,9 +211,11 @@ namespace RocketEcommerceAPI.Components
             url = LocalUtils.TokenReplacementCultureCode(url, CultureCode.ToLower());
             return url;
         }
-        public string CategoryUrl(SessionParams sessionParamData)
+        public string CategoryUrl(ModuleContentLimpet moduleSettings)
         {
-            return UrlTokens(sessionParamData.PageListUrl + PortalShop.ProductListURL, sessionParamData.Page, sessionParamData.PageSize);
+            var dictParams = new Dictionary<string, string>();
+            dictParams.Add("catid", CategoryId.ToString());
+            return DNNrocketUtils.NavigateURL(moduleSettings.ListPageTabId(), dictParams, Name);
         }
 
         #region "images"

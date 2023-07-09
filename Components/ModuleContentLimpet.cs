@@ -12,5 +12,26 @@ namespace RocketEcommerceAPI.Components
         {             
         }
         public int DefaultCategoryId { get { return GetSettingInt("defaultcategory"); } }
+        public int ListPageTabId()
+        {
+            var rtn = GetSettingInt("listpage");
+            if (rtn == 0)
+            {
+                var p = new PortalShopLimpet(PortalId, DNNrocketUtils.GetCurrentCulture());
+                rtn = p.ProductListPageId;
+            }
+            return rtn;
+        }
+        public int DetailPageTabId()
+        {
+            var rtn = GetSettingInt("detailpage");
+            if (rtn == 0)
+            {
+                var p = new PortalShopLimpet(PortalId, DNNrocketUtils.GetCurrentCulture());
+                rtn = p.ProductDetailPageId;
+            }
+            return rtn;
+        }
+
     }
 }

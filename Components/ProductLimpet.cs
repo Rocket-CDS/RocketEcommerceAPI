@@ -265,51 +265,6 @@ namespace RocketEcommerceAPI.Components
             Info.AddListItem(listname);
             Update();
         }
-        public string DetailUrl(SessionParams sessionParams, RemoteModule remoteModule)
-        {
-            var pageUrl = remoteModule.PageUrlDetail(CultureCode);
-            if (String.IsNullOrEmpty(pageUrl)) pageUrl = sessionParams.PageDetailUrl;
-            var url = pageUrl.TrimEnd('/') + PortalShop.ProductDetailURL;
-            url = url.Replace("{page}", sessionParams.Page.ToString());
-            url = url.Replace("{pagesize}", sessionParams.PageSize.ToString());
-            url = url.Replace("{productid}", ProductId.ToString());
-            url = url.Replace("{productname}", GeneralUtils.UrlFriendly(Name));
-            url = url.Replace("{catid}", sessionParams.GetInt("catid").ToString()); // use int so we always get a value (i.e. "0")
-            url = url.Replace("{categoryname}", "");
-            url = LocalUtils.TokenReplacementCultureCode(url, CultureCode.ToLower());
-            return url;
-        }
-        public string UrlTokens(string url)
-        {
-            url = url.Replace("{productid}", ProductId.ToString());
-            url = url.Replace("{productname}", GeneralUtils.UrlFriendly(Name));
-            url = LocalUtils.TokenReplacementCultureCode(url, CultureCode.ToLower());
-            return url;
-        }
-        public string ListReturnUrl(SessionParams sessionParamData)
-        {
-            var url = "";
-            if (sessionParamData.PageListUrl == "")
-                url = sessionParamData.PageUrl + PortalShop.ProductListURL;
-            else
-                url = sessionParamData.PageListUrl + PortalShop.ProductListURL;
-            var catid = sessionParamData.GetInt("catid");
-            if (catid > 0)
-            {
-                var categoryData = new CategoryLimpet(PortalId, catid, CultureCode);
-                return categoryData.CategoryUrl(sessionParamData);
-            }
-            else
-            {
-                url = url.Replace("{catid}", catid.ToString());
-                url = url.Replace("{categoryname}", "");
-                url = url.Replace("{page}", sessionParamData.Page.ToString());
-                url = url.Replace("{pagesize}", sessionParamData.PageSize.ToString());
-                url = url.Replace("{sortorder}", "");
-                url = LocalUtils.TokenReplacementCultureCode(url, CultureCode.ToLower());
-                return url;
-            }
-        }
         public void Validate()
         {
             // Fix List attr flag (required for handlebars)

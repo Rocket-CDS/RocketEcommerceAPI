@@ -88,13 +88,13 @@ namespace RocketEcommerceAPI.Components
                     ClearPropertyFilters();
                     SessionParamData.SearchText = "";
                 }
-                if (propertyFilter != "") _searchcategoryid = 0;
+                if (propertyFilter != "") _catid = 0;
             }
-            if (searchText != "") _searchcategoryid = 0;
+            if (searchText != "") _catid = 0;
 
             _searchFilter += searchText;
             _searchFilter += propertyFilter;
-            if (_searchcategoryid > 0) _searchFilter += " and [CATXREF].[XrefItemId] = " + _searchcategoryid + " ";
+            if (_catid > 0) _searchFilter += " and [CATXREF].[XrefItemId] = " + _catid + " ";
 
             // Filter hidden
             if (!showHidden) _searchFilter += " and NOT(isnull([XMLData].value('(genxml/checkbox/hidden)[1]','nvarchar(4)'),'false') = 'true') ";

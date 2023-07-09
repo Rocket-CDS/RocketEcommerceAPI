@@ -72,7 +72,7 @@ namespace RocketEcommerceAPI.Components
             if (ProductData.Exists)
             {
                 ModelId = Record.GetXmlProperty("genxml/modelid");
-                Qty = Record.GetXmlPropertyDouble("genxml/qty");
+                Qty = Record.GetXmlPropertyInt("genxml/qty");
                 Key = Record.GetXmlProperty("genxml/key");
                 Model = ProductData.GetModel(ModelId);
                 PriceCents = Model.BestPriceCents;
@@ -93,7 +93,7 @@ namespace RocketEcommerceAPI.Components
         public PortalShopLimpet PortalShop { get; private set; }
         public int ProductId { set; get; }
         public string ModelId { set; get; }
-        public double Qty { set; get; }
+        public int Qty { set; get; }
         public string Key { set; get; }
 
         public int PriceCents { set; get; }

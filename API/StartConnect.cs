@@ -432,12 +432,10 @@ namespace RocketEcommerceAPI.API
 
 
                 case "rocketecommerceapi_minicartqty":
-                    var cartData = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
-                    strOut = cartData.QtyCount.ToString();
+                    strOut = _dataObject.CartData.QtyCount.ToString();
                     break;
                 case "rocketecommerceapi_minicarttotal":
-                    var cartData2 = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
-                    strOut = cartData2.TotalDisplay;
+                    strOut = _dataObject.CartData.TotalDisplay;
                     break;
                 case "rocketecommerceapi_minicartjson":
                     rtnDic.Add("outputhtml", "");

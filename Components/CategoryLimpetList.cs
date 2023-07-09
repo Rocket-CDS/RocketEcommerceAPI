@@ -152,6 +152,12 @@ namespace RocketEcommerceAPI.Components
             }
             return treeList;
         }
+        public List<CategoryLimpet> GetCategoryByRef(string catRef)
+        {
+            List<CategoryLimpet> newList = _categoryList.Where(m => m.Ref == catRef).ToList();
+            return newList;
+        }
+
         public void Validate()
         {
             // validate categories

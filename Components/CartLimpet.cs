@@ -55,11 +55,8 @@ namespace RocketEcommerceAPI.Components
             PortalShop = new PortalShopLimpet(PortalId, CultureCode);
             CartItemList = CartUtils.GetCartItemList(Record, CultureCode);
             ItemCount = CartItemList.Count;
-            QtyCount = 0;
-            foreach (var c in CartItemList)
-            {
-                QtyCount += c.Qty;
-            }
+
+            ValidateCart();
         }
         public void Update()
         {
@@ -99,17 +96,20 @@ namespace RocketEcommerceAPI.Components
                 CopyBillToContact();
 
             // Cart Item Check and Calc
-            double total = 0;
+            int total = 0;
+            int qty = 0;
+            // Get any updated cart items.
+            CartItemList = CartUtils.GetCartItemList(Record, CultureCode);
             foreach (var ci in CartItemList)
             {
                 total += ci.TotalWithOptionsCents;
+                qty += ci.Qty;
             }
-            SubTotalCents = Convert.ToInt32(total);
+            QtyCount = qty;
+            SubTotalCents = total;
 
             // Shipping calc
-            //LogUtils.LogSystem("ValidateCart() [Before CalculateShippingCost]: cartid=" + Record.ItemID + " portalid=" + PortalShop.PortalId);
-            ShippingTotalCents =  CartUtils.CalculateShippingCost(Record.ItemID, PortalShop);
-            //LogUtils.LogSystem("ValidateCart() [After CalculateShippingCost]: cartid=" + Record.ItemID + " portalid=" + PortalShop.PortalId + " ShippingTotalCents=" + ShippingTotalCents);
+            ShippingTotalCents = CartUtils.CalculateShippingCost(this, PortalShop);
 
             TotalCents = SubTotalCents + DiscountTotalCents + ShippingTotalCents + TaxTotalCents;
         }
@@ -208,7 +208,7 @@ namespace RocketEcommerceAPI.Components
         public int OrderId { get { return Record.XrefItemId; } set { Record.XrefItemId = value; } }
         public PortalShopLimpet PortalShop { get; private set; }
         public int ItemCount { get; private set; }
-        public double QtyCount { get; private set; }
+        public int QtyCount { get; private set; }
         public List<CartItemLimpet> CartItemList { get; private set; }
 
 

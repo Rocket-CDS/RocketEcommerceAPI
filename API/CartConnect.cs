@@ -4,6 +4,7 @@ using RocketEcommerceAPI.Interfaces;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace RocketEcommerceAPI.API
@@ -57,6 +58,7 @@ namespace RocketEcommerceAPI.API
         public string SaveCartList()
         {
             _dataObject.CartData.UpdateProductList(_postInfo);
+            _dataObject.ReloadCart();
             return GetPublicCartContact();
         }
         public string SaveCartContact()

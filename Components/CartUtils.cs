@@ -130,7 +130,7 @@ namespace RocketEcommerceAPI.Components
                     }
                 }
                 var nod = record.XMLDoc.SelectSingleNode("genxml/products/genxml[key=\"" + p.GetXmlProperty("genxml/key") + "\"]/qty");
-                if (nod != null) record.SetXmlPropertyDouble("genxml/products/genxml[key=\"" + p.GetXmlProperty("genxml/key") + "\"]/qty", p.GetXmlPropertyDouble("genxml/qty"));
+                if (nod != null) record.SetXmlProperty("genxml/products/genxml[key=\"" + p.GetXmlProperty("genxml/key") + "\"]/qty", p.GetXmlPropertyInt("genxml/qty").ToString());
             }
             return record;
         }
@@ -218,12 +218,6 @@ namespace RocketEcommerceAPI.Components
             }
             return shiptotal;
         }
-        public static int CalculateShippingCost(int cartId, PortalShopLimpet portalShop)
-        {
-            var cartData = new CartLimpet(cartId);
-            return CalculateShippingCost(cartData, portalShop);
-        }
-
         public static PaymentLimpet CartBankReturn(SimplisityInfo paramInfo)
         {
             var paymentData = new PaymentLimpet(PortalUtils.GetPortalId(), -1); // create new payment (not on DB until it is updated)

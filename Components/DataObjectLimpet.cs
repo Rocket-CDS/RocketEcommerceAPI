@@ -16,6 +16,8 @@ namespace RocketEcommerceAPI.Components
         private const string _systemkey = "rocketecommerceapi";
         private Dictionary<string, object> _dataObjects;
         private Dictionary<string, string> _settings;
+        private string _browserid;
+        private string _cultureCode;
         public DataObjectLimpet(int portalid, string moduleRef, SessionParams sessionParams, bool editMode = true)
         {
             var cultureCode = sessionParams.CultureCodeEdit;
@@ -28,6 +30,8 @@ namespace RocketEcommerceAPI.Components
         }
         public void Populate(int portalid, string moduleRef, string cultureCode, int moduleId, int tabId, string browserid)
         {
+            _browserid = browserid;
+            _cultureCode = cultureCode;
             _settings = new Dictionary<string, string>();
             _dataObjects = new Dictionary<string, object>();
             var systemData = new SystemLimpet(_systemkey);
@@ -52,8 +56,12 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("categorylist", new CategoryLimpetList(portalid, cultureCode, true));
             SetDataObject("propertylist", new PropertyLimpetList(portalid, cultureCode));
             SetDataObject("portalstats", new PortalShopLimpetStats(portalShop));
-            SetDataObject("cartdata", new CartLimpet(browserid, cultureCode));
+            SetDataObject("cartdata", new CartLimpet(_browserid, cultureCode));
 
+        }
+        public void ReloadCart()
+        {
+            SetDataObject("cartdata", new CartLimpet(_browserid, _cultureCode));
         }
         public void SetDataObject(String key, object value)
         {

@@ -284,8 +284,6 @@ namespace RocketEcommerceAPI.API
 
             var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCode, true, false, _dataObject.ShopSettings.DefaultCategoryId);
 
-            var cartData = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
-            _dataObject.DataObjects.Add("cartdata", cartData);
             _dataObject.DataObjects.Add("productlist", articleDataList);
 
             var categoryDataList = new CategoryLimpetList(_dataObject.PortalShop.PortalId, _sessionParams.CultureCode, true);
@@ -310,8 +308,6 @@ namespace RocketEcommerceAPI.API
             var razorTempl = AssignRemoteTemplate();
             if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppThemeView.AppThemeFolder;
 
-            var cartData = new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode);
-            _dataObject.DataObjects.Add("cartdata", cartData);
             _dataObject.DataObjects.Add("productdata", articleData);
 
             var categoryDataList = new CategoryLimpetList(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit, true);

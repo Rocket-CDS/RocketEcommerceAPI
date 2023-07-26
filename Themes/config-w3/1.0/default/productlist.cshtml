@@ -34,7 +34,10 @@
             var orderbyDictionary = new Dictionary<string, string>();
             foreach (var orderbyInfo in productDataList.PortalShop.GetProductOrderByList())
             {
-                orderbyDictionary.Add(orderbyInfo.GetXmlProperty("genxml/key"), ResourceKey("RE." + orderbyInfo.GetXmlProperty("genxml/key")).ToString());
+                if (!orderbyDictionary.ContainsKey(orderbyInfo.GetXmlProperty("genxml/key")))
+                {
+                    orderbyDictionary.Add(orderbyInfo.GetXmlProperty("genxml/key"), ResourceKey("RE." + orderbyInfo.GetXmlProperty("genxml/key")).ToString());
+                }
             }
         }
         <div class="w3-bar-item w3-right w3-hide-small w3-margin-left">

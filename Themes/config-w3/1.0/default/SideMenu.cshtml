@@ -15,7 +15,8 @@
     var sessionParams = Model.SessionParamsData;
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
     var appThemeSystem = new AppThemeSystemLimpet(systemData.SystemKey);
-    var rtnUrl = DNNrocketUtils.NavigateURL(sessionParams.TabId,  new string[0]);
+    var userParams = new UserParams(0);
+    var viewurl = userParams.Get("viewurl");
 }
 
 
@@ -126,7 +127,7 @@
     </div>
 
     <hr>
-    <a class="w3-bar-item w3-button w3-padding"" href="@rtnUrl" ><strong><span class='material-icons'>arrow_back</span>&nbsp;@ResourceKey("DNNrocket.back")</strong></a>
+    <a class="w3-bar-item w3-button w3-padding" href="@viewurl"><strong><span class='material-icons'>arrow_back</span>&nbsp;@ResourceKey("DNNrocket.back")</strong></a>
 
 
     <!-- Admin Menu -->

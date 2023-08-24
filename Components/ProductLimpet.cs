@@ -197,8 +197,8 @@ namespace RocketEcommerceAPI.Components
                 if (mPrice < pmin || pmin == 0) pmin = mPrice;
                 if (mPrice > pmax || pmax == 0) pmax = mPrice;
                 var msPrice = m.GetXmlPropertyInt("genxml/textbox/modelsaleprice");
-                if (msPrice < psmin || psmin == 0) psmin = msPrice;
-                if (msPrice > psmax || psmax == 0) psmax = msPrice;
+                if ((msPrice > 0 && msPrice < psmin) || psmin == 0) psmin = msPrice;
+                if ((msPrice > 0 && msPrice > psmax) || psmax == 0) psmax = msPrice;
             }
             if (psmin == 0) psmin = psmax; // if we have a sale price, the minimum should always be set.
             Info.SetXmlPropertyInt("genxml/priceminimum", pmin.ToString());

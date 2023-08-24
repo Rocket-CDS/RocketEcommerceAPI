@@ -27,7 +27,7 @@
     <script>
 
         $(document).ready(function () {
-            $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', '@(systemData.SystemKey)_adminpanel', '{"systemkey":"@(systemData.SystemKey)","tabid":"@(sessionParams.TabId)","articleid":"@(articleId)"}', '')
+            $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', '@(systemData.SystemKey)_adminpanel', '{"systemkey":"@(systemData.SystemKey)","tabid":"@(sessionParams.TabId)","moduleid":"@(sessionParams.ModuleId)","articleid":"@(articleId)"}', '')
         });
 
     </script>

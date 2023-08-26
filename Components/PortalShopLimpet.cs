@@ -34,19 +34,19 @@ namespace RocketEcommerceAPI.Components
             if (PortalUtils.PortalExists(portalId))
             {
                 // Need to populate, not in cache.
-                DocFolderRel = PortalUtils.HomeDNNrocketDirectoryRel(PortalId).TrimEnd('/') + "/rocketecommerceapi/docs";
+                DocFolderRel = PortalUtils.HomeDNNrocketDirectoryRel(_portalId).TrimEnd('/') + "/rocketecommerceapi/docs";
                 DocFolderMapPath = DNNrocketUtils.MapPath(DocFolderRel);
-                ImageFolderRel = PortalUtils.HomeDNNrocketDirectoryRel(PortalId).TrimEnd('/') + "/rocketecommerceapi/images";
+                ImageFolderRel = PortalUtils.HomeDNNrocketDirectoryRel(_portalId).TrimEnd('/') + "/rocketecommerceapi/images";
                 ImageFolderMapPath = DNNrocketUtils.MapPath(ImageFolderRel);
-                ShopFolderRel = PortalUtils.HomeDNNrocketDirectoryRel(PortalId).TrimEnd('/') + "/rocketecommerceapi";
+                ShopFolderRel = PortalUtils.HomeDNNrocketDirectoryRel(_portalId).TrimEnd('/') + "/rocketecommerceapi";
                 ShopFolderMapPath = DNNrocketUtils.MapPath(ShopFolderRel);
                 if (!Directory.Exists(ShopFolderMapPath)) Directory.CreateDirectory(ShopFolderMapPath);
                 if (!Directory.Exists(ImageFolderMapPath)) Directory.CreateDirectory(ImageFolderMapPath);
                 if (!Directory.Exists(DocFolderMapPath)) Directory.CreateDirectory(DocFolderMapPath);
             }
 
-            _cacheKey = "PortalShop" + portalId + "*" + cultureCode;
-            Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey, portalId.ToString());
+            _cacheKey = "PortalShop" + _portalId + "*" + cultureCode;
+            Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey, _portalId.ToString());
             if (Record == null)
             {
                 ReadRecord(portalId, cultureCode);
@@ -100,13 +100,13 @@ namespace RocketEcommerceAPI.Components
                 if (!sqlInject)
                 {
                     Record = _objCtrl.SaveRecord(Record, _tableName); // you must cache what comes back.  that is the copy of the DB.
-                    CacheUtils.SetCache(_cacheKey, Record, PortalId.ToString());
+                    CacheUtils.SetCache(_cacheKey, Record, _portalId.ToString());
                 }
             }
             if (sqlInject)
             {
                 LogUtils.LogSystem("SQL INJECTION Attempt:" + Record.XMLData);
-                ReadRecord(Record.PortalId, Record.Lang);
+                ReadRecord(_portalId, Record.Lang);
             }
         }
         private void ReadRecord(int portalId, string cultureCode)
@@ -134,8 +134,8 @@ namespace RocketEcommerceAPI.Components
                 if (PortalUtils.PortalExists(portalId)) // check we have a portal, could be deleted
                 {
                     // create folder on first load.
-                    PortalUtils.CreateRocketDirectories(PortalId);
-                    if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath(PortalId))) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath(PortalId));
+                    PortalUtils.CreateRocketDirectories(_portalId);
+                    if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath(_portalId))) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath(_portalId));
                 }
             }
             CacheUtils.SetCache(_cacheKey, Record, portalId.ToString());
@@ -143,11 +143,11 @@ namespace RocketEcommerceAPI.Components
         public void Validate()
         {
             // check for existing page on portal for this system
-            var tabid = PagesUtils.CreatePage(PortalId, _systemkey);
-            PagesUtils.AddPagePermissions(PortalId, tabid, DNNrocketRoles.Manager);
-            PagesUtils.AddPagePermissions(PortalId, tabid, DNNrocketRoles.Editor);
-            PagesUtils.AddPagePermissions(PortalId, tabid, DNNrocketRoles.ClientEditor);
-            PagesUtils.AddPageSkin(PortalId, tabid, "rocketportal", "rocketadmin.ascx");
+            var tabid = PagesUtils.CreatePage(_portalId, _systemkey);
+            PagesUtils.AddPagePermissions(_portalId, tabid, DNNrocketRoles.Manager);
+            PagesUtils.AddPagePermissions(_portalId, tabid, DNNrocketRoles.Editor);
+            PagesUtils.AddPagePermissions(_portalId, tabid, DNNrocketRoles.ClientEditor);
+            PagesUtils.AddPageSkin(_portalId, tabid, "rocketportal", "rocketadmin.ascx");
         }
         public void Delete()
         {
@@ -157,7 +157,7 @@ namespace RocketEcommerceAPI.Components
         }
         public void RemoveCache()
         {
-            CacheUtils.RemoveCache(_cacheKey, PortalId.ToString());
+            CacheUtils.RemoveCache(_cacheKey, _portalId.ToString());
         }
         private string SqlFilterProduct { get { return Record.GetXmlProperty("genxml/sqlfilterproduct"); } }
         private string GetFilterSQL(string SqlFilterTemplate, SimplisityInfo paramInfo)
@@ -201,7 +201,7 @@ namespace RocketEcommerceAPI.Components
 
         public List<string> GetValidCultureCodes()
         {
-            return DNNrocketUtils.GetCultureCodeList(PortalId);
+            return DNNrocketUtils.GetCultureCodeList(_portalId);
         }
         public bool IsPaymentProviderActive(string interfaceKey)
         {
@@ -211,8 +211,8 @@ namespace RocketEcommerceAPI.Components
         }
         public List<PaymentInterface> GetAllPaymentMethods()
         {
-            var cacheKey = "GetAllPaymentMethods" + _systemkey + PortalId;
-            var rtn = (List<PaymentInterface>)CacheUtils.GetCache(cacheKey, PortalId.ToString());
+            var cacheKey = "GetAllPaymentMethods" + _systemkey + _portalId;
+            var rtn = (List<PaymentInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
             if (rtn != null) return rtn;
 
             var systemData = new SystemLimpet(_systemkey);
@@ -226,13 +226,13 @@ namespace RocketEcommerceAPI.Components
                     rtn.Add(bankprov);
                 }
             }
-            CacheUtils.SetCache(cacheKey, rtn, PortalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
             return rtn;
         }
         public List<PaymentInterface> GetActivePaymentMethods()
         {
-            var cacheKey = "GetActivePaymentMethods" + _systemkey + PortalId;
-            var rtn = (List<PaymentInterface>)CacheUtils.GetCache(cacheKey, PortalId.ToString());
+            var cacheKey = "GetActivePaymentMethods" + _systemkey + _portalId;
+            var rtn = (List<PaymentInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
             if (rtn != null) return rtn;
 
             rtn = new List<PaymentInterface>();
@@ -240,7 +240,7 @@ namespace RocketEcommerceAPI.Components
             {
                 if (p.Active() && IsPaymentProviderActive(p.PaymentProvKey())) rtn.Add(p);
             }
-            CacheUtils.SetCache(cacheKey, rtn, PortalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
             return rtn;
         }
         public bool IsShippingProviderActive(string interfaceKey)
@@ -251,8 +251,8 @@ namespace RocketEcommerceAPI.Components
         }
         public List<ShippingInterface> GetAllShippingProviders()
         {
-            var cacheKey = "GetAllShippingProviders" + _systemkey + PortalId;
-            var rtn = (List<ShippingInterface>)CacheUtils.GetCache(cacheKey, PortalId.ToString());
+            var cacheKey = "GetAllShippingProviders" + _systemkey + _portalId;
+            var rtn = (List<ShippingInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
             if (rtn != null) return rtn;
             var systemData = new SystemLimpet(_systemkey);
             rtn = new List<ShippingInterface>();
@@ -273,13 +273,13 @@ namespace RocketEcommerceAPI.Components
                     }
                 }
             }
-            CacheUtils.SetCache(cacheKey, rtn, PortalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
             return rtn;
         }
         public List<ShippingInterface> GetActiveShippingProviders()
         {
-            var cacheKey = "GetActiveShippingProviders" + _systemkey + PortalId;
-            var rtn = (List<ShippingInterface>)CacheUtils.GetCache(cacheKey, PortalId.ToString());
+            var cacheKey = "GetActiveShippingProviders" + _systemkey + _portalId;
+            var rtn = (List<ShippingInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
             if (rtn != null) return rtn;
 
             rtn = new List<ShippingInterface>();
@@ -287,7 +287,7 @@ namespace RocketEcommerceAPI.Components
             {
                 if (p.Active() && IsShippingProviderActive(p.ShipProvKey())) rtn.Add(p);
             }
-            CacheUtils.SetCache(cacheKey, rtn, PortalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
             return rtn;
         }
 
@@ -378,12 +378,12 @@ namespace RocketEcommerceAPI.Components
             get
             {
                 var countInt = 0;
-                var cacheCount = CacheUtils.GetCache("ArticleCount" + PortalId, PortalId.ToString());
+                var cacheCount = CacheUtils.GetCache("ArticleCount" + _portalId, _portalId.ToString());
                 if (cacheCount == null)
                 {
-                    var l = _objCtrl.GetList(PortalId, -1, "ART", "", CultureCode, "", 0, 0, 0, 0, _tableName);
+                    var l = _objCtrl.GetList(_portalId, -1, "ART", "", CultureCode, "", 0, 0, 0, 0, _tableName);
                     countInt = l.Count;
-                    CacheUtils.SetCache("ArticleCountCount" + PortalId, countInt.ToString(), PortalId.ToString());
+                    CacheUtils.SetCache("ArticleCountCount" + _portalId, countInt.ToString(), _portalId.ToString());
                 }
                 else
                 {
@@ -500,7 +500,7 @@ namespace RocketEcommerceAPI.Components
         /// <returns></returns>
         public string RemoteBase64Params()
         {
-            var portalData = new PortalLimpet(PortalId);
+            var portalData = new PortalLimpet(_portalId);
             var remoteParams = new RemoteParams();
             remoteParams.EngineURL = portalData.EngineUrlWithProtocol;
             remoteParams.SecurityKey = portalData.SecurityKey;
@@ -509,7 +509,7 @@ namespace RocketEcommerceAPI.Components
 
         public void ClearPortalCache()
         {
-            CacheUtils.ClearAllCache(PortalId.ToString());
+            CacheUtils.ClearAllCache(_portalId.ToString());
         }
 
         #region "Info - PortalCatalog Data"
@@ -526,12 +526,12 @@ namespace RocketEcommerceAPI.Components
             get
             {
                 var countInt = 0;
-                var cacheCount = CacheUtils.GetCache("ProductCount" + PortalId);
+                var cacheCount = CacheUtils.GetCache("ProductCount" + _portalId);
                 if (cacheCount == null)
                 {
-                    var l = _objCtrl.GetList(PortalId, -1, "PRD", "", CultureCode, "", 0, 0, 0, 0, _tableName);
+                    var l = _objCtrl.GetList(_portalId, -1, "PRD", "", CultureCode, "", 0, 0, 0, 0, _tableName);
                     countInt = l.Count;
-                    CacheUtils.GetCache("ProductCount" + PortalId, countInt.ToString());
+                    CacheUtils.GetCache("ProductCount" + _portalId, countInt.ToString());
                 }
                 else
                 {
@@ -556,7 +556,7 @@ namespace RocketEcommerceAPI.Components
         public string CurrencyGroupSeparator { get { return Record.GetXmlProperty("genxml/currencygroupseparator"); } set { Record.SetXmlProperty("genxml/currencygroupseparator", value.ToString()); } }
         public string CurrencySymbol { get { return Record.GetXmlProperty("genxml/currencysymbol"); } set { Record.SetXmlProperty("genxml/currencysymbol", value.ToString()); } }
         public string CurrencyCode { get { return Record.GetXmlProperty("genxml/currencycode"); } set { Record.SetXmlProperty("genxml/currencycode", value.ToString()); } }
-        public int PortalId { get { return Record.PortalId; } }
+        public int PortalId { get { return _portalId; } }
         public bool Exists { get { if (Record.ItemID > 0) return true; else return false; } }
         public string CultureCode { get { return Record.Lang; } }
         public bool ValidShop { get { if (Record.GetXmlProperty("genxml/maxproducts") != "") return true; else return false; } }
@@ -598,7 +598,7 @@ namespace RocketEcommerceAPI.Components
         {
             get
             {
-                return new AppThemeDataList(PortalId, "rocketecommerceapi");
+                return new AppThemeDataList(_portalId, "rocketecommerceapi");
             }
         }
         public int PaymentPageId { get { return Record.GetXmlPropertyInt("genxml/textbox/paymentpagetabid"); } }

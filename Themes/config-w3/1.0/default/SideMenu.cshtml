@@ -15,7 +15,7 @@
     var sessionParams = Model.SessionParamsData;
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
     var appThemeSystem = new AppThemeSystemLimpet(systemData.SystemKey);
-    var userParams = new UserParams("ModuleID:" + sessionParams.ModuleId);
+    var userParams = new UserParams("ModuleID:" + sessionParams.ModuleId, true);
     var viewurl = userParams.Get("viewurl");
 }
 

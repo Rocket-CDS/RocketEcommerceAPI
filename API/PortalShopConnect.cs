@@ -44,8 +44,6 @@ namespace RocketEcommerceAPI.API
                 if (portalShop.PortalId >= 0)
                 {
                     portalShop.Save(_postInfo);
-                    _dataObject.PortalData.Record.SetXmlProperty("genxml/systems/" + _systemkey + "setup", "True");
-                    _dataObject.PortalData.Update();
                 }
                 _dataObject.PortalShop.ClearPortalCache();
                 _dataObject.SetDataObject("portaldata", new PortalLimpet(portalId));

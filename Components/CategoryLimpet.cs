@@ -185,7 +185,7 @@ namespace RocketEcommerceAPI.Components
             }
             // Rebuild cacheKey, a new category we will have -1 for id in the old key.
             _cacheKey = "CategoryLimpet*" + PortalId + "*" + Info.ItemID + "*" + Info.Lang + "*" + _tableName;
-            CacheUtils.SetCache(_cacheKey, Info);
+            CacheUtils.RemoveCache(_cacheKey);
             return Info.ItemID;
         }
         public int ValidateAndUpdate()

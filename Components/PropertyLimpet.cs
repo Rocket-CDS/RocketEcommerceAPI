@@ -56,6 +56,7 @@ namespace RocketEcommerceAPI.Components
                 if (info != null) // check if we have a real record.
                 {
                     Info = info;
+                    CacheUtils.SetCache(_cacheKey, Info);
                 }
                 else
                     Info.ItemID = -1; // flags categories does not exist yet.
@@ -116,8 +117,6 @@ namespace RocketEcommerceAPI.Components
             if (testInfo != null && testInfo.ItemID != Info.ItemID)
             {
                 return -1;
-                //Info.SetXmlProperty("genxml/textbox/ref", Ref + GeneralUtils.GetRandomKey(5));
-                //Info.GUIDKey = Ref;
             }
             else
             {
@@ -134,7 +133,7 @@ namespace RocketEcommerceAPI.Components
         {
             Info = _objCtrl.SaveData(Info, TableName);
             _cacheKey = "PropertyLimpet*" + Info.PortalId + "*" + Info.ItemID + "*" + Info.Lang + "*" + _tableName;
-            CacheUtils.SetCache(_cacheKey, Info);
+            CacheUtils.RemoveCache(_cacheKey);
             return Info.ItemID;
         }
         public int ValidateAndUpdate()

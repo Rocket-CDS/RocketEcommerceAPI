@@ -987,4 +987,10 @@
   <data name="productimagelimit.Text" xml:space="preserve">
     <value>Image Limit</value>
   </data>
+  <data name="detailpage.Text" xml:space="preserve">
+    <value>Detail Page</value>
+  </data>
+  <data name="listpage.Text" xml:space="preserve">
+    <value>List Page</value>
+  </data>
 </root>

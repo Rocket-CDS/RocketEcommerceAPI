@@ -682,6 +682,15 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detail Page.
+        /// </summary>
+        internal static string detailpage_Text {
+            get {
+                return ResourceManager.GetString("detailpage.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Detail Page URL.
         /// </summary>
         internal static string detailpageurl_Text {
@@ -1065,6 +1074,15 @@ namespace RocketEcommerceAPI.App_LocalResources {
         internal static string lastname_Text {
             get {
                 return ResourceManager.GetString("lastname.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Page.
+        /// </summary>
+        internal static string listpage_Text {
+            get {
+                return ResourceManager.GetString("listpage.Text", resourceCulture);
             }
         }
         

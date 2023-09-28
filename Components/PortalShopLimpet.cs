@@ -146,7 +146,7 @@ namespace RocketEcommerceAPI.Components
             var tabid = PagesUtils.CreatePage(_portalId, _systemkey);
             PagesUtils.AddPagePermissions(_portalId, tabid, DNNrocketRoles.Manager);
             PagesUtils.AddPagePermissions(_portalId, tabid, DNNrocketRoles.Editor);
-            PagesUtils.AddPagePermissions(_portalId, tabid, DNNrocketRoles.ClientEditor);
+            PagesUtils.AddPagePermissions(_portalId, tabid, DNNrocketRoles.Collaborator);
             PagesUtils.AddPageSkin(_portalId, tabid, "rocketportal", "rocketadmin.ascx");
         }
         public void Delete()

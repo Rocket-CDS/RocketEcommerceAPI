@@ -152,7 +152,27 @@ namespace RocketEcommerceAPI.Components
             }
             if (paramCmd == "pay")
             {
-
+                if (UserUtils.IsValidUser(portalId,UserUtils.GetCurrentUserId()))
+                {
+                    var paymentid = sessionParam.GetInt("paymentid");
+                    if (paymentid > 0)
+                    {
+                        var paymentData = new PaymentLimpet(portalId, paymentid, sessionParam.CultureCode);
+                        if (paymentData.UserId == UserUtils.GetCurrentUserId() || UserUtils.IsManager())
+                        {
+                            dataObject.SetDataObject("paymentdata", paymentData);
+                        }
+                    }
+                    var orderid = sessionParam.GetInt("orderid");
+                    if (orderid > 0)
+                    {
+                        var orderData = new OrderLimpet(portalId, orderid, sessionParam.CultureCodeEdit);
+                        if (orderData.UserId == UserUtils.GetCurrentUserId() || UserUtils.IsManager())
+                        {
+                            dataObject.SetDataObject("orderdata", orderData);
+                        }
+                    }
+                }
             }
 
             var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);

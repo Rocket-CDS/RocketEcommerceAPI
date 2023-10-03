@@ -224,9 +224,8 @@ namespace RocketEcommerceAPI.Components
             try
             {
                 var systemData = new SystemLimpet("rocketecommerceapi");
-                var guidkey = paramInfo.GetXmlProperty("genxml/remote/urlparams/key"); // Use remote key if passed from module.
-                if (guidkey == "") guidkey = paramInfo.GetXmlProperty("genxml/urlparams/key");
-                if (guidkey == "") guidkey = paramInfo.GetXmlProperty("genxml/hidden/key");
+                var guidkey = paramInfo.GetXmlProperty("genxml/urlparams/paykey"); // standard key
+                if (guidkey == "") guidkey = paramInfo.GetXmlProperty("genxml/urlparams/key"); // legacy key
                 if (guidkey != "") paymentData = new PaymentLimpet(PortalUtils.GetPortalId(), guidkey);  // if we have a "key" param, we should have a payment record.
                 if (paymentData.BankAction == PaymentAction.BankPost)
                 {

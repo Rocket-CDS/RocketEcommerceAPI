@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using RazorEngine.Compilation.VisualBasic;
 using RocketPortal.Components;
 using Simplisity;
 using Simplisity.TemplateEngine;
@@ -11,6 +12,7 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml;
 
 namespace RocketEcommerceAPI.Components
 {
@@ -102,7 +104,7 @@ namespace RocketEcommerceAPI.Components
             CacheUtils.SetCache(cacheKey, pr.RenderedText, "portal" + portalId);
             return pr.RenderedText;
         }
-        public static string DisplayView(int portalId, string systemKey, string moduleRef, SessionParams sessionParam)
+        public static string DisplayView(int portalId, string systemKey, string moduleRef, SessionParams sessionParam, SimplisityInfo paramInfo = null, SimplisityInfo postInfo = null)
         {
             var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, sessionParam.ModuleId, sessionParam.TabId);
             if (sessionParam.PageSize == 0) sessionParam.PageSize = moduleSettings.GetSettingInt("pagesize");
@@ -137,12 +139,17 @@ namespace RocketEcommerceAPI.Components
                     if (defaultCat == 0) defaultCat = dataObject.ShopSettings.DefaultCategoryId;
                     var articleDataList = new ProductLimpetList(sessionParam, dataObject.PortalShop, sessionParam.CultureCode, true, false, defaultCat);
                     dataObject.SetDataObject("productlist", articleDataList);
-                    var categoryData = new CategoryLimpet(dataObject.PortalId, articleDataList.CategoryId, sessionParam.CultureCode) ;
+                    var categoryData = new CategoryLimpet(dataObject.PortalId, articleDataList.CategoryId, sessionParam.CultureCode);
                     dataObject.SetDataObject("categorydata", categoryData);
                 }
             }
             if (paramCmd == "catmenu")
             {
+                var defaultCat = sessionParam.GetInt("catid");
+                if (defaultCat == 0) defaultCat = moduleSettings.DefaultCategoryId;
+                if (defaultCat == 0) defaultCat = dataObject.ShopSettings.DefaultCategoryId;
+                var categoryData = new CategoryLimpet(dataObject.PortalId, defaultCat, sessionParam.CultureCode);
+                dataObject.SetDataObject("categorydata", categoryData);
             }
             if (paramCmd == "minicart")
             {
@@ -152,34 +159,46 @@ namespace RocketEcommerceAPI.Components
             }
             if (paramCmd == "pay")
             {
-                if (UserUtils.IsValidUser(portalId,UserUtils.GetCurrentUserId()))
+                var paymentid = sessionParam.GetInt("paymentid");
+                if (paymentid > 0)
                 {
-                    var paymentid = sessionParam.GetInt("paymentid");
-                    if (paymentid > 0)
+                    var paymentData = new PaymentLimpet(portalId, paymentid, sessionParam.CultureCode);
+                    if (paymentData.UserId == UserUtils.GetCurrentUserId() || UserUtils.IsManager())
                     {
-                        var paymentData = new PaymentLimpet(portalId, paymentid, sessionParam.CultureCode);
-                        if (paymentData.UserId == UserUtils.GetCurrentUserId() || UserUtils.IsManager())
-                        {
-                            dataObject.SetDataObject("paymentdata", paymentData);
-                        }
+                        dataObject.SetDataObject("paymentdata", paymentData);
                     }
-                    var orderid = sessionParam.GetInt("orderid");
-                    if (orderid > 0)
+                }
+                var orderid = sessionParam.GetInt("orderid");
+                if (orderid > 0)
+                {
+                    var orderData = new OrderLimpet(portalId, orderid, sessionParam.CultureCodeEdit);
+                    if (orderData.UserId == UserUtils.GetCurrentUserId() || UserUtils.IsManager())
                     {
-                        var orderData = new OrderLimpet(portalId, orderid, sessionParam.CultureCodeEdit);
-                        if (orderData.UserId == UserUtils.GetCurrentUserId() || UserUtils.IsManager())
-                        {
-                            dataObject.SetDataObject("orderdata", orderData);
-                        }
+                        dataObject.SetDataObject("orderdata", orderData);
                     }
                 }
             }
 
-            var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            if (sessionParam.SearchText == "") CacheUtils.SetCache(cacheKey, pr.RenderedText, "portal" + portalId);
-            return pr.RenderedText;
+            var rtncmd = sessionParam.Get("rtncmd");
+            switch (rtncmd)
+            {
+                case "remote_cartbankreturn":
+                    // get the interface and call the API.
+                    var rocketInterface = new RocketInterface(dataObject.SystemData.SystemInfo, "remote");
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn(rtncmd, dataObject.SystemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, dataObject.AppThemeView.AppThemeVersionFolderRel, "");
+                    if (returnDictionary.ContainsKey("outputhtml"))
+                    {
+                        return (string)returnDictionary["outputhtml"];
+                    }
+                    break;
+                default:
+                    var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);
+                    var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
+                    if (pr.StatusCode != "00") return pr.ErrorMsg;
+                    if (sessionParam.SearchText == "") CacheUtils.SetCache(cacheKey, pr.RenderedText, "portal" + portalId);
+                    return pr.RenderedText;
+            }
+            return "";
         }
         public static string DisplaySystemView(int portalId, string systemKey, string moduleRef, SessionParams sessionParam, string template, bool editMode = true)
         {

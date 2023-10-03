@@ -4,6 +4,7 @@ using RocketEcommerceAPI.Interfaces;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace RocketEcommerceAPI.API
 {
@@ -263,18 +264,18 @@ namespace RocketEcommerceAPI.API
         }
         public string BankIPN()
         {
-            var rtn = "";
+            var rtn = "FAIL";
             var paymentprovider = _paramInfo.GetXmlProperty("genxml/urlparams/paymentprovider");
             if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/urlparams/p"); // reduce chars for PayBox.  (150 chars limit)
-            // if the payment provider is not in the url, it may have been passed by using the TempStorage.
-            if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/genxml/paymentprovider");
-            if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/genxml/p");
-
-            var rocketInterface = _dataObject.SystemData.GetProvider(paymentprovider);
-            if (rocketInterface != null && rocketInterface.Assembly != "")
+            if (paymentprovider == "") paymentprovider = _paramInfo.GetXmlProperty("genxml/data/paymentprovider"); // from temp data record.
+            if (paymentprovider != "")
             {
-                var bankprov = PaymentInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                rtn = bankprov.NotifyEvent(_paramInfo);
+                var rocketInterface = _dataObject.SystemData.GetProvider(paymentprovider);
+                if (rocketInterface != null && rocketInterface.Assembly != "")
+                {
+                    var bankprov = PaymentInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                    rtn = bankprov.NotifyEvent(_paramInfo);
+                }
             }
             return rtn;
         }

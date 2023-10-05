@@ -14,8 +14,9 @@ namespace RocketEcommerceAPI.API
             try
             {
                 var razorTempl = _dataObject.AppThemeSystem.GetTemplate("notification.cshtml");
-                var notificationData = new NotificationLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
-                return RenderRazorUtils.RazorDetail(razorTempl, notificationData, _dataObject.Settings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.NotificationData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {

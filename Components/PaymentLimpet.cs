@@ -128,7 +128,8 @@ namespace RocketEcommerceAPI.Components
 
             if (AmountPaid == Amount) BankAction = PaymentAction.None;
 
-            return _objCtrl.Update(Record, _tableName);
+            Record.ItemID = _objCtrl.Update(Record, _tableName);
+            return Record.ItemID;
         }
         public int Update(string comment = "")
         {

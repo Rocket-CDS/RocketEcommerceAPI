@@ -403,13 +403,6 @@ namespace RocketEcommerceAPI.API
                     strOut = "";
                     break;
 
-                case "remote_payment":
-                    strOut = GetRemotePaymentDisplay();
-                    break;
-                case "remote_paymentheader":
-                    strOut = GetRemotePaymentHeader();
-                    break;
-
 
                 case "remote_pay": // deprecreated: use "remote_publicpay"
                     strOut = RedirectPaymentFormToBank();

@@ -122,63 +122,6 @@ namespace RocketEcommerceAPI.API
             }
 
         }
-
-        public string GetRemotePaymentHeader()
-        {
-            try
-            {
-                var paymentLimpet = new PaymentLimpet(PortalUtils.GetPortalId(), -1); // create new payment (not on DB until it is updated)
-                var razorTempl = AssignRemoteHeaderTemplate();
-                var guidkey = _paramInfo.GetXmlProperty("genxml/urlparams/key");
-                if (guidkey != "")
-                {
-                    paymentLimpet = new PaymentLimpet(PortalUtils.GetPortalId(), guidkey);  // if we have a "key" param, we should have a payment record.
-                }
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentLimpet, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
-        }
-
-
-        public string GetRemotePaymentDisplay()
-        {
-            try
-            {
-                var razorTempl = AssignRemoteTemplate();
-                var paymentLimpet = new PaymentLimpet(PortalUtils.GetPortalId(), -1); // create new payment (not on DB until it is updated)                
-                var guidkey = _paramInfo.GetXmlProperty("genxml/urlparams/key");
-                if (guidkey == "") guidkey = _paramInfo.GetXmlProperty("genxml/hidden/key");
-                if (guidkey != "") paymentLimpet = new PaymentLimpet(PortalUtils.GetPortalId(), guidkey);  // if we have a "key" param, we should have a payment record.
-                if (paymentLimpet.BankAction == PaymentAction.BankPost)
-                {
-                    var rocketInterface = _dataObject.SystemData.GetProvider(paymentLimpet.PaymentProvider);
-                    if (rocketInterface != null)
-                    {
-                        if (rocketInterface.Assembly != "")
-                        {
-                            var bankprov = PaymentInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            bankprov.ReturnEvent(_paramInfo);
-                            paymentLimpet.Reload(); // reload so we have the changed, that need to be past to the display.
-                        }
-                    }
-                    paymentLimpet.BankAction = PaymentAction.BankReturn;
-                    paymentLimpet.Update();
-                }
-                paymentLimpet.AmountPayCents = paymentLimpet.AmountDueCents;
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, paymentLimpet, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
-        }
         public string GetPaymentList()
         {
 

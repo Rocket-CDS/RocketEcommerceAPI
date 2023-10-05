@@ -101,6 +101,7 @@ namespace RocketEcommerceAPI.Components
         public ShopSettingsLimpet ShopSettings { get { return (ShopSettingsLimpet)GetDataObject("shopsettings"); } }
         public CartLimpet CartData { get { return (CartLimpet)GetDataObject("cartdata"); } }
         public CategoryLimpetList CategoryList { get { return (CategoryLimpetList)GetDataObject("categorylist"); } }
+        public NotificationLimpet NotificationData { get { return (NotificationLimpet)GetDataObject("notificationdata"); } }        
         public Dictionary<string, string> Settings { get { return _settings; } }
 
     }

@@ -3,6 +3,7 @@ using RocketEcommerceAPI.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace RocketEcommerceAPI.API
@@ -50,41 +51,33 @@ namespace RocketEcommerceAPI.API
 
         public string PrintOrder()
         {
-            try
+            var orderid = _paramInfo.GetXmlPropertyInt("genxml/hidden/orderid");
+            var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
+            if (orderData.Exists)
             {
-                var orderid = _paramInfo.GetXmlPropertyInt("genxml/hidden/orderid");
-                var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
-                if (orderData.Exists)
-                {
-                    var razorTempl = AssignRemoteTemplate("","PrintOrder.cshtml");
-                    return RenderRazorUtils.RazorObjectRender(razorTempl, orderData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
-                }
-                LogUtils.LogTracking("PrintOrder() - Invalid Order OrderId:" + orderid, _systemkey);
-                return "Invalid Order";
+                var razorTempl = AssignRemoteTemplate("","PrintOrder.cshtml");
+                _dataObject.SetDataObject("orderdata", orderData);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, orderData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
             }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            LogUtils.LogSystem("PrintOrder() - Invalid Order OrderId:" + orderid);
+            return "Invalid Order";
         }
         public string PrintShipLabel()
         {
-            try
+            var orderid = _paramInfo.GetXmlPropertyInt("genxml/hidden/orderid");
+            var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
+            if (orderData.Exists)
             {
-                var orderid = _paramInfo.GetXmlPropertyInt("genxml/hidden/orderid");
-                var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
-                if (orderData.Exists)
-                {
-                    var razorTempl = AssignRemoteTemplate("", "PrintShipLabel.cshtml");
-                    return RenderRazorUtils.RazorObjectRender(razorTempl, orderData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
-                }
-                LogUtils.LogTracking("PrintShipLabel() - Invalid Order OrderId:" + orderid, _systemkey);
-                return "Invalid Order";
+                var razorTempl = AssignRemoteTemplate("", "PrintShipLabel.cshtml");
+                _dataObject.SetDataObject("orderdata", orderData);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, orderData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
             }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
+            LogUtils.LogSystem("PrintShipLabel() - Invalid Order OrderId:" + orderid);
+            return "Invalid Order";
         }
         public int SaveOrder()
         {
@@ -137,32 +130,20 @@ namespace RocketEcommerceAPI.API
         }
         public String GetOrder(string templateName, OrderLimpet orderData)
         {
-            try
-            {
-                var razorTempl = _dataObject.AppThemeSystem.GetTemplate(templateName);
-                return RenderRazorUtils.RazorDetail(razorTempl, orderData, _dataObject.Settings, _sessionParams, true);
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
-
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate(templateName);
+            _dataObject.SetDataObject("orderdata", orderData);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, orderData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String GetOrderList(string templateName)
         {
-
-            try
-            {
-                var OrderDataList = new OrderLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
-                var razorTempl = _dataObject.AppThemeSystem.GetTemplate(templateName);
-                var strOut = RenderRazorUtils.RazorDetail(razorTempl, OrderDataList, _dataObject.Settings, _sessionParams, true);
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return LogUtils.LogException(ex);
-            }
-
+            var OrderDataList = new OrderLimpetList(_paramInfo, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate(templateName);
+            _dataObject.SetDataObject("orderdatalist", OrderDataList);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, OrderDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public bool AddOrderCartItem()
         {

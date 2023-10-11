@@ -32,7 +32,7 @@ namespace RocketEcommerceAPI.Components
         public bool SendEmail(string toEmail, string templateName, string subject = "")
         {
             var appThemeDefault = new AppThemeLimpet(PortalId, SystemData, "Default", "1.0");
-
+            
             _emailData.ToEmail = toEmail;
             _emailData.FromEmail = CompanyData.FromEmail;
             _emailData.ReplyToEmail = CompanyData.ContactEmail;
@@ -52,17 +52,10 @@ namespace RocketEcommerceAPI.Components
                 LogUtils.OutputDebugFile(SystemKey + "_" + _emailData.RazorTemplateName + "_Email.html", emailSender.RenderEmailBody());
             }
 
-            if (PortalShop.EmailActive)
-            {
-                var emailsent = emailSender.SendEmail();
-                ErrorMessage += " : " + emailSender.Error;
-                return emailsent;
-            }
-            else
-            {
-                ErrorMessage += " : PortalShop.EmailActive is FALSE";
-                return false;
-            }
+            var emailsent = emailSender.SendEmail();
+            ErrorMessage += " : " + emailSender.Error;
+            LogUtils.LogSystem("EMAIL ERROR: " + emailSender.Error);
+            return emailsent;
         }
 
         public string CultureCode { get; private set; }

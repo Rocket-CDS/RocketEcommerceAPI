@@ -41,21 +41,16 @@ namespace RocketEcommerceAPI.Components
 
         public static String CountrySettings(string systemKey, bool saved, SessionParams sessionParams = null)
         {
-            try
-            {
-                var appThemeSystem = new AppThemeSystemLimpet(systemKey);
-                var razorTempl = appThemeSystem.GetTemplate("CountrySettings.cshtml", "");
-                var countryData = new CountryLimpet(PortalUtils.GetPortalId());
+            var appThemeSystem = new AppThemeSystemLimpet(PortalUtils.GetPortalId(), systemKey);
+            var razorTempl = appThemeSystem.GetTemplate("CountrySettings.cshtml", "");
+            var countryData = new CountryLimpet(PortalUtils.GetPortalId());
 
-                var passSettings = new Dictionary<string, string>();
-                if (saved) passSettings.Add("saved", "true");
+            var passSettings = new Dictionary<string, string>();
+            if (saved) passSettings.Add("saved", "true");
 
-                return RenderRazorUtils.RazorDetail(razorTempl, countryData.Info, passSettings, sessionParams, true);
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, countryData.Info, null, passSettings, sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
 
         public static void CountrySave(SimplisityInfo postInfo)

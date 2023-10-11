@@ -5,6 +5,7 @@ using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace RocketEcommerceAPI.API
 {
@@ -180,6 +181,7 @@ namespace RocketEcommerceAPI.API
             var guidkey = _paramInfo.GetXmlProperty("genxml/remote/urlparams/key"); // Use remote key if passed from module.
             if (guidkey == "") guidkey = _paramInfo.GetXmlProperty("genxml/urlparams/key");
             if (guidkey == "") guidkey = _paramInfo.GetXmlProperty("genxml/hidden/key");
+
             var paymentData = new PaymentLimpet(_dataObject.PortalId, guidkey, _sessionParams.CultureCode);
             if (paymentData.PaymentId <= 0)
                 paymentid = SavePayment();
@@ -187,10 +189,23 @@ namespace RocketEcommerceAPI.API
                 paymentid = paymentData.PaymentId;
 
             if (paymentid > 0)
-            {               
+            {
+                _dataObject.CartData.CollectInStore = false;
+                _dataObject.CartData.UpdateBillAddress(_postInfo);
+                var cartData = new CartLimpet(_sessionParams.BrowserId, DNNrocketUtils.GetCurrentCulture());
+
                 var paymentLimpet = GetPayment(paymentid);
                 paymentLimpet.Load(_postInfo, _paramInfo);
+                paymentLimpet.CartId = cartData.Record.ItemID;
                 paymentLimpet.SessionData = _sessionParams;
+
+                // Convert cart values, some payment gateways want address for security.
+                if (cartData.BillFirstName == "") cartData.BillFirstName = paymentLimpet.FirstName;
+                if (cartData.BillLastName == "") cartData.BillLastName = paymentLimpet.LastName;
+                if (cartData.BillEmail == "") cartData.BillEmail = paymentLimpet.Email;
+                if (cartData.BillCompany == "") cartData.BillCompany = paymentLimpet.Company;
+                cartData.Update();
+
                 strOut = paymentLimpet.RedirectedToBankHtml();
             }
             return strOut;

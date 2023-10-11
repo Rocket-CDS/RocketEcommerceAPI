@@ -77,6 +77,7 @@ namespace RocketEcommerceAPI.Components
             LastName = postInfo.GetXmlProperty("genxml/textbox/lastname");
             Ref = postInfo.GetXmlProperty("genxml/textbox/ref");
             Notes = postInfo.GetXmlProperty("genxml/textbox/notes");
+
             var userid = paramInfo.GetXmlPropertyInt("genxml/hidden/userid");
             if (userid == 0) userid = UserUtils.GetCurrentUserId();
             UserId = userid;

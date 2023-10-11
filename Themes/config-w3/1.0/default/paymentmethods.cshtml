@@ -12,9 +12,9 @@
 
 
 @{
-    var portalShop = (PortalShopLimpet)Model.List.First();
-    var systemData = new SystemLimpet("rocketecommerceapi");
-    var appThemeSystem = new AppThemeSystemLimpet(portalShop.PortalId, systemData.SystemKey);
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
     var sFieldDict = new Dictionary<string, string>();
 }
 @RenderLanguageSelector("paymentmethods_list", sFieldDict, appThemeSystem, Model)

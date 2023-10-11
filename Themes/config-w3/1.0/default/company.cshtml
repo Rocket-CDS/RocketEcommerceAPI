@@ -13,8 +13,7 @@
     var companyData = (CompanyLimpet)Model.List.First();
     var info = companyData.Info;
     var systemData = new SystemLimpet("rocketecommerceapi");
-    var portalShop = new PortalShopLimpet(companyData.PortalId, companyData.CultureCode);
-    var passModel = new SimplisityRazor(portalShop, new Dictionary<string, string>());
+    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
     var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
 }
 

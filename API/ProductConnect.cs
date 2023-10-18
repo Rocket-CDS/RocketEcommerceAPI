@@ -179,10 +179,10 @@ namespace RocketEcommerceAPI.API
             {
                 var filenameList = fileuploadlist.Split('*');
                 var filebase64List = fileuploadbase64.Split('*');
-                var fileList = DocUtils.UploadBase64file(filenameList, filebase64List, _dataObject.PortalShop.DocFolderMapPath);
+                var fileList = DocUtils.UploadSecureBase64file(filenameList, filebase64List, _dataObject.PortalShop.DocFolderMapPath);
                 foreach (var imgFileMapPath in fileList)
                 {
-                    productData.AddDoc(Path.GetFileName(imgFileMapPath));
+                    productData.AddDoc(Path.GetFileName(imgFileMapPath.Key));
                 }
             }
             return GetProduct(productData.ProductId);

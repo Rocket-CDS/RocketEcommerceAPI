@@ -50,14 +50,14 @@ namespace RocketEcommerceAPI.Components
         {
             _objCtrl = new DNNrocketController();
 
-            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "portal" + PortalId);
             if (info == null)
             {
                 info = _objCtrl.GetInfo(CategoryId, CultureCode, TableName); // get existing record.
                 if (info != null) // check if we have a real record.
                 {
                     Info = info;
-                    CacheUtils.SetCache(_cacheKey, Info);
+                    CacheUtils.SetCache(_cacheKey, Info, "portal" + PortalId);
                 }
                 else
                     Info.ItemID = -1; // flags categories does not exist yet.
@@ -128,11 +128,7 @@ namespace RocketEcommerceAPI.Components
                 articleData.UpdateCategorySortOrder(categoryguidkey, lp);
                 lp += 5;
             }
-
-            // Clear cache
-            var categoryDataList = new CategoryLimpetList(PortalId, CultureCode);
-            categoryDataList.Reload();
-
+            ClearCache();
             return ValidateAndUpdate();
         }
         public List<CategoryLimpet> GetChildren()
@@ -172,7 +168,8 @@ namespace RocketEcommerceAPI.Components
         }
         public void ClearCache()
         {
-            CacheUtils.RemoveCache(_cacheKey);
+            CacheUtils.ClearAllCache("portal" + PortalId);
+            CacheUtils.RemoveCache(_cacheKey, "portal" + PortalId);
         }
         public int Update()
         {
@@ -183,9 +180,6 @@ namespace RocketEcommerceAPI.Components
                 Info.GUIDKey = GeneralUtils.GetGuidKey();
                 Info = _objCtrl.SaveData(Info, TableName);
             }
-            // Rebuild cacheKey, a new category we will have -1 for id in the old key.
-            _cacheKey = "CategoryLimpet*" + PortalId + "*" + Info.ItemID + "*" + Info.Lang + "*" + _tableName;
-            CacheUtils.RemoveCache(_cacheKey);
             return Info.ItemID;
         }
         public int ValidateAndUpdate()

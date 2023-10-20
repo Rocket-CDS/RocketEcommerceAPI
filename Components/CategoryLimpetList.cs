@@ -34,7 +34,7 @@ namespace RocketEcommerceAPI.Components
             _objCtrl = new DNNrocketController();
 
             _cacheKey = PortalId + "*" + _entityTypeCode + "*" + CultureCode + "*" + _tableName;
-            _cacheGroup = "categorylist" + PortalId + "*" + _tableName;
+            _cacheGroup = "portal" + PortalId;
 
             if (populate) Populate();
         }
@@ -166,15 +166,6 @@ namespace RocketEcommerceAPI.Components
                 var categoryData = new CategoryLimpet(PortalId, pInfo.ItemID, CultureCode);
                 categoryData.ValidateAndUpdate();
             }
-            Reload();
-        }
-        /// <summary>
-        /// Clear cache and Reload list 
-        /// </summary>
-        public void Reload()
-        {
-            ClearCache();
-            Populate();
         }
         public void ClearCache()
         {

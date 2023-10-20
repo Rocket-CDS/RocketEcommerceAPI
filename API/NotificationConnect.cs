@@ -3,6 +3,7 @@ using RocketEcommerceAPI.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace RocketEcommerceAPI.API
@@ -11,47 +12,21 @@ namespace RocketEcommerceAPI.API
     {
         public String NotificationEdit()
         {
-            try
-            {
-                var razorTempl = _dataObject.AppThemeSystem.GetTemplate("notification.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.NotificationData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("notification.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.NotificationData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public String NotificationSave()
         {
-            try
-            {
-                var notificationData = new NotificationLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
-                notificationData.Save(_postInfo);
-                return NotificationEdit();
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
+            _dataObject.NotificationData.Save(_postInfo);
+            return NotificationEdit();
         }
         public String NotificationReset()
         {
-            try
-            {
-                var notificationData = new NotificationLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
-                notificationData.Delete();
-                LogUtils.LogTracking("notification_reset", _systemkey);
-                return NotificationEdit();
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
+            _dataObject.NotificationData.Delete();
+            LogUtils.LogTracking("notification_reset", _systemkey);
+            return NotificationEdit();
         }
 
     }

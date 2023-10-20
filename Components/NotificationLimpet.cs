@@ -20,15 +20,13 @@ namespace RocketEcommerceAPI.Components
         private int _portalId;
         public NotificationLimpet(int portalId, string cultureCode)
         {
-            Info = new SimplisityInfo();
             if (cultureCode == "") cultureCode = DNNrocketUtils.GetEditCulture();
             CultureCode = cultureCode;
             _portalId = portalId;
-            _guidKey =  PortalUtils.SiteGuid(portalId);
+            _guidKey = _entityTypeCode + portalId;
             _objCtrl = new DNNrocketController();
 
-            var uInfo = _objCtrl.GetByGuidKey(portalId, -1, _entityTypeCode, _guidKey, "", _tableName);
-            if (uInfo != null) Info = _objCtrl.GetInfo(uInfo.ItemID, CultureCode, _tableName);
+            Info = _objCtrl.GetByGuidKey(portalId, -1, _entityTypeCode, _guidKey, "", _tableName, CultureCode);
             if (Info == null || Info.ItemID <= 0)
             {
                 Info = new SimplisityInfo();
@@ -38,7 +36,6 @@ namespace RocketEcommerceAPI.Components
                 Info.GUIDKey = _guidKey;
                 Info.Lang = CultureCode;
             }
-
         }
 
         public void Save(SimplisityInfo info)

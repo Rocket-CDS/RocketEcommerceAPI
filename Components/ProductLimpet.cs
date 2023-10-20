@@ -84,7 +84,7 @@ namespace RocketEcommerceAPI.Components
             _objCtrl = new DNNrocketController();
             if (CultureCode == "") CultureCode = DNNrocketUtils.GetEditCulture();
 
-            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "portal" + PortalId);
             if (info == null)
             {
                 if (_productId > 0)
@@ -92,6 +92,7 @@ namespace RocketEcommerceAPI.Components
                     info = _objCtrl.GetInfo(_productId, CultureCode, _tableName); // get existing record.
                     if (info != null && info.ItemID > 0) Info = info; // check if we have a real record, or a dummy being created and not saved yet.
                     if (GetModelList().Count <= 0) AddModel();
+                    CacheUtils.SetCache(_cacheKey, info, "portal" + PortalId);
                 }
             }
             else
@@ -219,6 +220,7 @@ namespace RocketEcommerceAPI.Components
             {
                 AddModel();
             }
+            ClearCache();
 
             return ValidateAndUpdate();
         }
@@ -232,7 +234,8 @@ namespace RocketEcommerceAPI.Components
         }
         public void ClearCache()
         {
-            CacheUtils.RemoveCache(_cacheKey);
+            CacheUtils.ClearAllCache("portal" + PortalId);
+            CacheUtils.RemoveCache(_cacheKey, "portal" + PortalId);
         }
 
         public int Update(bool cacheData = true)
@@ -246,11 +249,10 @@ namespace RocketEcommerceAPI.Components
             }
             _objCtrl.RebuildIndex(PortalId, Info.ItemID, SystemKey, _tableName);
 
+            ClearCache();
+
             // Rebuild cacheKey, if we are craeting a new product, we will have -1 for productid in the old key.
             _productId = Info.ItemID;
-            _cacheKey = "ProductLimpet*" + PortalId + "*" + _productId + "*" + Info.Lang + "*" + _tableName;
-
-            if (cacheData) CacheUtils.SetCache(_cacheKey, Info);
 
             return Info.ItemID;
         }
@@ -267,13 +269,6 @@ namespace RocketEcommerceAPI.Components
         }
         public void Validate()
         {
-            // Fix List attr flag (required for handlebars)
-            var InfoClone = (SimplisityInfo)Info.Clone();
-            if (Info.GetXmlProperty("genxml/modellist/@list") == "") UpdateModels(InfoClone.GetList("modellist"));
-            if (Info.GetXmlProperty("genxml/optionlist/@list") == "") UpdateOptions(InfoClone.GetList("optionlist"));
-            if (Info.GetXmlProperty("genxml/imagelist/@list") == "") UpdateImages(InfoClone.GetList("imagelist"));
-            if (Info.GetXmlProperty("genxml/documentlist/@list") == "") UpdateDocs(InfoClone.GetList("documentlist"));
-            if (Info.GetXmlProperty("genxml/linklist/@list") == "") UpdateLinks(InfoClone.GetList("linklist"));
         }
 
         public int DefaultCategory()

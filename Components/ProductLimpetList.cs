@@ -40,6 +40,7 @@ namespace RocketEcommerceAPI.Components
             SessionParamData.PageSize = 0;
 
             _searchcategoryid = categoryId;
+            _catid = categoryId;
 
             if (populate) Populate();
         }

@@ -145,7 +145,7 @@ namespace RocketEcommerceAPI.Components
             {
                 if (nod.InnerText.ToLower() == "true")
                 {
-                    var propid = nod.Name.Replace("checkboxfilter", "");
+                    var propid = nod.Name.Substring(0, nod.Name.IndexOf('-')).Replace("checkboxfilter", "");
                     // NOTE: checkbox for filter must be called "checkboxfilterand"
                     if (remoteModule.Record.GetXmlPropertyBool("genxml/checkbox/checkboxfilterand"))
                     {

@@ -34,7 +34,7 @@ namespace RocketEcommerceAPI.Components
                 else
                     p.ParentPageId = catData.ParentItemId;
                 p.PageId = catData.CategoryId;
-                p.Url = PagesUtils.NavigateURL(portalContent.ProductListPageId) + "/catid/" + catData.CategoryId + "/" + DNNrocketUtils.UrlFriendly(catData.Name);
+                p.Url = DNNrocketUtils.NavigateURL(portalContent.ProductListPageId) + "/catid/" + catData.CategoryId + "/" + DNNrocketUtils.UrlFriendly(catData.Name);
                 rtn.Add(p);
             }
             return rtn;

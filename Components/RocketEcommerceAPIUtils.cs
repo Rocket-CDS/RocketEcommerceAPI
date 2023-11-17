@@ -25,7 +25,7 @@ namespace RocketEcommerceAPI.Components
             var rtn = new Dictionary<string,string>();
             if (appThemeView != null)
             {
-                foreach (var tfile in appThemeView.GetModuleTemples())
+                foreach (var tfile in appThemeView.GetTemplatesDep())
                 {
                     var t = appThemeView.GetModT(tfile.Key, moduleRef);
                     foreach (var r in t.GetRecordList("moduletemplates"))
@@ -41,7 +41,7 @@ namespace RocketEcommerceAPI.Components
             var rtn = new SimplisityRecord();
             if (appThemeView != null)
             {
-                foreach (var tfile in appThemeView.GetModuleTemples())
+                foreach (var tfile in appThemeView.GetTemplatesDep())
                 {
                     var t = appThemeView.GetModT(tfile.Key, moduleRef);
                     foreach (var r in t.GetRecordList("moduletemplates"))

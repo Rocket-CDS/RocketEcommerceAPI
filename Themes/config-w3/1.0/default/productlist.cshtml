@@ -74,15 +74,7 @@
             {
                 <tr class=" simplisity_click" s-cmd="productadmin_editproduct" s-fields='{"productid":"@productData.ProductId","track":"true"}' style="cursor:pointer;">
                     <td style="width:54px;">
-                        @if (productData.GetImage(0) != null && productData.GetImage(0).RelPath != "")
-                        {
-                            <img src="@ThumbnailImageUrl(productData.GetImage(0).RelPath, 48, 48)" style="height:48px;width:48px;" class="w3-round" />
-                        }
-                        else
-                        {
-                            <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 48, 48)" style="height:48px;width:48px;" class="w3-round" />
-                        }
-
+                        <img src="@ImageUrl(productData.GetImage(0).RelPath, 48, 48)" style="height:48px;width:48px;" class="w3-round" />
                     </td>
                     <td><div class="w3-tiny">@productData.Ref</div><b>@productData.Name</b></td>
 					<td>

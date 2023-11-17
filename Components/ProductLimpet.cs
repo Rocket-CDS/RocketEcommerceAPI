@@ -440,7 +440,7 @@ namespace RocketEcommerceAPI.Components
             {
                 if (Info.ItemID < 0) Update(); // blank record, not on DB.  Create now.
                 articleDoc.RelPath = PortalShop.DocFolderRel.TrimEnd('/') + "/" + uniqueName;
-                articleDoc.Name = uniqueName;
+                articleDoc.FileName = uniqueName;
                 Info.AddListItem(DocumentListName, articleDoc.Info);
                 Update();
             }

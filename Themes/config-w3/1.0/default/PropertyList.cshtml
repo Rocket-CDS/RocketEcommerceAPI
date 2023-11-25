@@ -7,7 +7,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
 
 @{
-    var propertyDataList = (PropertyLimpetList)Model.List.First();
+    var propertyDataList = (PropertyLimpetList)Model.GetDataObject("propertylist");
     var propertyList = propertyDataList.GetPropertyList();
     var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
     var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");

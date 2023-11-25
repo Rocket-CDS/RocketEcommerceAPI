@@ -381,7 +381,7 @@ namespace RocketEcommerceAPI.API
                     break;
 
 
-                case "remote_login":
+                case "rocketecommerceapi_login":
                     strOut = Components.LocalUtils.ReloadPage(_dataObject.PortalData.PortalId);
                     break;
                 case "remote_productlist":

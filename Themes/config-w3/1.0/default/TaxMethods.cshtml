@@ -9,8 +9,6 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
 
-
-
 @{
     var portalShop = (PortalShopLimpet)Model.List.First();
     var systemData = new SystemLimpet("rocketecommerceapi");
@@ -49,46 +47,45 @@
                         <th>@ResourceKey("DNNrocket.name")</th>
                     </tr>
                 </thead>
-                @foreach (var interfaceProvider in systemData.GetInterfaceList())
+                @foreach (TaxInterface ti in portalShop.GetAllTaxProviders(false))
                 {
-                    if (interfaceProvider.IsProvider("tax"))
+                    var interfaceProvider = new RocketInterface(systemData.SystemInfo, ti.TaxProvKey());
+                    var providername = ResourceKey("provider." + interfaceProvider.InterfaceKey).ToString();
+                    if (providername == "")
                     {
-                        lp1 += 1;
-                        var i = portalShop.Info.GetListItem("taxprovidermethod", "genxml/hidden/taxmethodkey", interfaceProvider.InterfaceKey);
-                        if (i != null && i.GetXmlPropertyBool("genxml/checkbox/active"))
-                        {
-                            var providername = ResourceKey("provider." + interfaceProvider.InterfaceKey).ToString();
-                            if (providername == "")
-                            {
-                                providername = interfaceProvider.InterfaceKey;
-                            }
-                            try
-                            {
-                                var providerInterface = systemData.GetProvider(interfaceProvider.InterfaceKey);
-                                var prov = ShippingInterface.Instance(providerInterface.Assembly, providerInterface.NameSpaceClass);
-                                <tr class="simplisity_click" s-cmd="@interfaceProvider.DefaultCommand" style="cursor:pointer;">
-                                    <td>
-                                        @if (prov.Active())
-                                        {
-                                            @ButtonIcon(ButtonTypes.ok)
-                                        }
-                                        else
-                                        {
-                                            @ButtonIcon(ButtonTypes.fail)
-                                        }
-                                    </td>
-                                    <td>@interfaceProvider.InterfaceKey</td>
-                                    <td>@providername</td>
-                                </tr>
-                            }
-                            catch (Exception ex)
-                            {
-                                <b>ERROR: Invalid Provider -  @interfaceProvider.InterfaceKey Assembly: @interfaceProvider.Assembly NameSpaceClass: @interfaceProvider.NameSpaceClass</b>
-                                <p>@ex.ToString()</p>
-                            }
-
-                        }
-
+                        providername = interfaceProvider.InterfaceKey;
+                    }
+                    try
+                    {
+                        var providerInterface = systemData.GetProvider(interfaceProvider.InterfaceKey);
+                        var prov = TaxInterface.Instance(providerInterface.Assembly, providerInterface.NameSpaceClass);
+                        <tr class="tablelist simplisity_click" s-cmd="@interfaceProvider.DefaultCommand" s-fields='{"systemkey":"rocketecommerceapi"}' style="cursor:pointer;">
+                            <td>
+                                @if (prov.Active())
+                                {
+                                    @ButtonIcon(ButtonTypes.ok)
+                                }
+                                else
+                                {
+                                    @ButtonIcon(ButtonTypes.fail)
+                                }
+                            </td>
+                            <td>
+                                @interfaceProvider.InterfaceKey
+                                <!-- #interfacekey required for server side sort -->
+                                <input id="interfacekey" type="hidden" value="@providerInterface.InterfaceKey">
+                            </td>
+                            <td>@providername</td>
+                        </tr>
+                    }
+                    catch (Exception ex)
+                    {
+                        <tr>
+                            <td colspan="3">
+                                <b>ERROR: Invalid Provider -  @interfaceProvider.InterfaceKey Assembly: @interfaceProvider.Assembly NameSpaceClass: @interfaceProvider.NameSpaceClass </b>
+                                <p> @ex.ToString() </p>
+                            </td>
+                        </tr>
                     }
                 }
             </table>

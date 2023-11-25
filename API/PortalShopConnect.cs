@@ -45,6 +45,7 @@ namespace RocketEcommerceAPI.API
                 {
                     portalShop.Save(_postInfo);
                 }
+                _dataObject.SetDataObject("portalshop", portalShop);
                 _dataObject.PortalShop.ClearPortalCache();
                 _dataObject.SetDataObject("portaldata", new PortalLimpet(portalId));
 

@@ -158,7 +158,7 @@
                         <li class="w3-row w3-padding-small taxprovidermethod">
                             <div class="w3-col m1 w3-padding-small">
                                 @{
-                                    var i = portalShop.Info.GetListItem("shippingprovidermethod", "genxml/hidden/taxmethodkey", p.Key);
+                                    var i = portalShop.Info.GetListItem("taxprovidermethod", "genxml/hidden/taxmethodkey", p.Key);
                                 }
                                 @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border w3-check '", false, false, lp6)
                             </div>
@@ -175,10 +175,64 @@
                                     }
                                 }
                                 <b>@providername</b>
-                                <input type="hidden" id="taxmethodkey_@(lp6)" value="@p.Key" s-path="genxml/hidden/taxmethodkey" />
+                                <input value="@p.Key" id="taxmethodkey_@lp6" s-xpath="genxml/hidden/taxmethodkey" s-update="save" type="hidden">
                             </div>
                             <div class="w3-col m7 w3-padding-small">
-                                <p>@interfaceProvider.Info.GetXmlProperty("genxml/textbox/help")</p>
+                                <p>@interfaceProvider.InterfaceKey</p>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="w3-container">
+        <h2>@ResourceKey("RE.discountmethods")</h2>
+        <div class="w3-row w3-margin">
+
+            <div class="w3-row  w3-theme-l4 w3-padding">
+                <div class="w3-col m1">@ResourceKey("DNNrocket.active")</div>
+                <div class="w3-col m3">@ResourceKey("system.name")</div>
+                <div class="w3-col m7"></div>
+            </div>
+
+            <ul id="discountprovidermethodlist" class="w3-ul">
+                @{
+                    var lp7 = 0;
+                }
+
+                @foreach (var p in systemData.InterfaceList)
+                {
+                    var interfaceProvider = new RocketInterface(systemData.SystemInfo, p.Key);
+                    if (interfaceProvider.IsProvider("discount"))
+                    {
+                        lp7 += 1;
+                        <li class="w3-row w3-padding-small discountprovidermethod">
+                            <div class="w3-col m1 w3-padding-small">
+                                @{
+                                    var i = portalShop.Info.GetListItem("discountprovidermethod", "genxml/hidden/taxmethodkey", p.Key);
+                                }
+                                @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border w3-check '", false, false, lp7)
+                            </div>
+                            <div class="w3-col m3 w3-padding-small">
+                                @{
+                                    var providername = ResourceKey("provider." + p.Key).ToString();
+                                    if (providername == "")
+                                    {
+                                        providername = interfaceProvider.InterfaceKey;
+                                        if (providername == "")
+                                        {
+                                            providername = p.Key;
+                                        }
+                                    }
+                                }
+                                <b>@providername</b>
+                                <input value="@p.Key" id="discountmethodkey_@lp7" s-xpath="genxml/hidden/discountmethodkey" s-update="save" type="hidden">
+                            </div>
+                            <div class="w3-col m7 w3-padding-small">
+                                <p>@interfaceProvider.InterfaceKey</p>
                             </div>
                         </li>
                     }

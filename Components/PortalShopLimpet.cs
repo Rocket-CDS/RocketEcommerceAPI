@@ -290,6 +290,56 @@ namespace RocketEcommerceAPI.Components
             CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
             return rtn;
         }
+        public bool IsTaxProviderActive(string interfaceKey)
+        {
+            var i = Record.GetRecordListItem("shippingprovidermethod", "genxml/hidden/shippingmethodkey", interfaceKey);
+            if (i != null) return i.GetXmlPropertyBool("genxml/checkbox/active");
+            return false;
+        }
+        public List<TaxInterface> GetAllTaxProviders(bool useCache = true)
+        {
+            var rtn = new List<TaxInterface>();
+            var cacheKey = "GetAllTaxProviders" + _systemkey + _portalId;
+            if (useCache)
+            {
+                rtn = (List<TaxInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+                if (rtn != null) return rtn;
+            }
+            var systemData = new SystemLimpet(_systemkey);            
+            foreach (var provkey in Record.GetRecordList("taxprovidermethod"))
+            {
+                var rocketInterface = systemData.GetProvider(provkey.GetXmlProperty("genxml/hidden/taxmethodkey"));
+                if (rocketInterface != null)
+                {
+                    try
+                    {
+                        var prov = TaxInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                        rtn.Add(prov);
+                    }
+                    catch (Exception ex)
+                    {
+                        // we might not have the assembly in the bin folder, report and ignore.
+                        LogUtils.LogException(ex);
+                    }
+                }
+            }
+            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            return rtn;
+        }
+        public List<TaxInterface> GetActiveTaxProviders()
+        {
+            var cacheKey = "GetActiveTaxProviders" + _systemkey + _portalId;
+            var rtn = (List<TaxInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            if (rtn != null) return rtn;
+
+            rtn = new List<TaxInterface>();
+            foreach (var p in GetAllTaxProviders())
+            {
+                if (p.Active() && IsTaxProviderActive(p.TaxProvKey())) rtn.Add(p);
+            }
+            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            return rtn;
+        }
 
         #region "orderby"
         public List<SimplisityRecord> GetProductOrderByList()

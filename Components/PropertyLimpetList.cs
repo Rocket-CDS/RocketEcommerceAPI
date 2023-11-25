@@ -18,14 +18,19 @@ namespace RocketEcommerceAPI.Components
         private List<PropertyLimpet> _propertyList;
         private DNNrocketController _objCtrl;
         private string _searchText;
+        private string _systemKey;
+        private string _cachekey;
 
         public PropertyLimpetList(int portalId, string langRequired, string searchText = "")
         {
+            _systemKey = "rocketecommerceapi";
             _searchText = searchText;
             PortalId = portalId;
             CultureCode = langRequired;
-            EntityTypeCode = "rocketecommerceapiPROP";
+            EntityTypeCode = "PROP";
             TableName = _tableName;
+
+            _cachekey = PortalId + "*" + _systemKey + "*" + CultureCode + "PROP" + _tableName;
 
             if (CultureCode == "") CultureCode = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
@@ -36,8 +41,20 @@ namespace RocketEcommerceAPI.Components
         {
             var filter = "";
             if (_searchText != "") filter = " and [XMLData].value('(genxml/lang/genxml/textbox/name)[1]','nvarchar(max)') like '%" + _searchText + "%' ";
-            DataList = _objCtrl.GetList(PortalId, -1, EntityTypeCode, filter, CultureCode, " order by [XMLData].value('(genxml/textbox/ref)[1]','nvarchar(max)') ", 0, 0, 0, 0, TableName);
-            PopulatePropertyList();
+            DataList = (List<SimplisityInfo>)CacheUtils.GetCache(_cachekey + "SimplisityInfo", "portal" + PortalId);
+            _propertyList = (List<PropertyLimpet>)CacheUtils.GetCache(_cachekey + "PropertyLimpet", "portal" + PortalId);
+            if (DataList == null || _propertyList == null || filter != "")
+            {
+                DataList = _objCtrl.GetList(PortalId, -1, EntityTypeCode, filter, CultureCode, " order by R1.SortOrder desc, [XMLData].value('(genxml/textbox/ref)[1]','nvarchar(max)') ", 0, 0, 0, 0, TableName);
+                PopulatePropertyList();
+                CacheUtils.SetCache(_cachekey + "SimplisityInfo", DataList, "portal" + PortalId);
+                CacheUtils.SetCache(_cachekey + "PropertyLimpet", _propertyList, "portal" + PortalId);
+            }
+        }
+        public void ClearCache()
+        {
+            CacheUtils.RemoveCache(_cachekey + "SimplisityInfo", "portal" + PortalId);
+            CacheUtils.RemoveCache(_cachekey + "PropertyLimpet", "portal" + PortalId);
         }
         public void DeleteAll()
         {
@@ -64,6 +81,16 @@ namespace RocketEcommerceAPI.Components
             }
             return _propertyList;
         }
+        public Dictionary<string, string> GetPropertyFilterList(string groupKey)
+        {
+            var rtn = new Dictionary<string, string>();
+            foreach (var p in GetPropertyList(groupKey))
+            {
+                var filterId = "checkboxfilter" + p.PropertyId + "-" + groupKey;
+                rtn.Add(filterId, p.Name);
+            }
+            return rtn;
+        }
         private List<PropertyLimpet> PopulatePropertyList()
         {
             _propertyList = new List<PropertyLimpet>();
@@ -89,6 +116,7 @@ namespace RocketEcommerceAPI.Components
         /// </summary>
         public void Reload()
         {
+            ClearCache();
             Populate();
         }
     }

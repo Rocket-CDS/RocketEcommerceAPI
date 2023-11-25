@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RE_CartWeightShipping", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketEcommerceMod", "..\..\RocketModules\RocketEcommerceMod\RocketEcommerceMod.csproj", "{FC860C56-53ED-47F7-9242-69E3228239AC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "REtaxplugin", "..\REtaxplugin\REtaxplugin.csproj", "{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Comp All|Any CPU = Comp All|Any CPU
@@ -41,7 +43,6 @@ Global
 		{FD5267C8-3CC8-46E8-9B63-C7BAB83E0978}.CompAll|Any CPU.ActiveCfg = CompAll|Any CPU
 		{FD5267C8-3CC8-46E8-9B63-C7BAB83E0978}.CompAll|Any CPU.Build.0 = CompAll|Any CPU
 		{FD5267C8-3CC8-46E8-9B63-C7BAB83E0978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD5267C8-3CC8-46E8-9B63-C7BAB83E0978}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD5267C8-3CC8-46E8-9B63-C7BAB83E0978}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
 		{FD5267C8-3CC8-46E8-9B63-C7BAB83E0978}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD5267C8-3CC8-46E8-9B63-C7BAB83E0978}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -87,7 +88,6 @@ Global
 		{4F27E846-0703-4C59-9037-893A4AE42763}.CompAll|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F27E846-0703-4C59-9037-893A4AE42763}.CompAll|Any CPU.Build.0 = Debug|Any CPU
 		{4F27E846-0703-4C59-9037-893A4AE42763}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F27E846-0703-4C59-9037-893A4AE42763}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F27E846-0703-4C59-9037-893A4AE42763}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
 		{4F27E846-0703-4C59-9037-893A4AE42763}.Razor|Any CPU.Build.0 = Razor|Any CPU
 		{4F27E846-0703-4C59-9037-893A4AE42763}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -97,7 +97,6 @@ Global
 		{F500C4B4-4E0F-4ACE-A323-EF1D7F799B5A}.CompAll|Any CPU.ActiveCfg = Debug|Any CPU
 		{F500C4B4-4E0F-4ACE-A323-EF1D7F799B5A}.CompAll|Any CPU.Build.0 = Debug|Any CPU
 		{F500C4B4-4E0F-4ACE-A323-EF1D7F799B5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F500C4B4-4E0F-4ACE-A323-EF1D7F799B5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F500C4B4-4E0F-4ACE-A323-EF1D7F799B5A}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
 		{F500C4B4-4E0F-4ACE-A323-EF1D7F799B5A}.Razor|Any CPU.Build.0 = Razor|Any CPU
 		{F500C4B4-4E0F-4ACE-A323-EF1D7F799B5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -107,11 +106,19 @@ Global
 		{FC860C56-53ED-47F7-9242-69E3228239AC}.CompAll|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC860C56-53ED-47F7-9242-69E3228239AC}.CompAll|Any CPU.Build.0 = Debug|Any CPU
 		{FC860C56-53ED-47F7-9242-69E3228239AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC860C56-53ED-47F7-9242-69E3228239AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC860C56-53ED-47F7-9242-69E3228239AC}.Razor|Any CPU.ActiveCfg = Release|Any CPU
 		{FC860C56-53ED-47F7-9242-69E3228239AC}.Razor|Any CPU.Build.0 = Release|Any CPU
 		{FC860C56-53ED-47F7-9242-69E3228239AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC860C56-53ED-47F7-9242-69E3228239AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.Comp All|Any CPU.ActiveCfg = Debug|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.Comp All|Any CPU.Build.0 = Debug|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.CompAll|Any CPU.ActiveCfg = Debug|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.CompAll|Any CPU.Build.0 = Debug|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.Razor|Any CPU.Build.0 = Razor|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69626AF8-C8EB-42CA-B998-0AB7AB4828FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

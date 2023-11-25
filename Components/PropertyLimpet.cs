@@ -35,37 +35,33 @@ namespace RocketEcommerceAPI.Components
             EntityTypeCode = "PROP";
             TableName = _tableName;
             CultureCode = langRequired;
-
-            Info = new SimplisityInfo();
-            Info.ItemID = propertyId;
-            Info.TypeCode = EntityTypeCode;
-            Info.ModuleId = -1;
-            Info.UserId = -1;
-            Info.PortalId = PortalId;
-            Info.Lang = CultureCode;
-
-            Populate();
+            Populate(propertyId);
         }
-        private void Populate()
+        private void Populate(int propertyId)
         {
             _objCtrl = new DNNrocketController();
-            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
-            if (info == null)
+
+            Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_cacheKey);
+            if (Info == null)
             {
-                info = _objCtrl.GetInfo(PropertyId, CultureCode, TableName); // get existing record.
-                if (info != null) // check if we have a real record.
+                Info = _objCtrl.GetInfo(propertyId, CultureCode, TableName); // get existing record.
+                if (Info == null) // check if we have a real record.
                 {
-                    Info = info;
-                    CacheUtils.SetCache(_cacheKey, Info);
+                    Info = new SimplisityInfo();
+                    Info.ItemID = propertyId;
+                    Info.TypeCode = EntityTypeCode;
+                    Info.ModuleId = -1;
+                    Info.UserId = -1;
+                    Info.PortalId = PortalId;
+                    Info.Lang = CultureCode;
                 }
                 else
-                    Info.ItemID = -1; // flags categories does not exist yet.
-
+                {
+                    CacheUtilsDNN.SetCache(_cacheKey, Info);
+                }
                 Info.Lang = CultureCode; // reset langauge, for legacy record, without lang.
                 PortalId = Info.PortalId;
             }
-            else
-                Info = info;
             PortalShop = new PortalShopLimpet(PortalId, CultureCode);
         }
         public void Delete()
@@ -73,13 +69,13 @@ namespace RocketEcommerceAPI.Components
             if (Info.ItemID > 0)
             {
                 // remove property xref
-                var catxrefList = _objCtrl.GetList(PortalId, -1, "CATXREF", " and [XrefItemId] = " + PropertyId + " ", "", "", 0, 0, 0, 0, TableName);
+                var catxrefList = _objCtrl.GetList(PortalId, -1, "PROPXREF", " and [XrefItemId] = " + PropertyId + " ", "", "", 0, 0, 0, 0, TableName);
                 foreach (var catxrefRecord in catxrefList)
                 {
                     _objCtrl.Delete(catxrefRecord.ItemID, TableName);
                 }
                 _objCtrl.Delete(Info.ItemID, TableName);
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.RemoveCache(_cacheKey);
             }
         }
         private void ReplaceInfoFields(SimplisityInfo postInfo, string xpathListSelect)
@@ -113,16 +109,14 @@ namespace RocketEcommerceAPI.Components
             Info.RemoveXmlNode("genxml/checkboxlist");
             Info.AddXmlNode(postInfo.GetXmlNode("genxml/checkboxlist"), "group", "genxml/checkboxlist");
             Info.GUIDKey = Ref;
+            Info.SortOrder = Info.GetXmlPropertyInt("genxml/textbox/sortorder");
             var testInfo = _objCtrl.GetByGuidKey(PortalId, -1, EntityTypeCode, Info.GUIDKey, "", _tableName, CultureCode);
             if (testInfo != null && testInfo.ItemID != Info.ItemID)
             {
-                return -1;
+                Info.GUIDKey = Ref + "-" + GeneralUtils.GetRandomKey(3);
+                Info.SetXmlProperty(RefXPath, Info.GUIDKey);
             }
-            else
-            {
-                return ValidateAndUpdate();
-            }
-
+            return ValidateAndUpdate();
         }
         public List<SimplisityInfo> GetArticlesInfo()
         {
@@ -132,8 +126,9 @@ namespace RocketEcommerceAPI.Components
         public int Update()
         {
             Info = _objCtrl.SaveData(Info, TableName);
-            _cacheKey = "PropertyLimpet*" + Info.PortalId + "*" + Info.ItemID + "*" + Info.Lang + "*" + _tableName;
             CacheUtils.RemoveCache(_cacheKey);
+            // clear portal cache, so list so change.
+            CacheUtils.ClearAllCache("portal" + PortalId);
             return Info.ItemID;
         }
         public int ValidateAndUpdate()
@@ -143,6 +138,7 @@ namespace RocketEcommerceAPI.Components
         }
         public void Validate()
         {
+            Info.SetXmlProperty(RefXPath, DNNrocketUtils.UrlFriendly(GeneralUtils.StripAccents(Ref)));
         }
         public List<string> PropertyGroups()
         {

@@ -663,7 +663,11 @@
 		  <cmd>settingsadmin_save</cmd>
 		  <action>false</action>
 	  </command>
-	  
+	  <command>
+		  <cmd>settingsadmin_addgroup</cmd>
+		  <action>false</action>
+	  </command>	  
+
 
 	  <command>
       <cmd>remote_settings</cmd>

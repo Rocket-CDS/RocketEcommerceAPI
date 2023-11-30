@@ -83,23 +83,22 @@
                         }
                         @TextBox(info, "genxml/textbox/ref", " class='w3-input w3-border' autocomplete='off' " + disabledref, "", false, 0)
                     </div>
-                    <div class='w3-col m10 w3-padding'>
+                    <div class='w3-col m8 w3-padding'>
                         <label>@ResourceKey("RE.name")</label>		&nbsp;@EditFlag(sessionParams)
                         @TextBox(info, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ", "", true, 0)
                     </div>
+                    <div class='w3-col m2 w3-padding' style="">
+                        <label>@ResourceKey("DNNrocket.sortorder")</label>
+                        @TextBox(info, "genxml/textbox/sortorder", " class='w3-input w3-border' autocomplete='off' min='0' step='1' ", "", false, 0,"","number")
+                    </div>
                 </div>
                 <div class='w3-row w3-padding'>
-                    <label>@ResourceKey("RE.group")</label>
-                    @{
-                        var gDict = new Dictionary<string, string>();
-                        foreach (var g in shopSettings.PropertyGroups.Split(','))
-                        {
-                            gDict.Add(g.Trim(' '), g.Trim(' '));
-                        }
+                    @if (shopSettings.GetPropertyGroups().Count > 0)
+                    {
+                    <label>@ResourceKey("RC.group")</label>                    
+                    @CheckBoxList(info, "genxml/checkboxlist/group", shopSettings.GetPropertyGroups(), " class=' rocket-checkboxlist ' ")
                     }
-                    @CheckBoxList(info, "genxml/checkboxlist/group", gDict, " class=' rocket-checkboxlist ' ")
                 </div>
-
                 <div class='w3-row w3-padding'>
                     <label>@ResourceKey("RE.summary")</label>&nbsp;@EditFlag(sessionParams)
                     @TextArea(info, "genxml/lang/genxml/textbox/summary", " class='w3-input w3-border' autocomplete='off'  rows='4' ", "", true, 0)
@@ -162,39 +161,14 @@
     <i>ID: </i> @info.ItemID <i> GuidKey:</i> @info.GUIDKey
 </div>
 
-
-
 @RenderTemplate("PropertySelect.cshtml", appThemeSystem, Model, true)
 
 <script>
     $(document).ready(function () {
-
         selectMenu('propertyadmin');
         openPropertyTab('property');
-
-        $('#propertykeywords').tagEditor({
-            delimiter: ', ', /* space and comma */
-            placeholder: '@ResourceKey("RE.keywords") ...',
-            removeDuplicates: false,
-        });
-
+        $(':checkbox').addClass('w3-check');
     });
-
-    function searchFunction() {
-        var input, filter, ul, li, a, i;
-        input = document.getElementById("searchtext");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("datalist");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            txtValue = li[i].textContent || li[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-    }
 
     function openPropertyTab(propertytab) {
 

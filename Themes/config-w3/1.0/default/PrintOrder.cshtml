@@ -250,22 +250,41 @@
                             }
 
 
-                            <tr>
-                                <td>
-                                </td>
-                                <td class="text-right removecolumn">@ResourceKey("RE.subtotal", orderData.CultureCode)</td>
-                                <td class="text-right">@(orderData.SubTotalDisplay)</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td class="text-right removecolumn">@ResourceKey("RE.discount", orderData.CultureCode)</td>
-                                <td class="text-right">@(orderData.DiscountTotalDisplay)</td>
-                            </tr>
+                            @if (orderData.SubTotal != orderData.Total)
+                            {
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td class="text-right removecolumn">@ResourceKey("RE.subtotal", orderData.CultureCode)</td>
+                                    <td class="text-right">@(orderData.SubTotalDisplay)</td>
+                                </tr>
+                            }
+                            @if (portalShop.IsAdminMenuTurnOn("shippingmethods"))
+                            {
                             <tr>
                                 <td></td>
                                 <td class="text-right removecolumn">@ResourceKey("RE.shipping", orderData.CultureCode)</td>
                                 <td class="text-right">@(orderData.ShippingTotalDisplay)</td>
                             </tr>
+                            }
+                            @if (portalShop.IsAdminMenuTurnOn("discountmethods"))
+                            {
+                            <tr>
+                                <td></td>
+                                <td class="text-right removecolumn">@ResourceKey("RE.discount", orderData.CultureCode)</td>
+                                <td class="text-right">@(orderData.DiscountTotalDisplay)</td>
+                            </tr>
+                            }
+                            @if (portalShop.IsAdminMenuTurnOn("taxmethods"))
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td class="text-right removecolumn">@ResourceKey("RE.tax", orderData.CultureCode)</td>
+                                    <td class="text-right">@(orderData.TaxTotalDisplay)</td>
+                                </tr>
+                            }
+
+
                             <tr class="active">
                                 <td></td>
                                 <td class="text-right removecolumn"><b>@ResourceKey("RE.total", orderData.CultureCode)</b></td>

@@ -35,7 +35,7 @@
                 {
 
                     <input id="imagefileupload" class="simplisity_fileupload" s-before="saveRichText" s-maxchunksize="10000000" s-reload="false" s-cmd="productadmin_addimage" s-post="#datasection" s-list=".modellist,.imagelist,.optionlist,.documentlist,.linklist" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"productid":"@productData.ProductId"}' type="file" name="files[]" multiple style="display:none;">
-                    <div id="dropimagediv" contenteditable="true" class=" w3-display-container w3-col m12 w3-white w3-margin-bottom w3-border w3-light-grey" style="height:100px;">
+                    <div id="dropimagediv" contenteditable="true" class="w3-hide w3-display-container w3-col m12 w3-white w3-margin-bottom w3-border w3-light-grey" style="height:100px;">
                         <p><i>&nbsp;@ResourceKey("DNNrocket.dropimage")...</i></p>
                     </div>
 

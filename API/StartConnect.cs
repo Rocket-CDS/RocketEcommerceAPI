@@ -503,6 +503,9 @@ namespace RocketEcommerceAPI.API
                 case "settingsadmin_save":
                     strOut = SaveCatalogSettings();
                     break;
+                case "settingsadmin_addgroup":
+                    strOut = AddPropertyGroup();
+                    break;
 
 
                 case "remote_cartbankreturn":

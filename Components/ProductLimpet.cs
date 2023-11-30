@@ -813,6 +813,7 @@ namespace RocketEcommerceAPI.Components
         }
         public string Name { get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/productname"); } set { Info.SetXmlProperty("genxml/lang/genxml/textbox/productname", value); } }
         public string Ref { get { return Info.GetXmlProperty("genxml/textbox/productref"); } set { Info.SetXmlProperty("genxml/textbox/productref", value); } }
+        public string TaxRef { get { return Info.GetXmlProperty("genxml/select/taxref"); } set { Info.SetXmlProperty("genxml/select/taxref", value); } }
         public string Brand { get { return Info.GetXmlProperty("genxml/textbox/brand"); } set { Info.SetXmlProperty("genxml/textbox/brand", value); } }
         public string Keywords { get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/productkeywords"); } set { Info.SetXmlProperty("genxml/lang/genxml/textbox/productkeywords", value); } }
         public string Summary { get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/productsummary"); } set { Info.SetXmlProperty("genxml/lang/genxml/textbox/productsummary", value); } }

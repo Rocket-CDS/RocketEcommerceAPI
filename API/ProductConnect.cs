@@ -4,6 +4,7 @@ using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace RocketEcommerceAPI.API
@@ -215,6 +216,7 @@ namespace RocketEcommerceAPI.API
         {
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productdetail.cshtml");
             var articleData = GetActiveProduct(productId);
+            _dataObject.SetDataObject("productdata", articleData);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
@@ -224,6 +226,7 @@ namespace RocketEcommerceAPI.API
         {
             var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productlist.cshtml");
+            _dataObject.SetDataObject("productlist", articleDataList);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
@@ -235,6 +238,7 @@ namespace RocketEcommerceAPI.API
             var portalShop = new PortalShopLimpet(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit);
             var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCodeEdit, true);
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ProductSelectList.cshtml");
+            _dataObject.SetDataObject("productlist", articleDataList);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
@@ -247,6 +251,7 @@ namespace RocketEcommerceAPI.API
             if (itemid <= 0) return "Invalid productId.";
             var articleData = new ProductLimpet(_dataObject.PortalShop.PortalId, itemid, _sessionParams.CultureCodeEdit);
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ProductSelectDetail.cshtml");
+            _dataObject.SetDataObject("productdata", articleData);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
@@ -259,7 +264,7 @@ namespace RocketEcommerceAPI.API
             if (productid > 0)
             {
                 var articleData = new ProductLimpet(_dataObject.PortalShop.PortalId, productid, _sessionParams.CultureCode);
-                _dataObject.DataObjects.Add("productdata", articleData);
+                _dataObject.SetDataObject("productdata", articleData);
             }
 
             var razorTempl = AssignRemoteTemplate(appendix);
@@ -283,11 +288,7 @@ namespace RocketEcommerceAPI.API
             if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppThemeView.AppThemeFolder;
 
             var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCode, true, false, _dataObject.ShopSettings.DefaultCategoryId);
-
-            _dataObject.DataObjects.Add("productlist", articleDataList);
-
-            var categoryDataList = new CategoryLimpetList(_dataObject.PortalShop.PortalId, _sessionParams.CultureCode, true);
-            _dataObject.DataObjects.Add("categorydatalist", categoryDataList);
+            _dataObject.SetDataObject("productlist", articleDataList);
 
             // Get page url from remote setting (populated in init method)
             articleDataList.SessionParamData.PageDetailUrl = _sessionParams.PageDetailUrl;
@@ -308,10 +309,7 @@ namespace RocketEcommerceAPI.API
             var razorTempl = AssignRemoteTemplate();
             if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppThemeView.AppThemeFolder;
 
-            _dataObject.DataObjects.Add("productdata", articleData);
-
-            var categoryDataList = new CategoryLimpetList(_dataObject.PortalShop.PortalId, _sessionParams.CultureCodeEdit, true);
-            _dataObject.DataObjects.Add("categorydatalist", categoryDataList);
+            _dataObject.SetDataObject("productdata", articleData);
 
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, _dataObject.PortalShop.DebugMode);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
@@ -335,6 +333,7 @@ namespace RocketEcommerceAPI.API
             if (productid > 0)
             {
                 var articleData = new ProductLimpet(_dataObject.PortalShop.PortalId, productid, _sessionParams.CultureCodeEdit);
+                _dataObject.SetDataObject("productdata", articleData);
                 // do detail
                 sRec.SetXmlProperty("genxml/title", articleData.Name);
                 sRec.SetXmlProperty("genxml/description", articleData.Summary);

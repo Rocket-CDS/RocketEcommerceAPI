@@ -57,6 +57,7 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("propertylist", new PropertyLimpetList(portalid, cultureCode));
             SetDataObject("portalstats", new PortalShopLimpetStats(portalShop));
             SetDataObject("cartdata", new CartLimpet(_browserid, cultureCode));
+            SetDataObject("defaultcategory", new CategoryLimpet(portalid, shopSettings.DefaultCategoryId, cultureCode));
 
         }
         public void ReloadCart()

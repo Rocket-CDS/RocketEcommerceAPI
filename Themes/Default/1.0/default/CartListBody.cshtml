@@ -35,13 +35,6 @@
                 }
                 @foreach (var cItem in cartitemList)
                 {
-                    var logoRelPath = cItem.ProductData.LogoRelPath;
-                    if (cItem.ProductData.LogoRelPath == "")
-                    {
-                        logoRelPath = "/DesktopModules/DNNrocket/api/images/noimage2.png";
-                    }
-
-
                     var selectedModel = cItem.ProductData.GetModel(cItem.ModelId);
                     var cartitemtotal = Convert.ToDecimal(cItem.Qty) * cItem.PriceWithOptions;
                     carttotal += cartitemtotal;

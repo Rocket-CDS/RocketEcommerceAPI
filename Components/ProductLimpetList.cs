@@ -138,16 +138,16 @@ namespace RocketEcommerceAPI.Components
         {
             //Filter Property
             var checkboxfilter = "";
-            RemoteModule remoteModule = null;
+            ModuleContentLimpet moduleData = null;
             var nodList = SessionParamData.Info.XMLDoc.SelectNodes("r/*[starts-with(name(), 'checkboxfilter')]");
-            if (nodList != null && nodList.Count > 0) remoteModule = new RemoteModule(PortalShop.PortalId, SessionParamData.ModuleRef);
+            if (nodList != null && nodList.Count > 0) moduleData = new ModuleContentLimpet(PortalShop.PortalId, SessionParamData.ModuleRef);
             foreach (XmlNode nod in nodList)
             {
                 if (nod.InnerText.ToLower() == "true")
                 {
                     var propid = nod.Name.Substring(0, nod.Name.IndexOf('-')).Replace("checkboxfilter", "");
                     // NOTE: checkbox for filter must be called "checkboxfilterand"
-                    if (remoteModule.Record.GetXmlPropertyBool("genxml/checkbox/checkboxfilterand"))
+                    if (moduleData.Record.GetXmlPropertyBool("genxml/checkbox/checkboxfilterand"))
                     {
                         if (checkboxfilter != "") checkboxfilter += " and ";
                         checkboxfilter += " [PROPXREF].[XrefItemId] = " + propid + " ";

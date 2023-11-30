@@ -292,53 +292,45 @@ namespace RocketEcommerceAPI.Components
         }
         public bool IsTaxProviderActive(string interfaceKey)
         {
-            var i = Record.GetRecordListItem("shippingprovidermethod", "genxml/hidden/shippingmethodkey", interfaceKey);
+            var i = Record.GetRecordListItem("taxprovidermethod", "genxml/hidden/taxmethodkey", interfaceKey);
             if (i != null) return i.GetXmlPropertyBool("genxml/checkbox/active");
             return false;
         }
         public List<TaxInterface> GetAllTaxProviders(bool useCache = true)
         {
-            var rtn = new List<TaxInterface>();
-            var cacheKey = "GetAllTaxProviders" + _systemkey + _portalId;
-            if (useCache)
-            {
-                rtn = (List<TaxInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
-                if (rtn != null) return rtn;
-            }
-            var systemData = new SystemLimpet(_systemkey);            
+            var cacheKey = "GetAllTaxMethods" + _systemkey + _portalId;
+            var rtn = (List<TaxInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            if (rtn != null && useCache) return rtn;
+
+            var systemData = new SystemLimpet(_systemkey);
+            rtn = new List<TaxInterface>();
             foreach (var provkey in Record.GetRecordList("taxprovidermethod"))
             {
                 var rocketInterface = systemData.GetProvider(provkey.GetXmlProperty("genxml/hidden/taxmethodkey"));
                 if (rocketInterface != null)
                 {
-                    try
-                    {
-                        var prov = TaxInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                        rtn.Add(prov);
-                    }
-                    catch (Exception ex)
-                    {
-                        // we might not have the assembly in the bin folder, report and ignore.
-                        LogUtils.LogException(ex);
-                    }
+                    var prov = TaxInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                    rtn.Add(prov);
                 }
             }
             CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
             return rtn;
         }
-        public List<TaxInterface> GetActiveTaxProviders()
+        public TaxInterface GetActiveTaxProvider()
         {
-            var cacheKey = "GetActiveTaxProviders" + _systemkey + _portalId;
-            var rtn = (List<TaxInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var cacheKey = "GetActiveTaxProvider" + _systemkey + _portalId;
+            var rtn = (TaxInterface)CacheUtils.GetCache(cacheKey, _portalId.ToString());
             if (rtn != null) return rtn;
 
-            rtn = new List<TaxInterface>();
             foreach (var p in GetAllTaxProviders())
             {
-                if (p.Active() && IsTaxProviderActive(p.TaxProvKey())) rtn.Add(p);
+                if (p.Active())
+                {
+                    CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+                    return p; // Only 1 tax provider active.
+                }
             }
-            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
-            return rtn;
+            return null;
         }
 
         #region "orderby"

@@ -25,10 +25,10 @@ namespace RocketEcommerceAPI.Interfaces
 			return (TaxInterface)Activator.CreateInstance(objectType);
 		}
 
-		#endregion
-
-		public abstract int CalculateTaxCost(CartLimpet  cartData);
-		public abstract int CalculateTaxCost(OrderLimpet orderData);
+        #endregion
+        public abstract Dictionary<string,string> GetTaxRange();
+        public abstract TaxData CalculateTaxCost(CartLimpet  cartData);
+		public abstract TaxData CalculateTaxCost(OrderLimpet orderData);
 		public abstract bool Active();
         public abstract string TaxProvKey();
 

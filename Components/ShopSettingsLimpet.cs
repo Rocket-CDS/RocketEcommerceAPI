@@ -65,7 +65,23 @@ namespace RocketEcommerceAPI.Components
             var eventreturn = _objCtrl.ExecSql(sql);
             EventCSV = eventreturn;
 
+            Info.RemoveList("grouplist");
+            foreach (var g in postInfo.GetList("grouplist"))
+            {
+                g.SetXmlProperty("genxml/textbox/ref", g.GetXmlProperty("genxml/textbox/ref").Replace(" ", "-").Trim());
+                var groupRef = g.GetXmlProperty("genxml/textbox/ref");
+                if (groupRef != "") AddGroup(g);
+            }
+
             Update();
+        }
+        public List<SimplisityInfo> GroupList()
+        {
+            return Info.GetList("grouplist");
+        }
+        public void AddGroup(SimplisityInfo groupInfo)
+        {
+            Info.AddListItem("grouplist", groupInfo);
         }
         private void ReplaceInfoFields(SimplisityInfo postInfo, string xpathListSelect)
         {
@@ -86,7 +102,6 @@ namespace RocketEcommerceAPI.Components
                 }
             }
         }
-
         public void Update()
         {
             Info = _objCtrl.SaveData(Info, _tableName);
@@ -97,16 +112,6 @@ namespace RocketEcommerceAPI.Components
             _objCtrl.Delete(Info.ItemID, _tableName);
             CacheUtils.RemoveCache(_cacheKey);
         }
-        public Dictionary<string,string> GetPropertyGroups()
-        {
-            var rtn = new Dictionary<string, string>();
-            var s = PropertyGroups.Split(',');
-            foreach (var g in s)
-            {
-                rtn.Add(g, g);
-            }
-            return rtn;
-        }
         public Dictionary<string, string> EventNameList()
         {
             var rtn = new Dictionary<string, string>();
@@ -114,6 +119,18 @@ namespace RocketEcommerceAPI.Components
             foreach (var g in s)
             {
                 rtn.Add(g, g);
+            }
+            return rtn;
+        }
+        public Dictionary<string, string> GetPropertyGroups()
+        {
+            var rtn = new Dictionary<string, string>();
+            foreach (var g in GroupList())
+            {
+                var r = g.GetXmlProperty("genxml/textbox/ref");
+                var v = g.GetXmlProperty("genxml/lang/genxml/textbox/name");
+                if (v == "") v = r;
+                rtn.Add(r, v);
             }
             return rtn;
         }

@@ -18,7 +18,12 @@ namespace RocketEcommerceAPI.API
             _dataObject.ShopSettings.Save(_postInfo);
             return GetCatalogSettings();
         }
-
+        public string AddPropertyGroup()
+        {
+            _dataObject.ShopSettings.Save(_postInfo);
+            _dataObject.ShopSettings.AddGroup(new SimplisityInfo());
+            return GetCatalogSettings();
+        }
         public string GetCatalogSettings()
         {
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("ShopSettings.cshtml");

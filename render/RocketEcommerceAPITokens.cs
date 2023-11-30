@@ -1,22 +1,117 @@
 ﻿using DNNrocketAPI.Components;
 using Newtonsoft.Json.Linq;
 using RazorEngine.Text;
+using Rocket.AppThemes.Components;
+using RocketEcommerceAPI.Interfaces;
+using RocketPortal.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace RocketEcommerceAPI.Components
 {
     public class RocketEcommerceAPITokens<T> : DNNrocketAPI.render.DNNrocketTokens<T>
     {
+        // Define data classes, so we can use intellisense in inject templates
+        public AppThemeLimpet appTheme;
+        public AppThemeLimpet appThemeDefault;
+        public AppThemeSystemLimpet appThemeSystem;
+        public AppThemeSystemLimpet appThemeDirectory;
+        public AppThemeLimpet appThemeDirectoryDefault;
+        public ModuleContentLimpet moduleData;
+        public SimplisityInfo moduleDataInfo;
+        public PortalLimpet portalData;
+        public List<string> enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+        public SessionParams sessionParams;
+        public UserParams userParams;
+        public SimplisityInfo info;
+        public SimplisityInfo infoempty;
+        public SystemLimpet systemData;
+        public SystemLimpet systemDirectoryData;
+        public CategoryLimpetList categoryDataList;
+        public CategoryLimpet categoryData;
+        public PropertyLimpetList propertyDataList;
+        public PropertyLimpet propertyData;
+        public AppThemeProjectLimpet appThemeProjects;
+        public DefaultsLimpet defaultData;
+        public SystemGlobalData globalSettings;
+        public AppThemeDataList appThemeDataList;
+        public CompanyLimpet companyData;
+        public NotificationLimpet notificationData;
+        public PortalShopLimpetStats portalStats;
+        public CartLimpet cartData;
+        public PortalShopLimpet portalShop;
+        public ShopSettingsLimpet shopSettings;
+        public ProductLimpet productData;
+        public CategoryLimpet defaultCategory;
+        public ProductLimpetList productList;
 
-        public IEncodedString RenderRocketEcommerceAPITemplate(string templateName, PortalShopLimpet portalShop, SimplisityRazor model)
+        public string AssigDataModel(SimplisityRazor sModel)
         {
-            var appThemeSystem = new AppThemeSystemLimpet(portalShop.PortalId, "rocketecommerceapi");
-            return RenderTemplate(templateName, appThemeSystem, model, true);
+            appTheme = (AppThemeLimpet)sModel.GetDataObject("appthemeview");
+            appThemeDefault = (AppThemeLimpet)sModel.GetDataObject("appthemedefault");
+            appThemeSystem = (AppThemeSystemLimpet)sModel.GetDataObject("appthemesystem");
+            appThemeDirectory = (AppThemeSystemLimpet)sModel.GetDataObject("appthemedirectory");
+            appThemeDirectoryDefault = (AppThemeLimpet)sModel.GetDataObject("appthemedirectorydefault");
+            appThemeProjects = (AppThemeProjectLimpet)sModel.GetDataObject("appthemeprojects");
+            appThemeDataList = (AppThemeDataList)sModel.GetDataObject("appthemedatalist");
+            portalShop = (PortalShopLimpet)sModel.GetDataObject("portalshop");
+            systemData = (SystemLimpet)sModel.GetDataObject("systemdata");
+            systemDirectoryData = (SystemLimpet)sModel.GetDataObject("systemdirectorydata");
+            portalData = (PortalLimpet)sModel.GetDataObject("portaldata");
+            shopSettings = (ShopSettingsLimpet)sModel.GetDataObject("shopsettings");
+            moduleData = (ModuleContentLimpet)sModel.GetDataObject("modulesettings");
+            var mRec = new SimplisityRecord();
+            if (moduleData != null) mRec = moduleData.Record;
+            moduleDataInfo = new SimplisityInfo(mRec);
+            categoryDataList = (CategoryLimpetList)sModel.GetDataObject("categorylist");
+            categoryData = (CategoryLimpet)sModel.GetDataObject("categorydata");
+            propertyDataList = (PropertyLimpetList)sModel.GetDataObject("propertylist");
+            propertyData = (PropertyLimpet)sModel.GetDataObject("propertydata");
+            defaultData = (DefaultsLimpet)sModel.GetDataObject("defaultdata");
+            globalSettings = (SystemGlobalData)sModel.GetDataObject("globalsettings");
+            sessionParams = sModel.SessionParamsData;
+            userParams = (UserParams)sModel.GetDataObject("userparams");
+            companyData = (CompanyLimpet)sModel.GetDataObject("companydata");
+            notificationData = (NotificationLimpet)sModel.GetDataObject("notificationdata");
+            portalStats = (PortalShopLimpetStats)sModel.GetDataObject("portalstats");
+            cartData = (CartLimpet)sModel.GetDataObject("cartdata");
+            productData = (ProductLimpet)sModel.GetDataObject("productdata");
+            productList = (ProductLimpetList)sModel.GetDataObject("productlist");
+            defaultCategory = (CategoryLimpet)sModel.GetDataObject("defaultcategory");
+
+            if (sessionParams == null) sessionParams = new SessionParams(new SimplisityInfo());
+            info = new SimplisityInfo();
+            if (productData != null) info = productData.Info;
+
+            infoempty = new SimplisityInfo();
+
+            AddProcessDataResx(appTheme, true);
+            if (systemData != null) AddProcessData("resourcepath", systemData.SystemRelPath + "/App_LocalResources/");
+
+            // use return of "string", so we don;t get error with converting void to object.
+            return "";
         }
+        /// <summary>
+        /// Dropdown select for Tax values that can be added on a product.
+        /// </summary>
+        /// <param name="productData">The product data.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public IEncodedString TaxDropDown(SimplisityInfo productInfo)
+        {
+            var taxProv = portalShop.GetActiveTaxProvider();
+            if (taxProv != null)
+            {
+                return DropDownList(productInfo, "genxml/select/taxref", taxProv.GetTaxRange(), "class='w3-input w3-border taxselect' ");
+            }
+            return new RawString("");
+        }
+
         public IEncodedString ModelDropdown(ProductLimpet productData, string id = "modelid")
         {
             return DropDownList(new SimplisityInfo(), "genxml/hidden/" + id + productData.ProductId, productData.GetModelDictionary(), "class='w3-input w3-border modelselect' ");

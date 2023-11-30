@@ -3,32 +3,20 @@
 @using Simplisity;
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
-@using RocketPortal.Components
-
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+@using RocketPortal.Components;
+@AssigDataModel(Model);
 
 @{
-    var settingsData = (ShopSettingsLimpet)Model.List.First();
-    var info = settingsData.Info;
-    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
-    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
-    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
-    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
-    var defaultCategory = new CategoryLimpet(portalShop.PortalId, settingsData.DefaultCategoryId, DNNrocketUtils.GetCurrentCulture());
-    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");    
-}
-
-@{
+    info = shopSettings.Info;
     var sFieldDict = new Dictionary<string, string>();
 }
 @RenderLanguageSelector("settingsadmin_edit", sFieldDict, appThemeSystem, Model)
 
 <div id="" class="w3-display-container w3-animate-opacity">
 
-    <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-padding">PortalId:&nbsp;@settingsData.PortalId</div>
+    <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-padding">PortalId:&nbsp;@portalShop.PortalId</div>
     <div class="w3-bar w3-margin">
-        <div class="w3-bar-item w3-button w3-theme-action simplisity_click" s-list="" s-cmd="settingsadmin_save" s-post="#settingscontent">@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-bar-item w3-button w3-theme-action simplisity_click" s-cmd="settingsadmin_save" s-list=".grouplist" s-post="#settingscontent">@ButtonText(ButtonTypes.save)</div>
     </div>
 
     <div id="settingscontent" class="w3-margin w3-border-bottom">
@@ -55,13 +43,48 @@
         <div class="w3-row w3-padding">
         </div>
 
-        <div class="w3-row w3-padding">
+        <div class="w3-row w3-padding grouplistdatasection">
             <label>@ResourceKey("RE.propertygroups")</label>
-            @TextArea(info, "genxml/textbox/propertygroups", " class='w3-input w3-border action_tageditor' disable ", "General")
+
+            <div class="w3-bar-block">
+                <div class="w3-button w3-padding-small w3-theme-action simplisity_click" s-post="#settingscontent" s-list=".grouplist" s-cmd="settingsadmin_addgroup">@ButtonIcon(ButtonTypes.add)&nbsp;@ResourceKey("RC.group")</div>
+                <div class="w3-button w3-pale-yellow w3-padding-small simplisity_itemundo" s-recylebin="grouplistbin" s-return="#grouplistdata" s-removelist=".grouplist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+            </div>
+
+            <ul id="grouplistdata" class="w3-ul">
+                @{
+                    var groupLP = 0;
+                }
+                @foreach (var groupInfo in info.GetList("grouplist"))
+                {
+                    <li class="grouplist w3-display-container w3-border-0" style="list-style-type: none;">
+                        @SortableListIndex(groupInfo, groupLP)
+
+                        <div class="w3-display-container w3-padding w3-card">
+                            <div class="w3-row ">
+                                <div class="w3-col m4 w3-padding">
+                                    <label>@ResourceKey("DNNrocket.ref")</label>
+                                    @TextBox(groupInfo, "genxml/textbox/ref", " class='w3-input w3-border' autocomplete='off'", "", false, groupLP)
+                                </div>
+                                <div class="w3-col m8 w3-padding">
+                                    <label>@ResourceKey("DNNrocket.text")</label>&nbsp;@EditFlag(sessionParams)
+                                    @TextBox(groupInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' autocomplete='off'", "", true, groupLP)
+                                </div>
+                            </div>
+                            <div class="simplisity_removelistitem w3-display-topright" s-removelist=".grouplist" s-recylebin="grouplistbin" style="cursor: pointer;">
+                                @ButtonIcon(ButtonTypes.remove)
+                            </div>
+                        </div>
+                    </li>
+                    groupLP += 1;
+                }
+            </ul>
+
         </div>
+
         <div class="w3-row w3-padding">
             <label>@ResourceKey("RE.eventlist")</label><br/>
-            <div class="w3-light-grey" style="min-height:40px;">@settingsData.EventCSV</div>
+            <div class="w3-light-grey" style="min-height:40px;">@shopSettings.EventCSV</div>
         </div>
 
         <div class="w3-row w3-padding">
@@ -84,6 +107,10 @@
         </div>
 
     </div>
+</div>
+
+<div>
+    @RenderXml(info)
 </div>
 
 <script>

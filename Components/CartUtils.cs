@@ -218,6 +218,20 @@ namespace RocketEcommerceAPI.Components
             }
             return shiptotal;
         }
+        public static TaxData CalculateTaxCost(CartLimpet cartData, PortalShopLimpet portalShop)
+        {
+            var taxProv = portalShop.GetActiveTaxProvider();
+            if (taxProv != null)
+            {
+                return taxProv.CalculateTaxCost(cartData);
+            }
+            TaxData taxData = new TaxData();
+            taxData.CartTotalCents = 0;
+            taxData.ShippingTotalCents = 0;
+            taxData.TotalCents = 0;
+            taxData.TotalCentsAdd = 0;
+            return taxData;
+        }
         public static PaymentLimpet CartBankReturn(SimplisityInfo paramInfo)
         {
             var paymentData = new PaymentLimpet(PortalUtils.GetPortalId(), -1); // create new payment (not on DB until it is updated)

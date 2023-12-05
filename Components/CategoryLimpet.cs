@@ -50,14 +50,14 @@ namespace RocketEcommerceAPI.Components
         {
             _objCtrl = new DNNrocketController();
 
-            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "portal" + PortalId);
+            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "ecom" + PortalId);
             if (info == null)
             {
                 info = _objCtrl.GetInfo(CategoryId, CultureCode, TableName); // get existing record.
                 if (info != null) // check if we have a real record.
                 {
                     Info = info;
-                    CacheUtils.SetCache(_cacheKey, Info, "portal" + PortalId);
+                    CacheUtils.SetCache(_cacheKey, Info, "ecom" + PortalId);
                 }
                 else
                     Info.ItemID = -1; // flags categories does not exist yet.
@@ -168,8 +168,8 @@ namespace RocketEcommerceAPI.Components
         }
         public void ClearCache()
         {
-            CacheUtils.ClearAllCache("portal" + PortalId);
-            CacheUtils.RemoveCache(_cacheKey, "portal" + PortalId);
+            CacheUtils.ClearAllCache("ecom" + PortalId);
+            CacheUtils.RemoveCache(_cacheKey, "ecom" + PortalId);
         }
         public int Update()
         {

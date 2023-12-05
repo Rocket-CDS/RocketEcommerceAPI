@@ -84,7 +84,7 @@ namespace RocketEcommerceAPI.Components
             _objCtrl = new DNNrocketController();
             if (CultureCode == "") CultureCode = DNNrocketUtils.GetEditCulture();
 
-            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "portal" + PortalId);
+            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "ecom" + PortalId);
             if (info == null)
             {
                 if (_productId > 0)
@@ -92,7 +92,7 @@ namespace RocketEcommerceAPI.Components
                     info = _objCtrl.GetInfo(_productId, CultureCode, _tableName); // get existing record.
                     if (info != null && info.ItemID > 0) Info = info; // check if we have a real record, or a dummy being created and not saved yet.
                     if (GetModelList().Count <= 0) AddModel();
-                    CacheUtils.SetCache(_cacheKey, info, "portal" + PortalId);
+                    CacheUtils.SetCache(_cacheKey, info, "ecom" + PortalId);
                 }
             }
             else
@@ -234,8 +234,8 @@ namespace RocketEcommerceAPI.Components
         }
         public void ClearCache()
         {
-            CacheUtils.ClearAllCache("portal" + PortalId);
-            CacheUtils.RemoveCache(_cacheKey, "portal" + PortalId);
+            CacheUtils.ClearAllCache("ecom" + PortalId);
+            CacheUtils.RemoveCache(_cacheKey, "ecom" + PortalId);
         }
 
         public int Update(bool cacheData = true)

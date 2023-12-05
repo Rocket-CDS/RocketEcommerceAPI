@@ -206,6 +206,7 @@ namespace RocketEcommerceAPI.API
             {
                 var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productdetail.cshtml");
                 var articleData = GetActiveProduct(-1);
+                _dataObject.SetDataObject("productdata", articleData);
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, articleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;

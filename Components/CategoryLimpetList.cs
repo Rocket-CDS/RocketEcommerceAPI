@@ -34,7 +34,7 @@ namespace RocketEcommerceAPI.Components
             _objCtrl = new DNNrocketController();
 
             _cacheKey = PortalId + "*" + _entityTypeCode + "*" + CultureCode + "*" + _tableName;
-            _cacheGroup = "portal" + PortalId;
+            _cacheGroup = "ecom" + PortalId;
 
             if (populate) Populate();
         }

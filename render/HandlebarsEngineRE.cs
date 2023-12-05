@@ -69,11 +69,11 @@ namespace RocketEcommerceAPI.Components
             var cultureCode = (string)o.SelectToken("genxml.sessionparams.r.culturecode") ?? "";
 
             var cacheKey = portalid + "*portalshop*" + cultureCode;
-            var portalShop = (PortalShopLimpet)CacheUtils.GetCache(cacheKey, "portal" + portalid);
+            var portalShop = (PortalShopLimpet)CacheUtils.GetCache(cacheKey, "ecom" + portalid);
             if (portalShop == null)
             {
                 portalShop = new PortalShopLimpet(Convert.ToInt32(portalid), cultureCode);
-                CacheUtils.SetCache(cacheKey, portalShop, "portal" + portalid);
+                CacheUtils.SetCache(cacheKey, portalShop, "ecom" + portalid);
             }
             return portalShop;
         }

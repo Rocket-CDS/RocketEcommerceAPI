@@ -128,7 +128,7 @@ namespace RocketEcommerceAPI.Components
             Info = _objCtrl.SaveData(Info, TableName);
             CacheUtils.RemoveCache(_cacheKey);
             // clear portal cache, so list so change.
-            CacheUtils.ClearAllCache("portal" + PortalId);
+            CacheUtils.ClearAllCache("ecom" + PortalId);
             return Info.ItemID;
         }
         public int ValidateAndUpdate()

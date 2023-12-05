@@ -59,8 +59,6 @@ namespace RocketEcommerceAPI.API
                     break;
                 case "dashboard_clearallcache":
                     CacheFileUtils.ClearFileCacheAllPortals();
-                    CacheUtils.ClearAllCache();
-                    CacheUtils.ClearAllCache();
                     DNNrocketUtils.ClearAllCache();
                     strOut = "OK";
                     break;

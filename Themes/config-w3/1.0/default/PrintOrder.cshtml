@@ -4,23 +4,15 @@
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
 @using System.Globalization;
-
-@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+@AssigDataModel(Model);
 
 @{
     var info = new SimplisityInfo();
-    var orderData = (OrderLimpet)Model.List.First();
+    var orderData = (OrderLimpet)Model.GetDataObject("orderdata");
     if (orderData.Record != null)
     {
         info = new SimplisityInfo(orderData.Record);
     }
-
-    var portalShop = orderData.PortalShop;
-    var companyData = new CompanyLimpet(portalShop.PortalId, orderData.CultureCode);
-    var notificationData = new NotificationLimpet(orderData.PortalId, orderData.PreferedCultureCode);
 }
 
 <style type="text/css">

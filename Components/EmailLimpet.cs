@@ -22,6 +22,18 @@ namespace RocketEcommerceAPI.Components
             _emailData = new EmailSenderData();
             ErrorMessage = "";
         }
+        public EmailLimpet(int portalId, SimplisityRazor model, string cultureCode = "")
+        {
+            if (cultureCode == "") cultureCode = DNNrocketUtils.GetCurrentCulture();
+            CultureCode = cultureCode;
+            PortalId = portalId;
+            PortalShop = (PortalShopLimpet)model.GetDataObject("portalshop");
+            SystemData = (SystemLimpet)model.GetDataObject("systemdata");
+            CompanyData = (CompanyLimpet)model.GetDataObject("companydata");
+            _model = model;
+            _emailData = new EmailSenderData();
+            ErrorMessage = "";
+        }
         /// <summary>
         /// Send Email
         /// </summary>
@@ -39,9 +51,9 @@ namespace RocketEcommerceAPI.Components
             _emailData.EmailSubject = CompanyData.CompanyName + " : " + subject;
             _emailData.RazorTemplateName = templateName;
             _emailData.Model = _model;
-            _emailData.Model.SetDataObject("companyData", CompanyData);
             _emailData.CultureCode = CultureCode;
             _emailData.AppTheme = appThemeDefault;
+            _emailData.AppSystemTheme = (AppThemeSystemLimpet)_model.GetDataObject("appthemesystem");
 
             if (appThemeDefault == null) ErrorMessage += " : Email AppTheme is NULL";
 

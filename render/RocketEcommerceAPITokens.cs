@@ -54,14 +54,11 @@ namespace RocketEcommerceAPI.Components
         {
             appTheme = (AppThemeLimpet)sModel.GetDataObject("appthemeview");
             appThemeDefault = (AppThemeLimpet)sModel.GetDataObject("appthemedefault");
-            appThemeSystem = (AppThemeSystemLimpet)sModel.GetDataObject("appthemesystem");
-            appThemeDirectory = (AppThemeSystemLimpet)sModel.GetDataObject("appthemedirectory");
-            appThemeDirectoryDefault = (AppThemeLimpet)sModel.GetDataObject("appthemedirectorydefault");
+            appThemeSystem = (AppThemeSystemLimpet)sModel.GetDataObject("appthemesystem");          
             appThemeProjects = (AppThemeProjectLimpet)sModel.GetDataObject("appthemeprojects");
             appThemeDataList = (AppThemeDataList)sModel.GetDataObject("appthemedatalist");
             portalShop = (PortalShopLimpet)sModel.GetDataObject("portalshop");
             systemData = (SystemLimpet)sModel.GetDataObject("systemdata");
-            systemDirectoryData = (SystemLimpet)sModel.GetDataObject("systemdirectorydata");
             portalData = (PortalLimpet)sModel.GetDataObject("portaldata");
             shopSettings = (ShopSettingsLimpet)sModel.GetDataObject("shopsettings");
             moduleData = (ModuleContentLimpet)sModel.GetDataObject("modulesettings");

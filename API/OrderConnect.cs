@@ -22,7 +22,14 @@ namespace RocketEcommerceAPI.API
                 var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
                 if (orderData.Exists)
                 {
-                    if (orderData.SendEmail())
+                    var razorTempl = AssignRemoteTemplate("", "PrintOrder.cshtml");
+                    _dataObject.SetDataObject("orderdata", orderData);
+
+                    var nbRazor = new SimplisityRazor(null, _dataObject.Settings);
+                    nbRazor.SessionParamsData = _sessionParams;
+                    nbRazor.DataObjects = _dataObject.DataObjects;
+
+                    if (orderData.SendEmail(nbRazor))
                     {
                         var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent");
                         var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent", "Msg");
@@ -40,7 +47,7 @@ namespace RocketEcommerceAPI.API
                         return messageData.GetDisplayError();
                     }
                 }
-                LogUtils.LogTracking("SendOrderEmail() - Invalid Order OrderId:" + orderid, _systemkey);
+                LogUtils.LogSystem("SendOrderEmail() - Invalid Order OrderId:" + orderid);
                 return "Invalid Order";
             }
             catch (Exception ex)

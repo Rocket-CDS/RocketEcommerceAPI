@@ -1,26 +1,9 @@
 ﻿@inherits RocketEcommerceAPI.Components.RocketEcommerceAPITokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
-@using RocketEcommerceAPI.Components;
 @using Simplisity;
+@using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
-
-
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
-
-
-@{
-    var info = new SimplisityInfo();
-    var orderData = (OrderLimpet)Model.List.First();
-    if (orderData.Record != null)
-    {
-        info = new SimplisityInfo(orderData.Record);
-    }
-    var companyData = (CompanyLimpet)Model.GetDataObject("companyData");
-    var portalShop = new PortalShopLimpet(orderData.PortalId, orderData.PreferedCultureCode);
-    var notificationData = new NotificationLimpet(orderData.PortalId, orderData.PreferedCultureCode);
-}
+@AssigDataModel(Model);
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -48,7 +31,7 @@
                     <tr>
                         <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
 
-                            @RenderRocketEcommerceAPITemplate("PrintOrder.cshtml", portalShop, Model)
+                            @RenderTemplate("PrintOrder.cshtml", appThemeSystem, Model)
 
                         </td>
                     </tr>

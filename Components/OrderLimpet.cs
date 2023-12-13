@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -144,22 +145,28 @@ namespace RocketEcommerceAPI.Components
 
         #region "Email"
 
-        public bool SendEmail()
+        public bool SendEmail(SimplisityRazor model = null)
         {
-            return EmailSend(Email, "OrderEmail.cshtml");
+            return EmailSend(Email, "OrderEmail.cshtml", model);
         }
-        public bool SendManagerEmail()
+        public bool SendManagerEmail(SimplisityRazor model = null)
         {
             var companyLimpet = new CompanyLimpet(PortalId, CultureCode);
-            return EmailSend(companyLimpet.OrderEmail, "OrderEmail.cshtml");
+            return EmailSend(companyLimpet.OrderEmail, "OrderEmail.cshtml", model);
         }
-        private bool EmailSend(string email, string templateName)
+        private bool EmailSend(string email, string templateName, SimplisityRazor model = null)
         {
             var systemData = new SystemLimpet(_systemkey);
             if (GeneralUtils.IsEmail(email))
             {
                 var notificationData = new NotificationLimpet(PortalId, PreferedCultureCode);
-                var emailLimpet = new EmailLimpet(PortalId, this, PreferedCultureCode);
+
+                EmailLimpet emailLimpet;
+                if (model == null)
+                    emailLimpet = new EmailLimpet(PortalId, this, PreferedCultureCode);
+                else
+                    emailLimpet = new EmailLimpet(PortalId, model, PreferedCultureCode);
+
                 if (emailLimpet.SendEmail(email, templateName, notificationData.Message_EmailOrderSubject))
                 {
                     Update("SENT: " + templateName + " > " + email);

@@ -89,7 +89,7 @@ namespace RocketEcommerceAPI.Components
 
             var articleId = sessionParam.GetInt("pid");
             var cacheKey = moduleRef + "*" + articleId + "*" + template;
-            var rtn = (string)CacheFileUtils.GetCache(cacheKey, "ecom" + portalId);
+            var rtn = (string)CacheFileUtils.GetCache(portalId, cacheKey, "ecom" + portalId);
             if (rtn != null && !moduleSettings.DisableCache) return rtn;
 
             var dataObject = new DataObjectLimpet(portalId, moduleRef, sessionParam, false);
@@ -101,7 +101,7 @@ namespace RocketEcommerceAPI.Components
             var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
-            CacheFileUtils.SetCache(cacheKey, pr.RenderedText, "ecom" + portalId);
+            CacheFileUtils.SetCache(portalId, cacheKey, pr.RenderedText, "ecom" + portalId);
             return pr.RenderedText;
         }
         public static string DisplayView(int portalId, string systemKey, string moduleRef, SessionParams sessionParam, SimplisityInfo paramInfo = null, SimplisityInfo postInfo = null)
@@ -112,7 +112,7 @@ namespace RocketEcommerceAPI.Components
             var cacheKey = moduleRef + "*" + sessionParam.UrlFriendly + "-" + sessionParam.OrderByRef + "-" + sessionParam.Page + "-" + sessionParam.PageSize;
             if (sessionParam.SearchText == "")
             {
-                var rtn = (string)CacheFileUtils.GetCache(cacheKey, "ecom" + portalId);
+                var rtn = (string)CacheFileUtils.GetCache(portalId, cacheKey, "ecom" + portalId);
                 if (rtn != null && !moduleSettings.DisableCache) return rtn;
             }
 
@@ -195,7 +195,7 @@ namespace RocketEcommerceAPI.Components
                     var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);
                     var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
                     if (pr.StatusCode != "00") return pr.ErrorMsg;
-                    if (sessionParam.SearchText == "") CacheFileUtils.SetCache(cacheKey, pr.RenderedText, "ecom" + portalId);
+                    if (sessionParam.SearchText == "") CacheFileUtils.SetCache(portalId, cacheKey, pr.RenderedText, "ecom" + portalId);
                     return pr.RenderedText;
             }
             return "";

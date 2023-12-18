@@ -4,7 +4,6 @@
 @using Simplisity;
 @using DNNrocketAPI.Components;
 
-
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
@@ -12,10 +11,9 @@
 
 @{
     var paymentData = (PaymentLimpet)Model.List.First();
-    var info = new SimplisityInfo(paymentData.Record);
-    var companyData = (CompanyLimpet)Model.GetDataObject("companyData");
-    var portalShop = new PortalShopLimpet(paymentData.PortalId, paymentData.PreferedCultureCode);
-    var notificationData = new NotificationLimpet(paymentData.PortalId, paymentData.PreferedCultureCode);
+    var companyData = new CompanyLimpet(paymentData.PortalId, paymentData.CultureCode);
+    var portalShop = new PortalShopLimpet(paymentData.PortalId, paymentData.CultureCode);
+    var notificationData = new NotificationLimpet(paymentData.PortalId, paymentData.CultureCode);
 }
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

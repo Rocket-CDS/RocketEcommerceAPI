@@ -3,7 +3,24 @@
 @using Simplisity;
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
-@AssigDataModel(Model);
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
+@{
+    // DO NOT use AssignData(Model), the Model only contains the order.
+    //@AssigDataModel(Model);
+
+    var info = new SimplisityInfo();
+    var orderData = (OrderLimpet)Model.List.First();
+    if (orderData.Record != null)
+    {
+        info = new SimplisityInfo(orderData.Record);
+    }
+    var portalShop = orderData.PortalShop;
+    var companyData = new CompanyLimpet(portalShop.PortalId, orderData.CultureCode);
+    var notificationData = new NotificationLimpet(orderData.PortalId, orderData.PreferedCultureCode);
+    var appThemeSystem = new AppThemeSystemLimpet(orderData.PortalId, "rocketecommerceapi");
+}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

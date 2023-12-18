@@ -145,16 +145,16 @@ namespace RocketEcommerceAPI.Components
 
         #region "Email"
 
-        public bool SendEmail(SimplisityRazor model = null)
+        public bool SendEmail()
         {
-            return EmailSend(Email, "OrderEmail.cshtml", model);
+            return EmailSend(Email, "OrderEmail.cshtml");
         }
-        public bool SendManagerEmail(SimplisityRazor model = null)
+        public bool SendManagerEmail()
         {
             var companyLimpet = new CompanyLimpet(PortalId, CultureCode);
-            return EmailSend(companyLimpet.OrderEmail, "OrderEmail.cshtml", model);
+            return EmailSend(companyLimpet.OrderEmail, "OrderEmail.cshtml");
         }
-        private bool EmailSend(string email, string templateName, SimplisityRazor model = null)
+        private bool EmailSend(string email, string templateName)
         {
             var systemData = new SystemLimpet(_systemkey);
             if (GeneralUtils.IsEmail(email))
@@ -162,10 +162,7 @@ namespace RocketEcommerceAPI.Components
                 var notificationData = new NotificationLimpet(PortalId, PreferedCultureCode);
 
                 EmailLimpet emailLimpet;
-                if (model == null)
-                    emailLimpet = new EmailLimpet(PortalId, this, PreferedCultureCode);
-                else
-                    emailLimpet = new EmailLimpet(PortalId, model, PreferedCultureCode);
+                emailLimpet = new EmailLimpet(PortalId, this, PreferedCultureCode);
 
                 if (emailLimpet.SendEmail(email, templateName, notificationData.Message_EmailOrderSubject))
                 {

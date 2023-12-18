@@ -4,17 +4,24 @@
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
 @using System.Globalization;
-@AssigDataModel(Model);
 
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
 @{
+
+    // DO NOT use AssignData(Model), the Model only contains the order.
+    //@AssigDataModel(Model);
+
     var info = new SimplisityInfo();
-    var orderData = (OrderLimpet)Model.GetDataObject("orderdata");
+    var orderData = (OrderLimpet)Model.List.First();
     if (orderData.Record != null)
     {
         info = new SimplisityInfo(orderData.Record);
     }
+    var portalShop = orderData.PortalShop;
+    var companyData = new CompanyLimpet(portalShop.PortalId, orderData.CultureCode);
+    var notificationData = new NotificationLimpet(orderData.PortalId, orderData.PreferedCultureCode);
 }
-
 <style type="text/css">
     #outlook a {
         padding: 0;
@@ -103,7 +110,6 @@
         text-align: right !important;
     }
 </style>
-
 
 <table class="orderemail" width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0">
     <tr>

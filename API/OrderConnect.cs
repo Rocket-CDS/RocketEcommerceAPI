@@ -22,14 +22,7 @@ namespace RocketEcommerceAPI.API
                 var orderData = new OrderLimpet(_dataObject.PortalShop.PortalId, orderid, _sessionParams.CultureCodeEdit);
                 if (orderData.Exists)
                 {
-                    var razorTempl = AssignRemoteTemplate("", "PrintOrder.cshtml");
-                    _dataObject.SetDataObject("orderdata", orderData);
-
-                    var nbRazor = new SimplisityRazor(null, _dataObject.Settings);
-                    nbRazor.SessionParamsData = _sessionParams;
-                    nbRazor.DataObjects = _dataObject.DataObjects;
-
-                    if (orderData.SendEmail(nbRazor))
+                    if (orderData.SendEmail())
                     {
                         var messageTitle = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent");
                         var messageText = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/", "Help.emailsent", "Msg");

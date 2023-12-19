@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RE_Etransactions", "..\RE_E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayPal", "..\RocketEcommercePayPal\PayPal.csproj", "{46472EB2-8B61-4CC2-BE44-8553FA5DD696}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RE_ManualPay", "..\RE_ManualPay\RE_ManualPay.csproj", "{DD23699D-168C-4AAF-8B77-56A7A53DC38B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,16 @@ Global
 		{46472EB2-8B61-4CC2-BE44-8553FA5DD696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46472EB2-8B61-4CC2-BE44-8553FA5DD696}.ReleaseAll|Any CPU.ActiveCfg = Release|Any CPU
 		{46472EB2-8B61-4CC2-BE44-8553FA5DD696}.ReleaseAll|Any CPU.Build.0 = Release|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.DebugAll|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.DebugAll|Any CPU.Build.0 = Debug|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.Razor|Any CPU.Build.0 = Razor|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.ReleaseAll|Any CPU.ActiveCfg = Release|Any CPU
+		{DD23699D-168C-4AAF-8B77-56A7A53DC38B}.ReleaseAll|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

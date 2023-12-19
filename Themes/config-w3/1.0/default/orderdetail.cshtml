@@ -215,7 +215,7 @@
                     <div class="w3-row w3-padding w3-margin-top">
                         <div class="w3-bar">
                             <div class="w3-bar-item">
-                                <h4><b>@ResourceKey("RE.products")</b> @(orderData.Exists)</h4>
+                                <h4><b>@ResourceKey("RE.products")</b></h4>
                             </div>
                             @if (orderData.Exists && (orderData.StatusCode == Convert.ToInt32(OrderStatus.Special) || orderData.StatusCode == Convert.ToInt32(OrderStatus.Incomplete)))
                             {

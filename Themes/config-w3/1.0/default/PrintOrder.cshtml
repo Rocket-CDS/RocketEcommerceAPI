@@ -326,14 +326,17 @@
                 </tr>
             </table>
 
-            <div style="height:8px">&nbsp;</div><!-- spacer -->
-            <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
-                <tr>
-                    <td width="50%" align="left" valign="top" style="line-height:100%">
-                        @BreakOf(notificationData.Message_BankInstructions)
-                    </td>
-                </tr>
-            </table>
+            @if (orderData.IsManualPayment())
+            {
+                <div style="height:8px">&nbsp;</div><!-- spacer -->
+                <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
+                    <tr>
+                        <td width="50%" align="left" valign="top" style="line-height:100%">
+                            @BreakOf(notificationData.Message_BankInstructions)
+                        </td>
+                    </tr>
+                </table>
+            }
 
         </td>
     </tr>

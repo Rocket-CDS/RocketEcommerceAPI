@@ -208,6 +208,16 @@ namespace RocketEcommerceAPI.Components
             }
             return rtn;
         }
+        public bool IsManualPayment()
+        {
+            var pl = GetPaymentList();
+            if (pl.Count > 0)
+            {
+                var p = pl.First();
+                if (p.PaymentProvider.ToLower() == "manualpay") return true;
+            }
+            return false;
+        }
 
         #endregion
 

@@ -70,6 +70,7 @@ namespace RocketEcommerceAPI.Components
                 return "";
             }
         }
+        public string OptionRef { get { return ProductOptionData.Ref; } }
         public string OptionName { get {return ProductOptionData.Name;}  }
         public ProductOptionLimpet ProductOptionData { set; get; }
         public string KeyEncoded { set; get; }

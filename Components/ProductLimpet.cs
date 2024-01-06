@@ -398,7 +398,7 @@ namespace RocketEcommerceAPI.Components
         public string DefaultImageUrl()
         {
             var i = GetImage(0);
-            if (i == null)
+            if (i == null || i.RelPath == "")
                 return "/DesktopModules/DNNrocket/api/images/noimage2.png";
             else
                 return "/" + i.RelPath.Trim('/');

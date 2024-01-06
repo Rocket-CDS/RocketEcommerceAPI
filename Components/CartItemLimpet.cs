@@ -66,6 +66,31 @@ namespace RocketEcommerceAPI.Components
             }
             return rtn;
         }
+        public CartItemOptionLimpet GetOption(string optionref)
+        {
+            foreach (var o in GetSelectedOptionsDict())
+            {
+                var productOption = ProductData.GetOption(o.Key);
+                var cartItemOption = new CartItemOptionLimpet(productOption, o.Key, o.Value);
+                if (cartItemOption.OptionRef == optionref) return cartItemOption;
+            }
+            return null;
+        }
+        public CartItemOptionLimpet GetOption(int idx)
+        {
+            var lp = 1;
+            foreach (var o in GetSelectedOptionsDict())
+            {
+                if (lp == idx)
+                {
+                    var productOption = ProductData.GetOption(o.Key);
+                    var cartItemOption = new CartItemOptionLimpet(productOption, o.Key, o.Value);
+                    return cartItemOption;
+                }
+                lp += 1;
+            }
+            return null;
+        }
         public void Validate()
         {
             Valid = false;

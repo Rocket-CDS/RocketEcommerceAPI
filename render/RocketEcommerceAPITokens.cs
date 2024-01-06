@@ -113,7 +113,7 @@ namespace RocketEcommerceAPI.Components
         {
             return DropDownList(new SimplisityInfo(), "genxml/hidden/" + id + productData.ProductId, productData.GetModelDictionary(), "class='w3-input w3-border modelselect' ");
         }
-        public IEncodedString OptionsInput(ProductLimpet productData, string checkBoxCSS = "w3-check", string dropDownCSS = "w3-select w3-border", string radioButtonCSS = "w3-input", string textBoxCSS = "w3-input w3-border", string labelCSS = "w3-margin-top", string id = "optionid")
+        public IEncodedString OptionsInput(ProductLimpet productData, string checkBoxCSS = "w3-check", string dropDownCSS = "w3-select w3-border", string radioButtonCSS = "w3-radio w3-margin-left", string textBoxCSS = "w3-input w3-border", string labelCSS = "w3-margin-top", string id = "optionid")
         {
             var strOut = "";
             var lp = 1;
@@ -134,7 +134,10 @@ namespace RocketEcommerceAPI.Components
                 if (option.IsRadioButton)
                 {
                     strOut += "<div class='" + labelCSS + "'>" + option.Name + "</div>";
-                    strOut += RadioButtonList(new SimplisityInfo(), "genxml/" + id + productData.ProductId + lp, option.GetOptionFieldDictionary(), "class='option" + productData.ProductId + " " + radioButtonCSS + "' optionkey='" + option.OptionKey + "' ","","",false);
+                    var oDict = option.GetOptionFieldDictionary();
+                    var defaultKey = "";
+                    if (oDict.Count > 0) defaultKey = oDict.First().Key;
+                    strOut += RadioButtonList(new SimplisityInfo(), "genxml/" + id + productData.ProductId + lp, oDict, "class='option" + productData.ProductId + " ' optionkey='" + option.OptionKey + "' ", defaultKey, "",false,0,"", radioButtonCSS);
                 }
                 if (option.IsTextBox)
                 {

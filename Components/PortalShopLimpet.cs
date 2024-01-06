@@ -636,6 +636,7 @@ namespace RocketEcommerceAPI.Components
         public bool Active { get { return Record.GetXmlPropertyBool("genxml/active"); } set { Record.SetXmlProperty("genxml/active", value.ToString()); } }
         public bool EmailActive { get { return Record.GetXmlPropertyBool("genxml/emailon"); } }
         public bool DebugMode { get { if (Record == null) return false; else return Record.GetXmlPropertyBool("genxml/debugmode"); } }
+        public bool UniqueCartItems { get { if (Record == null) return false; else return Record.GetXmlPropertyBool("genxml/uniquecartitems"); } }        
         public AppThemeDataList AppThemeList
         {
             get

@@ -91,6 +91,9 @@ namespace RocketEcommerceAPI.Components
                     }
                     optionpostkey = optionpostkey.TrimEnd('*');
 
+                    var portalShop = new PortalShopLimpet(productData.PortalId, productData.CultureCode);
+                    if (portalShop.UniqueCartItems) optionpostkey += "*" + GeneralUtils.GetUniqueString();
+
                     var key = productId + "*" + modelkey + "*" + optionpostkey;
 
                     var listItemExists = true;

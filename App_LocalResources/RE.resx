@@ -993,4 +993,7 @@
   <data name="listpage.Text" xml:space="preserve">
     <value>List Page</value>
   </data>
+  <data name="checkout.Text" xml:space="preserve">
+    <value>Checkout</value>
+  </data>
 </root>

@@ -50,6 +50,7 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("appthemedefault", new AppThemeLimpet(portalid, systemData, "Default", "1.0"));
             SetDataObject("appthemeview", new AppThemeLimpet(portalid, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName));
             SetDataObject("companydata", new CompanyLimpet(portalid, cultureCode));
+            SetDataObject("countrydata", new CountryLimpet(portalid, cultureCode));
             SetDataObject("portalshop", portalShop);
             SetDataObject("appthemedatalist", new AppThemeDataList(portalid, portalShop.ProjectName, _systemkey));
             SetDataObject("notificationdata", new NotificationLimpet(portalid,cultureCode));

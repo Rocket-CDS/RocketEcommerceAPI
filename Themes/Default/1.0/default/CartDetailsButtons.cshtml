@@ -22,7 +22,6 @@
 
 <div class="w3-row w3-margin-top w3-margin-bottom">
     <div class="w3-button w3-border w3-left simplisity_click" s-post="#datasection" s-cmd="rocketecommerceapi_savecart" s-return='.ecommerce-container' s-fields='{"template":"cartlist.cshtml","moduleref":"@(moduleSettings.ModuleRef)"}'>@ButtonText(ButtonTypes.previous, sessionParams.CultureCode)</div>
-    <span class="w3-button w3-border w3-left w3-margin-left w3-light-grey w3-hide-small" onclick="location.reload();return false;"><span class="material-icons">home</span>&nbsp;@ResourceKey("RE.continueshopping", sessionParams.CultureCode)</span>
     <span class="w3-button w3-border w3-left w3-margin-left w3-hide-small simplisity_click " s-cmd="rocketecommerceapi_cartship" s-return='.ecommerce-container' s-fields='{"template":"@(portalShop.Record.GetXmlProperty("genxml/checkouttemplate"))","moduleref":"@(moduleSettings.ModuleRef)"}'>@ButtonIcon(ButtonTypes.refresh, sessionParams.CultureCode)</span>
     <span class="w3-button w3-border w3-right w3-margin-left a-dovalidate simplisity_click" s-post="#datasection" s-cmd="rocketecommerceapi_savecart" s-before="validateCart" s-return='.ecommerce-container' s-fields='{"template":"cartsummary.cshtml","moduleref":"@(moduleSettings.ModuleRef)"}'>@ButtonText(ButtonTypes.next, sessionParams.CultureCode)</span>
 </div>

@@ -385,6 +385,15 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checkout.
+        /// </summary>
+        internal static string checkout_Text {
+            get {
+                return ResourceManager.GetString("checkout.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checkout Type.
         /// </summary>
         internal static string checkouttype_Text {

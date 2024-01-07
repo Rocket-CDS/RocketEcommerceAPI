@@ -571,8 +571,12 @@
 	  <command>
       <cmd>rocketecommerceapi_minicart</cmd>
       <action>false</action>
-    </command>
-    <command>
+    </command>	  
+	  <command>
+		  <cmd>rocketecommerceapi_addtocartnext</cmd>
+		  <action>false</action>
+	  </command>
+      <command>
       <cmd>rocketecommerceapi_addtocart</cmd>
       <action>false</action>
     </command>

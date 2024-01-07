@@ -438,6 +438,9 @@ namespace RocketEcommerceAPI.API
                 case "rocketecommerceapi_addtocart":
                     strOut = AddToCart();
                     break;
+                case "rocketecommerceapi_addtocartnext":
+                    strOut = AddToCartReturnCartList();
+                    break;                    
                 case "rocketecommerceapi_addtocartjson":
                     rtnDic.Add("outputhtml", "");
                     rtnDic.Add("outputjson", AddToCart("json"));

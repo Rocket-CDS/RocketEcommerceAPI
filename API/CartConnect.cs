@@ -43,6 +43,11 @@ namespace RocketEcommerceAPI.API
             else
                 return GetMiniCartDisplay();
         }
+        public string AddToCartReturnCartList()
+        {
+            _dataObject.CartData.AddProduct(_postInfo);
+            return GetPublicCartList();
+        }
         public string RemoveCartItem()
         {
             var cartitemindex = _paramInfo.GetXmlPropertyInt("genxml/hidden/cartitemindex");

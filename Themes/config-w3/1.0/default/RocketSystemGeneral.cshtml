@@ -52,7 +52,15 @@
                     <div class="w3-row">
                         <div class="w3-col m6  w3-padding" style="">
                             <label class="">@ResourceKey("RE.currencyculturecode")</label>
-                            @DropDownCultureCodeList(info, "genxml/currencyculturecode", "class='w3-input w3-border'", DNNrocketUtils.GetEditCulture())
+                            @{
+                                var allCultureCodeDict = new Dictionary<string, string>();
+                                var allCultureCodeList = DNNrocketUtils.GetAllCultureCodeList();
+                                foreach (var cRec in allCultureCodeList)
+                                {
+                                    allCultureCodeDict.Add(cRec.GetXmlProperty("genxml/code"), cRec.GetXmlProperty("genxml/code"));
+                                }
+                            }
+                            @DropDownList(info, "genxml/currencyculturecode", allCultureCodeDict, "class='w3-input w3-border'", DNNrocketUtils.GetEditCulture())
                         </div>
                         <div class="w3-col m6 w3-padding">
                             <label class="">@ResourceKey("RE.currencycode")</label>

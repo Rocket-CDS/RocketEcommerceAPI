@@ -141,8 +141,10 @@ namespace RocketEcommerceAPI.Components
                 }
                 if (option.IsTextBox)
                 {
+                    var required = "";
+                    if (option.IsRequired) required = "required";
                     strOut += "<div class='" + labelCSS + "'>" + option.Name + "</div>";
-                    strOut += TextBox(new SimplisityInfo(), "genxml/" + id + productData.ProductId + lp, "class='option" + productData.ProductId + " " + textBoxCSS + "' optionkey='" + option.OptionKey + "' maxlength='100' ","",false);
+                    strOut += TextBox(new SimplisityInfo(), "genxml/" + id + productData.ProductId + lp, required + " name='" + id + productData.ProductId + lp + "'  class='option" + productData.ProductId + " rocketoptiontextbox " + textBoxCSS + "' optionkey='" + option.OptionKey + "' maxlength='100' ","",false);
                 }
 
                 strOut += HiddenField(new SimplisityInfo(), "genxml/optionkey" + productData.ProductId + lp, "", option.OptionKey, false, lp ); // we need the optionkey for adding to cart.

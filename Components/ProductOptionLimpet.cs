@@ -77,6 +77,13 @@ namespace DNNrocketAPI.Components
                 return rtn;
             }
         }
+        public bool IsRequired
+        {
+            get
+            {
+                return Info.GetXmlPropertyBool("genxml/checkbox/required");
+            }
+        }
         public bool IsCheckBox
         {
             get

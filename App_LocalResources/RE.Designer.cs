@@ -2077,6 +2077,15 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required.
+        /// </summary>
+        internal static string required_Text {
+            get {
+                return ResourceManager.GetString("required.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resetting the store will restore all store settings to the default value for the system.  (Usually created by PortalShop Export).
         /// </summary>
         internal static string resetportalshop_Help {

@@ -996,4 +996,7 @@
   <data name="checkout.Text" xml:space="preserve">
     <value>Checkout</value>
   </data>
+  <data name="required.Text" xml:space="preserve">
+    <value>Required</value>
+  </data>
 </root>

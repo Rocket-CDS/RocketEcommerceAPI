@@ -21,6 +21,7 @@
     var portalShop = orderData.PortalShop;
     var companyData = new CompanyLimpet(portalShop.PortalId, orderData.CultureCode);
     var notificationData = new NotificationLimpet(orderData.PortalId, orderData.PreferedCultureCode);
+    var appTheme = new AppThemeLimpet(portalShop.PortalId, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName);
 }
 <style type="text/css">
     #outlook a {
@@ -325,6 +326,8 @@
                     </td>
                 </tr>
             </table>
+
+            @RenderTemplate("orderextraprint.cshtml",appTheme,Model)
 
             @if (orderData.IsManualPayment())
             {

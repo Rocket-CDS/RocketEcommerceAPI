@@ -19,6 +19,7 @@
     var portalShop = new PortalShopLimpet(orderData.PortalId, DNNrocketUtils.GetEditCulture());
     var passModel = new SimplisityRazor(portalShop, new Dictionary<string, string>());
     var appThemeSystem = new AppThemeSystemLimpet("rocketecommerceapi");
+    var appTheme = new AppThemeLimpet(portalShop.PortalId, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName);
 }
 
 @{
@@ -381,6 +382,9 @@
                     <h4><b>@ResourceKey("RE.specialinstructions")</b></h4>
                     @BreakOf(orderData.ClientNotes)
 
+                    <div class="w3-margin-top">
+                        @RenderTemplate("orderextra.cshtml",appTheme,Model)
+                    </div>
                 </div>
             </div>
 

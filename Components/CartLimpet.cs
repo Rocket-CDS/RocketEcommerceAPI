@@ -115,6 +115,9 @@ namespace RocketEcommerceAPI.Components
             var taxData = CartUtils.CalculateTaxCost(this, PortalShop);
             TaxTotalCents = taxData.TotalCents;
 
+            //tax calc
+            DiscountTotalCents = CartUtils.CalculateDiscountCost(this, PortalShop);
+
             TotalCents = SubTotalCents + DiscountTotalCents + ShippingTotalCents + taxData.TotalCentsAdd;
         }
         public void UpdateProductList(SimplisityInfo postInfo)

@@ -64,7 +64,7 @@
                             try
                             {
                                 var providerInterface = systemData.GetProvider(interfaceProvider.InterfaceKey);
-                                var prov = ShippingInterface.Instance(providerInterface.Assembly, providerInterface.NameSpaceClass);
+                                var prov = DiscountInterface.Instance(providerInterface.Assembly, providerInterface.NameSpaceClass);
                                 <tr class="simplisity_click" s-cmd="@interfaceProvider.DefaultCommand" style="cursor:pointer;">
                                     <td>
                                         @if (prov.Active())

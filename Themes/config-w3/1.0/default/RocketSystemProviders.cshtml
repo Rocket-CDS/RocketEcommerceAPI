@@ -212,7 +212,7 @@
                         <li class="w3-row w3-padding-small discountprovidermethod">
                             <div class="w3-col m1 w3-padding-small">
                                 @{
-                                    var i = portalShop.Info.GetListItem("discountprovidermethod", "genxml/hidden/taxmethodkey", p.Key);
+                                    var i = portalShop.Info.GetListItem("discountprovidermethod", "genxml/hidden/discountmethodkey", p.Key);
                                 }
                                 @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border w3-check '", false, false, lp7)
                             </div>

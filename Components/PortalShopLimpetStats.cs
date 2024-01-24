@@ -87,6 +87,7 @@ namespace RocketEcommerceAPI.Components
             var orderList = _objCtrl.GetList(_portalId, -1, "ORDER", sqlOrderSelect, "", "", 0, 0, 0, 0, "RocketEcommerceAPI");
             double total = 0;
             double taxtotal = 0;
+            double discounttotal = 0;
             double shiptotal = 0;
             double subtotal = 0;
             int cartitemcount = 0;
@@ -97,6 +98,7 @@ namespace RocketEcommerceAPI.Components
                 subtotal += orderData.SubTotalCents;
                 total += orderData.TotalCents;
                 taxtotal += orderData.TaxTotalCents;
+                discounttotal += orderData.DiscountTotalCents;
                 shiptotal += orderData.ShippingTotalCents;
                 cartitemcount += orderData.GetCartItemList().Count;
 
@@ -110,6 +112,7 @@ namespace RocketEcommerceAPI.Components
             record.SetXmlProperty("genxml/subtotal", subtotal.ToString());
             record.SetXmlProperty("genxml/total", total.ToString());
             record.SetXmlProperty("genxml/taxtotal", taxtotal.ToString());
+            record.SetXmlProperty("genxml/discounttotal", discounttotal.ToString());
             record.SetXmlProperty("genxml/shiptotal", shiptotal.ToString());
             record.SetXmlProperty("genxml/cartitemcount", cartitemcount.ToString());
 

@@ -107,7 +107,7 @@ namespace RocketEcommerceAPI.Components
                 return rtn;
             }
         }
-
+        public string DiscountCode { get { return Record.GetXmlProperty("genxml/textbox/discountcode"); } set { Record.SetXmlProperty("genxml/textbox/discountcode", value); } }
 
 
         public int PortalId { get { return Record.PortalId; } set { Record.PortalId = value; } }

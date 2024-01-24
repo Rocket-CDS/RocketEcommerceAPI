@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
     
-		<package name="RocketEcommerceAPI" type="Library" version="2.0.3">
+		<package name="RocketEcommerceAPI" type="Library" version="2.0.4">
 			<friendlyName>RocketEcommerceAPI</friendlyName>
 			<description>RocketEcommerceAPI</description>
       <iconFile></iconFile>

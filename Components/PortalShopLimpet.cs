@@ -332,6 +332,50 @@ namespace RocketEcommerceAPI.Components
             }
             return null;
         }
+        #region "Discount"
+        public bool IsDiscountProviderActive(string interfaceKey)
+        {
+            var i = Record.GetRecordListItem("discountprovidermethod", "genxml/hidden/discountmethodkey", interfaceKey);
+            if (i != null) return i.GetXmlPropertyBool("genxml/checkbox/active");
+            return false;
+        }
+        public List<DiscountInterface> GetAllDiscountProviders(bool useCache = true)
+        {
+            var cacheKey = "GetAllDiscountMethods" + _systemkey + _portalId;
+            var rtn = (List<DiscountInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            if (rtn != null && useCache) return rtn;
+
+            var systemData = new SystemLimpet(_systemkey);
+            rtn = new List<DiscountInterface>();
+            foreach (var provkey in Record.GetRecordList("discountprovidermethod"))
+            {
+                var rocketInterface = systemData.GetProvider(provkey.GetXmlProperty("genxml/hidden/discountmethodkey"));
+                if (rocketInterface != null)
+                {
+                    var prov = DiscountInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                    rtn.Add(prov);
+                }
+            }
+            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            return rtn;
+        }
+        public List<DiscountInterface> GetActiveDiscountProvider()
+        {
+            var cacheKey = "GetActiveDiscountProvider" + _systemkey + _portalId;
+            var rtn = (List<DiscountInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            if (rtn != null) return rtn;
+
+            rtn = new List<DiscountInterface>();
+            foreach (var p in GetAllDiscountProviders())
+            {
+                if (p.Active())
+                {
+                    rtn.Add(p);
+                }
+            }
+            return rtn;
+        }
+        #endregion
 
         #region "orderby"
         public List<SimplisityRecord> GetProductOrderByList()

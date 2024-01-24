@@ -313,7 +313,6 @@ namespace RocketEcommerceAPI.Components
         public string OrderGuid { get { return Record.GetXmlProperty("genxml/hidden/orderguid"); } set { Record.SetXmlProperty("genxml/hidden/orderguid", value); } }
         public string OrderNumber { get { return Record.GetXmlProperty("genxml/hidden/ordernumber"); } set { Record.SetXmlProperty("genxml/hidden/ordernumber", value); } }
         public string TaxNumber { get { return Record.GetXmlProperty("genxml/hidden/taxnumber"); } set { Record.SetXmlProperty("genxml/hidden/taxnumber", value); } }
-        public string DiscountCode { get { return Record.GetXmlProperty("genxml/hidden/discountcode"); } set { Record.SetXmlProperty("genxml/hidden/discountcode", value); } }
         public int CartId { get { return Record.XrefItemId; } set { Record.XrefItemId = value; } }
         public int UserId { get { return Record.UserId; } set { Record.UserId = value; } }
         public int StatusCode { get { return Record.SortOrder; } set {
@@ -338,7 +337,6 @@ namespace RocketEcommerceAPI.Components
                 Record.SortOrder = Convert.ToInt32(value);  // use the sortorder to help speed selection in SQL
             }
         }
-        public string Notes { get { return Record.GetXmlProperty("genxml/textbox/notes"); } }
         public PortalShopLimpet PortalShop { get; private set; }
         public string EventName { get { return Record.GetXmlProperty("genxml/textbox/eventname"); } set { Record.SetXmlProperty("genxml/textbox/eventname", value.ToString()); } }
 

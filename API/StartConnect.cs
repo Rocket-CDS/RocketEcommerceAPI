@@ -717,7 +717,7 @@ namespace RocketEcommerceAPI.API
             if (template == "") template = _paramInfo.GetXmlProperty("genxml/hidden/remotetemplate");
             if (template == "") template = _paramInfo.GetXmlProperty("genxml/remote/remotetemplate");
             if (template == "") template = "view.cshtml";
-            var templateRtn = _dataObject.AppThemeView.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
+            var templateRtn = _dataObject.AppThemeView.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template), _sessionParams.ModuleRef);
             if (templateRtn == "") templateRtn = _dataObject.AppThemeDefault.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
             if (templateRtn == "") templateRtn = _dataObject.AppThemeSystem.GetTemplate(Path.GetFileNameWithoutExtension(template) + appendix + Path.GetExtension(template));
             return templateRtn;

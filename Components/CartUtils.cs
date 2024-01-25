@@ -243,8 +243,9 @@ namespace RocketEcommerceAPI.Components
             foreach (var prov in discountMethods)
             {
                 var calc = prov.CalculateDiscountCost(cartData);
-                if (calc < discounttotal || discounttotal == 0) discounttotal = calc;
+                discounttotal += calc;
             }
+            if (discounttotal + cartData.SubTotalCents < 0) discounttotal = 0;
             return discounttotal;
         }
         public static PaymentLimpet CartBankReturn(SimplisityInfo paramInfo)

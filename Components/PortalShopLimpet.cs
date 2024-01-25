@@ -518,8 +518,9 @@ namespace RocketEcommerceAPI.Components
         }
         public decimal CurrencyCentsToDollars(int cents)
         {
-            var minus = false;
-            if (cents < 0) minus = true;
+            // DCL: Unsure why we make everything positive, I think it was a mistake.  
+            //var minus = false;
+            //if (cents < 0) minus = true;
 
             var multiplyer = "1";
             var lp = 0;
@@ -529,7 +530,7 @@ namespace RocketEcommerceAPI.Components
                 lp += 1;
             }
             var rtn = Convert.ToDecimal(cents) / Convert.ToDecimal(multiplyer);
-            if (minus) rtn = (rtn * -1);
+            //if (minus) rtn = (rtn * -1);
             return CurrencyConvertToCulture(rtn.ToString());
         }
         public decimal CurrencyConvertToCulture(string value)

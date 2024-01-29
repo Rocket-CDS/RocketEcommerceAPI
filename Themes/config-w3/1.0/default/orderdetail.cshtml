@@ -381,6 +381,7 @@
 
                     <h4><b>@ResourceKey("RE.specialinstructions")</b></h4>
                     @BreakOf(orderData.ClientNotes)
+                    @HiddenField(info, "genxml/textbox/clientnotes")
 
                     <div class="w3-margin-top">
                         @RenderTemplate("orderextra.cshtml",appTheme,Model)

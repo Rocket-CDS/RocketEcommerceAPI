@@ -9,7 +9,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
 @{
 
-    // DO NOT use AssignData(Model), the Model only contains the order.
+    // DO NOT use AssignData(Model), the Model may not contain data if called for email.
     //@AssigDataModel(Model);
 
     var info = new SimplisityInfo();
@@ -23,6 +23,9 @@
     var notificationData = new NotificationLimpet(orderData.PortalId, orderData.PreferedCultureCode);
     var appTheme = new AppThemeLimpet(portalShop.PortalId, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName);
 }
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + appTheme.ProjectName + "/" + appTheme.AppThemeFolder + "/" + appTheme.AppVersionFolder + "/resx/")
+
+<!--inject-->
 <style type="text/css">
     #outlook a {
         padding: 0;
@@ -327,7 +330,7 @@
                 </tr>
             </table>
 
-            @RenderTemplate("orderextraprint.cshtml",appTheme,Model)
+            [INJECT:apptheme,orderextraprint.cshtml]
 
             @if (orderData.IsManualPayment())
             {

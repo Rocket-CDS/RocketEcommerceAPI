@@ -37,6 +37,7 @@ namespace RocketEcommerceAPI.Components
             var systemData = new SystemLimpet(_systemkey);
             var portalShop = new PortalShopLimpet(portalid, cultureCode);
             var shopSettings = new ShopSettingsLimpet(portalid, cultureCode);
+            var appTheme = new AppThemeLimpet(portalid, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName);
 
             SetDataObject("shopsettings", shopSettings);
             SetDataObject("appthemesystem", new AppThemeSystemLimpet(portalid, _systemkey));
@@ -48,7 +49,8 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("modulesettings", new ModuleContentLimpet(portalid, moduleRef, moduleId, tabId));
             SetDataObject("globalsettings", new SystemGlobalData());
             SetDataObject("appthemedefault", new AppThemeLimpet(portalid, systemData, "Default", "1.0"));
-            SetDataObject("appthemeview", new AppThemeLimpet(portalid, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName));
+            SetDataObject("appthemeview", appTheme); // Legacy
+            SetDataObject("apptheme", appTheme);
             SetDataObject("companydata", new CompanyLimpet(portalid, cultureCode));
             SetDataObject("countrydata", new CountryLimpet(portalid, cultureCode));
             SetDataObject("portalshop", portalShop);

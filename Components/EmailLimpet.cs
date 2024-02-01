@@ -44,7 +44,11 @@ namespace RocketEcommerceAPI.Components
         public bool SendEmail(string toEmail, string templateName, string subject = "")
         {
             var appThemeDefault = new AppThemeLimpet(PortalId, SystemData, "Default", "1.0");
-            
+            var portalShop = new PortalShopLimpet(PortalId, CultureCode);
+            var appTheme = new AppThemeLimpet(portalShop.PortalId, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName);
+            _model.SetDataObject("portalshop", portalShop);
+            _model.SetDataObject("apptheme", appTheme);
+
             _emailData.ToEmail = toEmail;
             _emailData.FromEmail = CompanyData.FromEmail;
             _emailData.ReplyToEmail = CompanyData.ContactEmail;
@@ -66,7 +70,7 @@ namespace RocketEcommerceAPI.Components
 
             var emailsent = emailSender.SendEmail();
             ErrorMessage += " : " + emailSender.Error;
-            LogUtils.LogSystem("EMAIL ERROR: " + emailSender.Error);
+            if (!emailsent) LogUtils.LogSystem("EMAIL ERROR: " + emailSender.Error);
             return emailsent;
         }
 

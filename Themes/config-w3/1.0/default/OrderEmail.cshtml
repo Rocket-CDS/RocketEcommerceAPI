@@ -3,6 +3,7 @@
 @using Simplisity;
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
+@using System.Globalization;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
@@ -20,7 +21,9 @@
     var companyData = new CompanyLimpet(portalShop.PortalId, orderData.CultureCode);
     var notificationData = new NotificationLimpet(orderData.PortalId, orderData.PreferedCultureCode);
     var appThemeSystem = new AppThemeSystemLimpet(orderData.PortalId, "rocketecommerceapi");
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
 }
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + appTheme.ProjectName +  "/" + appTheme.AppThemeFolder + "/" + appTheme.AppVersionFolder + "/resx/")
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -48,7 +51,7 @@
                     <tr>
                         <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
 
-                            @RenderTemplate("PrintOrder.cshtml", appThemeSystem, Model)
+                            [INJECT:appthemesystem,PrintOrder.cshtml]
 
                         </td>
                     </tr>

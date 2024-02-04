@@ -183,21 +183,6 @@ namespace RocketEcommerceAPI.Components
         {
             return new RawString("<span class='material-icons " + cssclass + "' " + attributes + ">" + iconname + "</span>");
         }
-        public IEncodedString RenderHandleBarsRE(Dictionary<string, SimplisityInfo> dataObjects, AppThemeLimpet appTheme, string templateName, string moduleref = "", string cacheKey = "")
-        {
-            var strOut = "";
-            if (cacheKey != "") strOut = (string)CacheUtils.GetCache(moduleref + cacheKey, "hbs");
-            if (String.IsNullOrEmpty(strOut))
-            {
-                string jsonString = SimplisityUtils.ConvertToJson(dataObjects);
-                var template = appTheme.GetTemplate(templateName, moduleref);
-                JObject model = JObject.Parse(jsonString);
-                HandlebarsEngineRE hbEngine = new HandlebarsEngineRE();
-                strOut = hbEngine.ExecuteRE(template, model);
-                if (cacheKey != "") CacheUtils.SetCache(moduleref + cacheKey, strOut, "hbs");
-            }
-            return new RawString(strOut);
-        }
 
     }
 }

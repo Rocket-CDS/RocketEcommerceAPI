@@ -20,6 +20,21 @@ namespace RocketEcommerceAPI.Components
     {
         public const string ControlPath = "/DesktopModules/DNNrocketModules/RocketEcommerceAPI";
         public const string ResourcePath = "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources";
+
+        public static ProductLimpet GetProductData(int portalId, int articleId, string cultureCode, bool useCache = true)
+        {
+            var cacheKey = "ProductLimpet*" + portalId + "*" + articleId + "*" + cultureCode;
+            var groupId = "ecom" + portalId;
+            var articleData = (ProductLimpet)CacheUtils.GetCache(cacheKey, groupId);
+            if (articleData == null)
+            {
+                articleData = new ProductLimpet(portalId, articleId, cultureCode);
+                if (articleId > 0) CacheUtils.SetCache(cacheKey, articleData, groupId);
+                LogUtils.LogSystem("RocketDirectoryAPIUtils.GetArticleData: " + cacheKey);
+            }
+            return articleData;
+        }
+
         public static Dictionary<string, string> ModuleTemples(AppThemeLimpet appThemeView, string moduleRef)
         {
             var rtn = new Dictionary<string,string>();

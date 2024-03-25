@@ -32,7 +32,6 @@ namespace RocketEcommerceAPI.API
             portalShop.Update();
 
             CacheUtils.ClearAllCache();
-            CacheUtilsDNN.ClearAllCache();
             DNNrocketUtils.ClearAllCache();
         }
         private string SavePortalShop()
@@ -156,21 +155,8 @@ namespace RocketEcommerceAPI.API
                 foreach (var c in catList)
                 {
                     var catSource = new CategoryLimpet(c.PortalId, c.ItemID, sourcelanguage);
-                    var catDest = new CategoryLimpet(c.PortalId, c.ItemID, destlanguage);
-                    if (!catDest.Exists || overwritelang)
-                    {
-                        catSource.Info.Lang = destlanguage;
-                        catSource.Update();
-                    }
-                    else
-                    {
-                        if (catDest.Name == "") catDest.Name = catSource.Name;
-                        if (catDest.Summary == "") catDest.Summary = catSource.Summary;
-                        if (catDest.RichText == "") catDest.RichText = catSource.RichText;
-                        if (catDest.Keywords == "") catDest.Keywords = catSource.Keywords;
-                        catDest.Update();
-                    }
-
+                    catSource.Info.Lang = destlanguage;
+                    catSource.Update();
                 }
 
             }

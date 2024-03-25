@@ -101,7 +101,7 @@ namespace RocketEcommerceAPI.API
                 if (orderData != null && orderData.StatusCode == Convert.ToInt32(OrderStatus.Archived))
                 {
                     orderData.Delete();
-                    LogUtils.LogTracking("delete order: " + orderid + " - " + orderData.OrderNumber + " " + orderData.FullName, _systemkey);
+                    LogUtils.LogSystem("delete order: " + orderid + " - " + orderData.OrderNumber + " " + orderData.FullName);
                 }
             }
         }

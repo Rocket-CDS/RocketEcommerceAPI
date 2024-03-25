@@ -16,7 +16,6 @@ namespace RocketEcommerceAPI.Components
     public class CategoryLimpet
     {
         private const string _tableName = "RocketEcommerceAPI";
-        public const string _entityTypeCode = "CAT";
         private string _cacheKey;
 
         private DNNrocketController _objCtrl;
@@ -26,47 +25,40 @@ namespace RocketEcommerceAPI.Components
         /// <param name="portalId"></param>
         /// <param name="articleId"></param>
         /// <param name="langRequired"></param>
-        public CategoryLimpet(int portalId, int categoryId, string langRequired = "", bool populate = true)
+        public CategoryLimpet(int portalId, int categoryId, string langRequired)
         {
-            _cacheKey = "CategoryLimpet*" + portalId + "*" + categoryId + "*" + langRequired + "*" + _tableName;
-
-            if (categoryId <= 0) categoryId = -1;  // create new record.
+            _cacheKey = "CategoryLimpet*" + portalId + "*" + categoryId + "*" + langRequired;
             PortalId = portalId;
-            EntityTypeCode = _entityTypeCode;
+            EntityTypeCode = "CAT";
             TableName = _tableName;
             CultureCode = langRequired;
-
-            Info = new SimplisityInfo();
-            Info.ItemID = categoryId;
-            Info.TypeCode = EntityTypeCode;
-            Info.ModuleId = -1;
-            Info.UserId = -1;
-            Info.PortalId = PortalId;
-            Info.Lang = CultureCode;
-
-            Populate();
+            Populate(categoryId);
         }
-        private void Populate()
+        private void Populate(int categoryId)
         {
             _objCtrl = new DNNrocketController();
 
-            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "ecom" + PortalId);
-            if (info == null)
+            Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            if (Info == null)
             {
-                info = _objCtrl.GetInfo(CategoryId, CultureCode, TableName); // get existing record.
-                if (info != null) // check if we have a real record.
+                Info = _objCtrl.GetInfo(categoryId, CultureCode, TableName); // get existing record.
+                if (Info == null) // check if we have a real record.
                 {
-                    Info = info;
-                    CacheUtils.SetCache(_cacheKey, Info, "ecom" + PortalId);
+                    Info = new SimplisityInfo();
+                    Info.ItemID = -1;
+                    Info.TypeCode = EntityTypeCode;
+                    Info.ModuleId = -1;
+                    Info.UserId = -1;
+                    Info.PortalId = PortalId;
+                    Info.Lang = CultureCode;
                 }
                 else
-                    Info.ItemID = -1; // flags categories does not exist yet.
+                {
+                    CacheUtils.SetCache(_cacheKey, Info);
+                }
                 Info.Lang = CultureCode; // reset langauge, for legacy record, without lang.
                 PortalId = Info.PortalId;
             }
-            else
-                Info = info;
-
             PortalShop = new PortalShopLimpet(PortalId, CultureCode);
         }
         public void Delete()
@@ -80,7 +72,7 @@ namespace RocketEcommerceAPI.Components
                     _objCtrl.Delete(catxrefRecord.ItemID, TableName);
                 }
                 _objCtrl.Delete(Info.ItemID, TableName);
-                CacheUtils.ClearAllCache();
+                CacheUtils.RemoveCache(_cacheKey);
             }
         }
         private void ReplaceInfoFields(SimplisityInfo postInfo, string xpathListSelect)
@@ -124,12 +116,22 @@ namespace RocketEcommerceAPI.Components
             {
                 var categoryguidkey = articleRec.GetXmlProperty("genxml/hidden/categoryguidkey");
                 var articleId = articleRec.GetXmlPropertyInt("genxml/hidden/articleid");
-                var articleData = new ProductLimpet(PortalId, articleId, CultureCode);
+                var articleData = RocketEcommerceAPIUtils.GetProductData(articleRec.PortalId, articleId, CultureCode);
                 articleData.UpdateCategorySortOrder(categoryguidkey, lp);
                 lp += 5;
             }
-            ClearCache();
+
+            // Clear cache
+            var categoryDataList = new CategoryLimpetList(PortalId, CultureCode);
+            categoryDataList.Reload();
+
             return ValidateAndUpdate();
+        }
+        public List<CategoryLimpet> GetDirectChildren()
+        {
+            var categoryDataList = new CategoryLimpetList(PortalId, CultureCode);
+            List<CategoryLimpet> rtnList = categoryDataList.GetCategoryList().Where(m => m.ParentItemId == CategoryId).ToList();
+            return rtnList;
         }
         public List<CategoryLimpet> GetChildren()
         {
@@ -163,13 +165,13 @@ namespace RocketEcommerceAPI.Components
         }
         public ProductLimpetList GetArticles()
         {
-            var PortalShop = new PortalShopLimpet(PortalId, CultureCode);
-            return new ProductLimpetList(CategoryId, PortalShop, CultureCode, true);
+            var portalCatalog = new PortalShopLimpet(PortalId, CultureCode);
+            return new ProductLimpetList(CategoryId, portalCatalog, CultureCode, true);
         }
         public void ClearCache()
         {
-            CacheUtils.ClearAllCache("ecom" + PortalId);
-            CacheUtils.RemoveCache(_cacheKey, "ecom" + PortalId);
+            CacheUtils.RemoveCache(_cacheKey);
+            CacheFileUtils.ClearAllCache(PortalId, "ecom" + PortalId);
         }
         public int Update()
         {
@@ -180,6 +182,7 @@ namespace RocketEcommerceAPI.Components
                 Info.GUIDKey = GeneralUtils.GetGuidKey();
                 Info = _objCtrl.SaveData(Info, TableName);
             }
+            ClearCache();
             return Info.ItemID;
         }
         public int ValidateAndUpdate()
@@ -211,7 +214,6 @@ namespace RocketEcommerceAPI.Components
             dictParams.Add("catid", CategoryId.ToString());
             return DNNrocketUtils.NavigateURL(moduleSettings.ListPageTabId(), dictParams, Name);
         }
-
         #region "images"
         public List<SimplisityInfo> GetImageList()
         {
@@ -250,7 +252,6 @@ namespace RocketEcommerceAPI.Components
 
         #region "properties"
 
-        public RemoteModule RemoteModule { get; set; }
         public string CultureCode { get; set; }
         public string EntityTypeCode { get; set; }
         public SimplisityInfo Info { get; set; }
@@ -276,23 +277,21 @@ namespace RocketEcommerceAPI.Components
         public string ImageListName { get { return "imagecategorylist"; } }
         public string ArticleListName { get { return "articlelist"; } }
         public PortalShopLimpet PortalShop { get; set; }
-        public string Ref { get { return Info.GetXmlProperty(RefXPath); } set { Info.SetXmlProperty(RefXPath, value.ToString()); } }
+        public string Ref { get { return Info.GetXmlProperty(RefXPath); } }
         public string RefXPath { get { return "genxml/textbox/ref"; } }
-        public string RichText { get { return Info.GetXmlProperty(RichTextXPath); } set { Info.SetXmlProperty(RichTextXPath, value.ToString()); } }
+        public string RichText { get { return Info.GetXmlProperty(RichTextXPath); } }
         public string RichTextXPath { get { return "genxml/lang/genxml/textbox/categoryrichtext"; } }
-        public string Name { get { return Info.GetXmlProperty(NameXPath); } set { Info.SetXmlProperty(NameXPath, value.ToString()); } }
+        public string Name { get { return Info.GetXmlProperty(NameXPath); } }
         public string NameXPath { get { return "genxml/lang/genxml/textbox/name"; } }
-        public string Summary { get { return Info.GetXmlProperty(SummaryXPath); } set { Info.SetXmlProperty(SummaryXPath, value.ToString()); } }
+        public string Summary { get { return Info.GetXmlProperty(SummaryXPath); } }
         public string SummaryXPath { get { return "genxml/lang/genxml/textbox/summary"; } }
-        public string Keywords { get { return Info.GetXmlProperty(KeywordsXPath); } set { Info.SetXmlProperty(KeywordsXPath, value.ToString()); } }
+        public string Keywords { get { return Info.GetXmlProperty(KeywordsXPath); } }
         public string KeywordsXPath { get { return "genxml/lang/genxml/textbox/categorykeywords"; } }
         public bool Hidden { get { return Info.GetXmlPropertyBool("genxml/checkbox/hidden"); } }
         public bool HiddenByCulture { get { return Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hidden"); } }
         public bool Disabled { get { return Info.GetXmlPropertyBool("genxml/checkbox/disabled"); } }
         public bool IsHidden { get { if (Hidden || HiddenByCulture) return true; else return false; } }
-        public string SystemKey { get { return "rocketecommerceapi"; } }
         #endregion
 
     }
-
 }

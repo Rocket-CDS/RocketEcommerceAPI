@@ -25,7 +25,6 @@ namespace RocketEcommerceAPI.API
         public String NotificationReset()
         {
             _dataObject.NotificationData.Delete();
-            LogUtils.LogTracking("notification_reset", _systemkey);
             return NotificationEdit();
         }
 

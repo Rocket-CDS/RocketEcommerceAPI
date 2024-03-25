@@ -15,25 +15,22 @@ namespace RocketEcommerceAPI.Components
     public class CategoryLimpetList
     {
         private const string _tableName = "RocketEcommerceAPI";
-        public const string _entityTypeCode = "CAT";
         private List<CategoryLimpet> _categoryList;
         private DNNrocketController _objCtrl;
         private string _cacheKey;
         private string _cacheGroup;
-        private string _systemKey;
 
-        public CategoryLimpetList(int portalId, string langRequired, bool populate = true, RemoteModule remoteModule = null)
+        public CategoryLimpetList(int portalId, string langRequired, bool populate = true)
         {
             PortalId = portalId;
             CultureCode = langRequired;
-            EntityTypeCode = _entityTypeCode;
+            EntityTypeCode = "CAT";
             TableName = _tableName;
-            RemoteModule = remoteModule;
 
             if (CultureCode == "") CultureCode = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
 
-            _cacheKey = PortalId + "*" + _entityTypeCode + "*" + CultureCode + "*" + _tableName;
+            _cacheKey = PortalId + "*" + EntityTypeCode + "*" + CultureCode + "*" + _tableName;
             _cacheGroup = "ecom" + PortalId;
 
             if (populate) Populate();
@@ -56,7 +53,6 @@ namespace RocketEcommerceAPI.Components
             }
             ClearCache();
         }
-        public RemoteModule RemoteModule { get; set; }
         public List<SimplisityInfo> DataList { get; private set; }
         public int PortalId { get; set; }
         public string TableName { get; set; }
@@ -78,7 +74,6 @@ namespace RocketEcommerceAPI.Components
                 var categoryData = new CategoryLimpet(PortalId, parentid, CultureCode);
                 if (categoryData.Exists && lp < 100)
                 {
-                    categoryData.RemoteModule = RemoteModule;
                     rtnList.Add(categoryData);
                     parentid = categoryData.ParentItemId;
                 }
@@ -101,6 +96,11 @@ namespace RocketEcommerceAPI.Components
             List<CategoryLimpet> newList = _categoryList.Where(m => m.ParentItemId == parentid).ToList();
             return newList;
         }
+        public List<CategoryLimpet> GetCategoryByRef(string catRef)
+        {
+            List<CategoryLimpet> newList = _categoryList.Where(m => m.Ref == catRef).ToList();
+            return newList;
+        }
         private List<CategoryLimpet> PopulateCategoryList()
         {
             _categoryList = (List<CategoryLimpet>)CacheUtils.GetCache(_cacheKey + "PopulateCategoryList", _cacheGroup);
@@ -117,7 +117,6 @@ namespace RocketEcommerceAPI.Components
                     categoryData.Update();
                     ClearCache();
                 }
-                categoryData.RemoteModule = RemoteModule;
                 _categoryList.Add(categoryData);
                 sortorder += 5;
             }
@@ -152,12 +151,6 @@ namespace RocketEcommerceAPI.Components
             }
             return treeList;
         }
-        public List<CategoryLimpet> GetCategoryByRef(string catRef)
-        {
-            List<CategoryLimpet> newList = _categoryList.Where(m => m.Ref == catRef).ToList();
-            return newList;
-        }
-
         public void Validate()
         {
             // validate categories
@@ -166,10 +159,19 @@ namespace RocketEcommerceAPI.Components
                 var categoryData = new CategoryLimpet(PortalId, pInfo.ItemID, CultureCode);
                 categoryData.ValidateAndUpdate();
             }
+            Reload();
+        }
+        /// <summary>
+        /// Clear cache and Reload list 
+        /// </summary>
+        public void Reload()
+        {
+            ClearCache();
+            Populate();
         }
         public void ClearCache()
         {
-            CacheUtils.ClearAllCache(_cacheGroup);
+            CacheFileUtils.ClearAllCache(PortalId, _cacheGroup);
         }
     }
 

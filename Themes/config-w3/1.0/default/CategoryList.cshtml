@@ -33,7 +33,7 @@
         <div class="w3-bar-item w3-right w3-button" onclick="$('#categorytree').show();">@ButtonIcon(ButtonTypes.tree)</div>
         <div class="w3-bar-item w3-right w3-button simplisity_click" s-cmd="categoryadmin_editlist">@ButtonIcon(ButtonTypes.refresh)</div>
 
-        <input class="w3-bar-item w3-right w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtext" onkeyup="searchFunction()">
+        <input class="w3-bar-item w3-right w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtext" >
 
     </div>
 
@@ -144,23 +144,30 @@
 
         $("#categorylistdata").disableSelection();
 
-    });
-
-    function searchFunction() {
-        var input, filter, ul, li, a, i;
-        input = document.getElementById("searchtext");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("datalist");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            txtValue = li[i].textContent || li[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
+        $("#searchtext").on("keypress", function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                return false;
             }
-        }
-    }
+        });
 
+        $("#searchtext").on("keyup", function (e) {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("searchtext");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("datalist");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                txtValue = li[i].textContent || li[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        });
+
+
+    });
 
 </script>

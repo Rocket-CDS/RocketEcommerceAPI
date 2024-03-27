@@ -28,7 +28,14 @@
         <table id="categorylistdata" class="w3-table ">
             <thead>
                 <tr>
-                    <th>@ResourceKey("RE.name")</th>
+                    <th>
+                        @ResourceKey("RE.name")
+                    </th>
+                    <th>
+                        @ResourceKey("RE.defaultcategory")
+                    </th>
+                    <th>
+                    </th>
                 </tr>
             </thead>
             @foreach (var categoryData in catList)
@@ -50,23 +57,27 @@
                             <div class="w3-bar-item" title="@(breadcrumbdisplay)">
                                 @categoryData.Name
                             </div>
-                            <div class="w3-bar-item w3-button w3-right simplisity_click " s-return=".a-articlecategorylist" s-cmd="productadmin_removecategory" s-fields='{"productid":"@(articleData.ProductId)","categoryid":"@(categoryData.CategoryId)"}'>
-                                @ButtonIcon(ButtonTypes.remove)
-                            </div>
-                            <div class="w3-bar-item w3-button w3-right simplisity_click " s-return=".a-articlecategorylist" s-cmd="productadmin_assigndefaultcategory" s-fields='{"productid":"@(articleData.ProductId)","categoryid":"@(categoryData.CategoryId)"}'>
-                                @if (articleData.DefaultCategory() == categoryData.CategoryId)
-                                {
-                                    <span class="material-icons">
-                                        radio_button_checked
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="material-icons">
-                                        radio_button_unchecked
-                                    </span>
-                                }
-                            </div>
+                        </div>
+                    </td>
+                    <td style="width:200px;">
+                        <div class="w3-button simplisity_click " s-return=".a-articlecategorylist" s-cmd="productadmin_assigndefaultcategory" s-fields='{"productid":"@(articleData.ProductId)","categoryid":"@(categoryData.CategoryId)"}'>
+                            @if (articleData.DefaultCategory() == categoryData.CategoryId)
+                            {
+                                <span class="material-icons">
+                                    radio_button_checked
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="material-icons">
+                                    radio_button_unchecked
+                                </span>
+                            }
+                        </div>
+                    </td>
+                    <td style="width:64px;">
+                        <div class="w3-button simplisity_click " s-return=".a-articlecategorylist" s-cmd="productadmin_removecategory" s-fields='{"productid":"@(articleData.ProductId)","categoryid":"@(categoryData.CategoryId)"}'>
+                            @ButtonIcon(ButtonTypes.remove)
                         </div>
                     </td>
                 </tr>

@@ -106,6 +106,15 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Price.
+        /// </summary>
+        internal static string addprice_Text {
+            get {
+                return ResourceManager.GetString("addprice.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         internal static string address_Text {
@@ -1978,7 +1987,7 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Properties.
+        ///   Looks up a localized string similar to Tags.
         /// </summary>
         internal static string properties_Text {
             get {
@@ -1987,7 +1996,7 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Properties.
+        ///   Looks up a localized string similar to Tags.
         /// </summary>
         internal static string propertiesadmin_Text {
             get {
@@ -1996,7 +2005,7 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Property.
+        ///   Looks up a localized string similar to Tag.
         /// </summary>
         internal static string property_Text {
             get {

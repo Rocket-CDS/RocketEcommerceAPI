@@ -664,10 +664,10 @@
     <value>Products</value>
   </data>
   <data name="properties.Text" xml:space="preserve">
-    <value>Properties</value>
+    <value>Tags</value>
   </data>
   <data name="propertiesadmin.Text" xml:space="preserve">
-    <value>Properties</value>
+    <value>Tags</value>
   </data>
   <data name="protocol.Text" xml:space="preserve">
     <value>Protocol</value>
@@ -955,7 +955,7 @@
     <value>AppTheme Project</value>
   </data>
   <data name="property.Text" xml:space="preserve">
-    <value>Property</value>
+    <value>Tag</value>
   </data>
   <data name="sortorder.Text" xml:space="preserve">
     <value>Sort Order</value>
@@ -998,5 +998,8 @@
   </data>
   <data name="required.Text" xml:space="preserve">
     <value>Required</value>
+  </data>
+  <data name="addprice.Text" xml:space="preserve">
+    <value>Add Price</value>
   </data>
 </root>

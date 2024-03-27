@@ -154,7 +154,7 @@
                             <input id="categoryguidkey_@(lp1)" type="hidden" s-type="save" s-xpath="genxml/hidden/categoryguidkey" value="@(categoryData.GUIDKey)" />
                             <input id="articleid_@(lp1)" type="hidden" s-type="save" s-xpath="genxml/hidden/articleid" value="@(articleData.ProductId)" />
                             <div class="w3-bar w3-card " style="">
-                                <div class="w3-button w3-bar-item simplisity_click" s-cmd="productadmin_editproduct" s-fields='{"productid":"@articleData.ProductId","categoryguidkey":"@categoryData.GUIDKey","track":"false"}'>
+                                <div class="w3-button w3-bar-item w3-hide simplisity_click" s-cmd="productadmin_editproduct" s-fields='{"productid":"@articleData.ProductId","categoryguidkey":"@categoryData.GUIDKey","track":"false"}'>
                                     @ButtonIcon(ButtonTypes.edit)
                                 </div>
                                 <div class="w3-bar-item ">

@@ -233,6 +233,11 @@
         readmin.moveToTop('#articlemodal');
         $('#articlemodal').show();
 
+        $('[id^="imagealt_"]').each(function () {
+            if ($(this).val() == '') {
+                $(this).val($('#productname').val());
+            }
+        });
     });
 
     function openSection(sectionName) {

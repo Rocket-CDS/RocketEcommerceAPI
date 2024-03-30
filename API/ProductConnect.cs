@@ -183,7 +183,7 @@ namespace RocketEcommerceAPI.API
                 var fileList = DocUtils.UploadSecureBase64file(filenameList, filebase64List, _dataObject.PortalShop.DocFolderMapPath);
                 foreach (var imgFileMapPath in fileList)
                 {
-                    productData.AddDoc(Path.GetFileName(imgFileMapPath.Key));
+                    productData.AddDoc(imgFileMapPath.Value, Path.GetFileName(imgFileMapPath.Key));
                 }
             }
             return GetProduct(productData.ProductId);

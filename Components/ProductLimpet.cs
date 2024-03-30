@@ -9,6 +9,7 @@ using System.Xml;
 using DNNrocketAPI.Components;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace RocketEcommerceAPI.Components
 {
@@ -433,14 +434,16 @@ namespace RocketEcommerceAPI.Components
         {
             return Info.GetList(DocumentListName);
         }
-        public ArticleDoc AddDoc(string uniqueName)
+        public ArticleDoc AddDoc(string friendlyName, string uniqueName)
         {
             var articleDoc = new ArticleDoc(new SimplisityInfo(), "articledoc");
             if (GetDocList().Count < PortalShop.ProductDocumentLimit)
             {
                 if (Info.ItemID < 0) Update(); // blank record, not on DB.  Create now.
-                articleDoc.RelPath = PortalShop.DocFolderRel.TrimEnd('/') + "/" + uniqueName;
-                articleDoc.FileName = uniqueName;
+                articleDoc.RelPath = PortalShop.DocFolderRel.TrimEnd('/') + "/" + Path.GetFileName(uniqueName);
+                articleDoc.FileName = friendlyName;
+                articleDoc.Extension = Path.GetExtension(friendlyName);
+                articleDoc.Name = friendlyName;
                 Info.AddListItem(DocumentListName, articleDoc.Info);
                 Update();
             }

@@ -411,9 +411,8 @@ namespace RocketEcommerceAPI.API
         {
             var articleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
             var categoryId = _paramInfo.GetXmlPropertyInt("genxml/hidden/categoryid");
-            var cascade = _postInfo.GetXmlPropertyBool("genxml/checkbox/cascade");
             var articleData = GetActiveProduct(articleId);
-            articleData.AddCategory(categoryId, cascade);
+            articleData.AddCategory(categoryId);
             return GetArticleCategoryList(articleData);
         }
         public string AssignDefaultProductCategory()

@@ -29,20 +29,16 @@
 <div id="categoryselect" class="w3-modal">
     <div class="w3-modal-content" style="width:50%;">
 
-        <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
+        <header class="" style="height: 38.5px;">
             <span onclick="$('#categoryselect').hide();" class="w3-button w3-display-topright">&times;</span>
-            <h4>@ResourceKey("RE.categories")</h4>
         </header>
+
+        <div class="w3-row w3-padding">
+            <input class="w3-col m12 w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtextcategory" onkeyup="searchFunctionCategory()">
+        </div>
 
         <div class="w3-margin-top" style="">
             <div id="datalistcategory" class="w3-container">
-
-                <div class="w3-row w3-padding">
-                    <input class="w3-col m6 w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtextcategory" onkeyup="searchFunctionCategory()">
-                    <div class="w3-col m5 w3-padding cascadeflag w3-right-align">
-                        @CheckBox(new SimplisityInfo(), "genxml/checkbox/cascade", "&nbsp;" + ResourceKey("RE.cascade").ToString(), "class='w3-check' ", true)
-                    </div>
-                </div>
 
                 @{
                     var lp1 = 0;
@@ -76,10 +72,8 @@
     </div>
 </div>
 
-
 <script>
     $(document).ready(function () {
-        $(':checkbox').attr('class', 'w3-check');
         $("#categorylistdata").disableSelection();
     });
 
@@ -97,11 +91,6 @@
                 li[i].style.display = "none";
             }
         }
-    }
-
-
-    function languageChange() {
-        location.reload();
     }
 
 </script>

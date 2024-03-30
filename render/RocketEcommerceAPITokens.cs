@@ -102,11 +102,18 @@ namespace RocketEcommerceAPI.Components
         public IEncodedString TaxDropDown(SimplisityInfo productInfo)
         {
             var taxProv = portalShop.GetActiveTaxProvider();
-            if (taxProv != null)
+            if (taxProv == null)
             {
-                return DropDownList(productInfo, "genxml/select/taxref", taxProv.GetTaxRange(), "class='w3-input w3-border taxselect' ");
+                var taxRange = new Dictionary<string, string>();
+                if (taxRange.Count == 0) taxRange.Add("", "");
+                return DropDownList(productInfo, "genxml/select/taxref", taxRange, "class='w3-input w3-border taxselect' ");
             }
-            return new RawString("");
+            else
+            {
+                var taxRange = taxProv.GetTaxRange();
+                if (taxRange.Count == 0) taxRange.Add("", "");
+                return DropDownList(productInfo, "genxml/select/taxref", taxRange, "class='w3-input w3-border taxselect' ");
+            }
         }
 
         public IEncodedString ModelDropdown(ProductLimpet productData, string id = "modelid")

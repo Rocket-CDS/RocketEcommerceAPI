@@ -600,6 +600,7 @@ namespace RocketEcommerceAPI.Components
         #endregion
 
         #region "category"
+
         public void AddCategory(int categoryId, bool cascade = true)
         {
             if (Info.ItemID < 0) Update(); // blank record, not on DB.  Create now.
@@ -617,6 +618,8 @@ namespace RocketEcommerceAPI.Components
                     sRec.XrefItemId = categoryId;
                     sRec.TypeCode = "CATXREF";
                     sRec.GUIDKey = xrefGuidKey;
+                    if (_catXrefList == null) PopulateLists();
+                    if (_catXrefList.Count == 0) sRec.ModuleId = 1; // use ModuleId for default.
                     _objCtrl.Update(sRec, _tableName);
 
                     if (cascade) AddCasCadeCategory(categoryId, 0);

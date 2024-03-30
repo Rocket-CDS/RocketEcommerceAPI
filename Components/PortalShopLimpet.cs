@@ -108,6 +108,79 @@ namespace RocketEcommerceAPI.Components
                 LogUtils.LogSystem("SQL INJECTION Attempt:" + Record.XMLData);
                 ReadRecord(_portalId, Record.Lang);
             }
+            // update PL settings for QueryParams
+            if (AppThemeFolder != "")
+            {
+                var info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+                if (info == null)
+                {
+                    info = new SimplisityRecord();
+                    info.ItemID = -1;
+                    info.PortalId = _portalId;
+                    info.TypeCode = "PLSETTINGS";
+                    info.GUIDKey = "PLSETTINGS";
+                }
+                if (info != null)
+                {
+                    var upd = false;
+                    var appTheme = new AppThemeLimpet(PortalId, AppThemeFolder, AppThemeVersion, ProjectName);
+
+                    // Add Query Params for Article and Categories
+                    var newqueryParamList = new List<SimplisityRecord>();
+                    foreach (var qdata in RocketEcommerceAPIUtils.UrlQueryParams(appTheme))
+                    {
+                        if (info.GetRecordListItem("queryparams", "genxml/textbox/queryparam", qdata.Key) == null)
+                        {
+                            var qRec = new SimplisityRecord();
+                            qRec.SetXmlProperty("genxml/select/tablename", qdata.Value.tablename);
+                            qRec.SetXmlProperty("genxml/select/datatype", qdata.Value.datatype);
+                            qRec.SetXmlProperty("genxml/textbox/queryparam", qdata.Value.queryparam);
+                            qRec.SetXmlProperty("genxml/textbox/systemkey", qdata.Value.systemkey);
+                            newqueryParamList.Add(qRec);
+                            upd = true;
+                        }
+                    }
+                    if (upd)
+                    {
+                        // Remove duplicate Query Params
+                        foreach (var newq in newqueryParamList)
+                        {
+                            var idx = 0;
+                            foreach (var q in info.GetRecordList("queryparams"))
+                            {
+                                if (q.GetXmlProperty("genxml/select/datatype") == newq.GetXmlProperty("genxml/select/datatype") && q.GetXmlProperty("genxml/select/systemkey") == newq.GetXmlProperty("genxml/select/systemkey"))
+                                {
+                                    info.RemoveRecordListItem("queryparams", idx);
+                                    break; // should only be 1.
+                                }
+                                idx += 1;
+                            }
+                        }
+                        foreach (var newq in newqueryParamList)
+                        {
+                            info.AddRecordListItem("queryparams", newq);
+                        }
+                    }
+                    // Add Menu Provider
+                    foreach (var menuproviderData in RocketEcommerceAPIUtils.MenuProvider(appTheme))
+                    {
+                        if (info.GetRecordListItem("menuprovider", "genxml/textbox/systemkey", menuproviderData.Key) == null)
+                        {
+                            var mRec = new SimplisityRecord();
+                            mRec.SetXmlProperty("genxml/textbox/assembly", menuproviderData.Value.assembly);
+                            mRec.SetXmlProperty("genxml/textbox/namespaceclass", menuproviderData.Value.namespaceclass);
+                            mRec.SetXmlProperty("genxml/textbox/systemkey", menuproviderData.Value.systemkey);
+                            info.AddRecordListItem("menuprovider", mRec);
+                            upd = true;
+                        }
+                    }
+
+                    if (upd) _objCtrl.Update(info);
+                }
+            }
+
+
+
         }
         private void ReadRecord(int portalId, string cultureCode)
         {

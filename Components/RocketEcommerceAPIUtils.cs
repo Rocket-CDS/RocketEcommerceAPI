@@ -34,7 +34,48 @@ namespace RocketEcommerceAPI.Components
             }
             return articleData;
         }
-
+        public static Dictionary<string, QueryParamsData> UrlQueryParams(AppThemeLimpet appThemeView)
+        {
+            var rtn = new Dictionary<string, QueryParamsData>();
+            if (appThemeView != null)
+            {
+                foreach (var tfile in appThemeView.GetTemplatesDep())
+                {
+                    var t = appThemeView.GetModT(tfile.Key, "");
+                    foreach (var r in t.GetRecordList("queryparams"))
+                    {
+                        var queryParamsData = new QueryParamsData();
+                        queryParamsData.queryparam = r.GetXmlProperty("genxml/queryparam");
+                        queryParamsData.tablename = r.GetXmlProperty("genxml/tablename");
+                        queryParamsData.systemkey = r.GetXmlProperty("genxml/systemkey");
+                        queryParamsData.datatype = r.GetXmlProperty("genxml/datatype");
+                        queryParamsData.queryparamvalue = "";
+                        if (!rtn.ContainsKey(queryParamsData.queryparam)) rtn.Add(queryParamsData.queryparam, queryParamsData);
+                    }
+                }
+            }
+            return rtn;
+        }
+        public static Dictionary<string, MenuProviderData> MenuProvider(AppThemeLimpet appThemeView)
+        {
+            var rtn = new Dictionary<string, MenuProviderData>();
+            if (appThemeView != null)
+            {
+                foreach (var tfile in appThemeView.GetTemplatesDep())
+                {
+                    var t = appThemeView.GetModT(tfile.Key, "");
+                    foreach (var r in t.GetRecordList("menuprovider"))
+                    {
+                        var menoproviderData = new MenuProviderData();
+                        menoproviderData.assembly = r.GetXmlProperty("genxml/assembly");
+                        menoproviderData.namespaceclass = r.GetXmlProperty("genxml/namespaceclass");
+                        menoproviderData.systemkey = r.GetXmlProperty("genxml/systemkey");
+                        if (!rtn.ContainsKey(menoproviderData.systemkey)) rtn.Add(menoproviderData.systemkey, menoproviderData);
+                    }
+                }
+            }
+            return rtn;
+        }
         public static Dictionary<string, string> ModuleTemples(AppThemeLimpet appThemeView, string moduleRef)
         {
             var rtn = new Dictionary<string,string>();

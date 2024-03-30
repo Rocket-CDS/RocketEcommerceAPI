@@ -203,6 +203,9 @@ namespace RocketEcommerceAPI.API
                 case "categoryadmin_addimage":
                     strOut = AddCategoryImage();
                     break;
+                case "categoryadmin_removeimage":
+                    strOut = RemoveCategoryImage();
+                    break;
                 case "categoryadmin_move":
                     strOut = MoveCategory();
                     break;

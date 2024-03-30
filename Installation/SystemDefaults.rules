@@ -263,6 +263,10 @@
       <cmd>categoryadmin_addimage</cmd>
       <action>true</action>
     </command>
+	  <command>
+		  <cmd>categoryadmin_removeimage</cmd>
+		  <action>true</action>
+	  </command>
     <command>
       <cmd>categoryadmin_move</cmd>
       <action>true</action>

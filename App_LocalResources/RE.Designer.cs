@@ -2311,6 +2311,33 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show OrderBy.
+        /// </summary>
+        internal static string showorderby_Text {
+            get {
+                return ResourceManager.GetString("showorderby.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Page Size.
+        /// </summary>
+        internal static string showpagesize_Text {
+            get {
+                return ResourceManager.GetString("showpagesize.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Search Text.
+        /// </summary>
+        internal static string showsearchtext_Text {
+            get {
+                return ResourceManager.GetString("showsearchtext.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From Email (SMTP).
         /// </summary>
         internal static string smtpfromemail_Text {

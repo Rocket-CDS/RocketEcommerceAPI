@@ -2,77 +2,69 @@
 @using Simplisity;
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
-
-
-
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
-
+@AssigDataModel(Model)
+<!--inject-->
 @{
-    var sessionParams = (SessionParams)Model.SessionParamsData;
-    var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
-    var productDataList = (ProductLimpetList)Model.GetDataObject("productlist");
-    var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
-    var categoryData = new CategoryLimpet(portalShop.PortalId, sessionParams.GetInt("searchcategoryid"), sessionParams.CultureCode);
+    var showtext = " display:none; ";
+    if (moduleData.GetSettingBool("showsearchtext"))
+    {
+        showtext = "";
+    }
+    var showpage = " display:none; ";
+    if (moduleData.GetSettingBool("showpagesize"))
+    {
+        showpage = "";
+    }
+    var showorderby = " display:none; ";
+    if (moduleData.GetSettingBool("showorderby"))
+    {
+        showorderby = "";
+    }
 }
-
 <div class="w3-bar searchdata">
 
-    <div class="w3-bar-item " style=''>
+    <div class="w3-bar-item " style='@(showtext)'>
         <div class="w3-bar">
-            @TextBox(new SimplisityInfo(), "genxml/textbox/searchtext", " style='height:40px;width:250px;' class='w3-bar-item w3-input w3-border w3-light-grey simplisity_sessionfield actionentrykey' autocomplete='off' ", sessionParams.Get("searchtext"))
-            <span class="w3-bar-item ">
-                <span class="material-icons dosearch" style="cursor: pointer;" onclick="$('.triggersearch').trigger('click');">
-                    search
-                </span>
-                <span class="material-icons w3-small clearsearch" onclick="$('#searchtext').val('');$('.triggersearch').trigger('click');" style="vertical-align: top; display: none; cursor: pointer; ">
-                    cancel
-                </span>
-            </span>
+            @TextBox(infoempty, "genxml/textbox/searchtext", " class='w3-bar-item w3-input w3-border w3-light-grey simplisity_sessionfield actionentrykey' autocomplete='off' ", sessionParams.Get("searchtext"))
+            <span class="w3-bar-item w3-button clearsearch " style="display:none;" onclick="clearSearch();return false;">@ButtonIcon(ButtonTypes.cancel)</span>
+            <span class="w3-bar-item w3-button w3-theme simplisity_click dosearch" onclick="doSearchReload();return false;" style="height:40px;">@ButtonIcon(ButtonTypes.search)</span>
         </div>
     </div>
 
-    @if (productDataList != null)
-    {
+    <div class="w3-bar-item w3-right w3-hide-small w3-margin-left" style='@(showpage)'>
+        @DropDownList(infoempty, "genxml/hidden/pagesize", "12,24,48", "12,24,48", " style='height:40px;' class='w3-input w3-border simplisity_sessionfield ' onchange=\"doSearchReload();return false;\" title='" + @ResourceKey("DNNrocket.pagesize", sessionParams.CultureCode) + "'", sessionParams.PageSize.ToString())
+    </div>
+
+    @{
         var orderbyDictionary = new Dictionary<string, string>();
-        orderbyDictionary.Add("", "");
         foreach (var orderbyInfo in portalShop.GetProductOrderByList())
         {
-            if (!orderbyDictionary.ContainsKey(orderbyInfo.GetXmlProperty("genxml/key")))
-            {
-                orderbyDictionary.Add(orderbyInfo.GetXmlProperty("genxml/key"), ResourceKey("RE." + orderbyInfo.GetXmlProperty("genxml/key"), sessionParams.CultureCode).ToString());
-            }
+            orderbyDictionary.Add(orderbyInfo.GetXmlProperty("genxml/key"), ResourceKey("RE." + orderbyInfo.GetXmlProperty("genxml/key"), sessionParams.CultureCode).ToString());
         }
-        <div class="w3-bar-item w3-right w3-hide-small w3-margin-left">
-            @DropDownList(new SimplisityInfo(), "genxml/hidden/pagesize", "12,24,48,96", "12,24,48,96", " style='height:40px;' class='w3-input w3-border simplisity_sessionfield ' onchange=\"$('.triggersearch').trigger('click');\" title='" + @ResourceKey("DNNrocket.pagesize", sessionParams.CultureCode) + "'", "32")
-        </div>
-        <div class="w3-bar-item w3-right w3-hide-small w3-margin-left">
-            <span>
-                @DropDownList(new SimplisityInfo(), "genxml/hidden/orderbyref", orderbyDictionary, " style='height:40px;' class='w3-input w3-border simplisity_sessionfield ' onchange=\"$('.triggersearch').trigger('click');\"", "")
-            </span>
-        </div>
+        if (orderbyDictionary.Count > 1)
+        {
+            <div class="w3-bar-item w3-right w3-hide-small w3-margin-left" style='@(showorderby)'>
+                <span>
+                    @DropDownList(infoempty, "genxml/hidden/orderbyref", orderbyDictionary, " style='height:40px;' class='w3-input w3-border simplisity_sessionfield ' onchange=\"doSearchReload();return false;\"", sessionParams.Get("orderbyref"))
+                </span>
+            </div>
+        }
     }
 
 </div>
 
-<!-- Element to trigger simplisity call from JS event -->
-<span class="w3-hide triggersearch" onclick="setSessionParams();"></span>
+<div class="simplisity_loader">
+    <span class=" simplisity_loader_inner">
+    </span>
+</div>
 
 <script>
 
     $(document).ready(function () {
-
-        $('.clearsearch ').unbind("click");
-        $('.clearsearch ').click(function () {
-            $('#searchtext').val('');
-            $('.dosearch').trigger('click');
-            return false; // prevent the button click from happening
-        });
-
-
         if ($('.actionentrykey').val() !== '') {
             $('.actionentrykey').focus();
             $('.clearsearch').show();
+            $('.dosearch').hide();
             var tmpStr = $('.actionentrykey').val();
             $('.actionentrykey').val('');
             $('.actionentrykey').val(tmpStr);
@@ -80,25 +72,38 @@
         }
         else {
             $('#searchtext').removeClass('w3-theme-light');
+            $('.clearsearch').hide();
+            $('.dosearch').show();
         }
 
         $('.actionentrykey').unbind('keypress');
         $('.actionentrykey').on('keypress', function (e) {
             if (e.keyCode == 13) {
-                $('.dosearch').trigger('click');
+                doSearchReload();
                 return false; // prevent the button click from happening
             }
         });
 
+        simplisity_setSessionField('searchtext', $('#searchtext').val()); // we need to repopulate the session cookie if the DNN search has been used.
+
+        $('.simplisity_loader').hide();
     });
 
+    function clearSearch() {
+        $('#searchtext').val('');
+        doSearchReload();
+    }
 
-    function setSessionParams() {
+    function doSearchReload() {
         simplisity_setSessionField('searchtext', $('#searchtext').val());
         simplisity_setSessionField('pagesize', $('#pagesize').val());
         simplisity_setSessionField('orderbyref', $('#orderbyref').val());
         $('.simplisity_loader').show();
-        window.location.href = '@(sessionParams.PageUrl)';
+    @{
+        var urlp = new Dictionary<string, string>();
+        urlp.Add("page", "1");
+    }
+            window.location.href = '@(DNNrocketUtils.NavigateURL(sessionParams.TabId, urlp))';
     }
 
 </script>

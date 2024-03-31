@@ -1002,4 +1002,13 @@
   <data name="addprice.Text" xml:space="preserve">
     <value>Add Price</value>
   </data>
+  <data name="showorderby.Text" xml:space="preserve">
+    <value>Show OrderBy</value>
+  </data>
+  <data name="showpagesize.Text" xml:space="preserve">
+    <value>Show Page Size</value>
+  </data>
+  <data name="showsearchtext.Text" xml:space="preserve">
+    <value>Show Search Text</value>
+  </data>
 </root>

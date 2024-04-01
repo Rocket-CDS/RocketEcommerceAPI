@@ -26,6 +26,7 @@ namespace RocketEcommerceAPI.Components
         private string _systemKey;
         private string _propRef;
         private int _catid;
+        private string _orderby;
 
         public ProductLimpetList(int categoryId, PortalShopLimpet portalShop, string langRequired, bool populate)
         {
@@ -100,19 +101,22 @@ namespace RocketEcommerceAPI.Components
             // Filter hidden
             if (!showHidden) _searchFilter += " and NOT(isnull([XMLData].value('(genxml/checkbox/hidden)[1]','nvarchar(4)'),'false') = 'true') ";
 
-            var orderby = "";
-            if (_searchcategoryid > 0 && PortalShop.ManualCategoryOrderby)
-                orderby = " order by [CATXREF].[SortOrder] "; // use manual sort for articles by category;
+            _orderby = "";
+            if (_searchcategoryid > 0 && ShopSettings.ManualCategoryOrderby)
+                _orderby = " order by [CATXREF].[SortOrder] "; // use manual sort for articles by category;
             else
+                _orderby = PortalShop.OrderByProductSQL(SessionParamData.OrderByRef);
+
+            if (showHidden)
             {
-                if (ShopSettings.ManualOrderBy) orderby = PortalShop.OrderByProductSQL("sqlorderby-product-default");
-                if (orderby == "") orderby = PortalShop.OrderByProductSQL("sqlorderby-product-name");
+                // Assume admin if showhidden.
+                _orderby = PortalShop.OrderByProductSQL(PortalShop.Info.GetXmlProperty("genxml/hidden/adminorderbyref"));
             }
-            if (orderby == "") orderby = " order by productname.GUIDKey ";
+            if (_orderby == "") _orderby = " order by articlename.GUIDKey ";
 
             SessionParamData.RowCount = _objCtrl.GetListCount(PortalShop.PortalId, -1, _entityTypeCode, _searchFilter, _langRequired, _tableName);
             RecordCount = SessionParamData.RowCount; 
-            DataList = _objCtrl.GetList(PortalShop.PortalId, -1, _entityTypeCode, _searchFilter, _langRequired, orderby, 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount, _tableName);
+            DataList = _objCtrl.GetList(PortalShop.PortalId, -1, _entityTypeCode, _searchFilter, _langRequired, _orderby, 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount, _tableName);
         }
         public void DeleteAll()
         {
@@ -121,6 +125,16 @@ namespace RocketEcommerceAPI.Components
             {
                 _objCtrl.Delete(r.ItemID);
             }
+        }
+        public List<ProductLimpet> GetArticlesListWithoutPaging(int limit = 1000)
+        {
+            var rtn = new List<ProductLimpet>();
+            var articleList = _objCtrl.GetList(PortalShop.PortalId, -1, _entityTypeCode, _searchFilter, _langRequired, _orderby, limit, 0, 0, 0, _tableName);
+            foreach (var a in articleList)
+            {
+                rtn.Add(new ProductLimpet(a));
+            }
+            return rtn;
         }
         private void ClearPropertyFilters()
         {

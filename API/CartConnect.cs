@@ -13,7 +13,7 @@ namespace RocketEcommerceAPI.API
     {
         public string GetMiniCartDisplay()
         {
-            var razorTempl = _dataObject.AppThemeView.GetTemplate("minicart.cshtml");
+            var razorTempl = _dataObject.AppTheme.GetTemplate("minicart.cshtml");
             if (razorTempl == "") razorTempl = _dataObject.AppThemeDefault.GetTemplate("minicart.cshtml");
             if (razorTempl == "") return "No MiniCart.cshtml Template ";
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.PortalShop, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
@@ -171,7 +171,7 @@ namespace RocketEcommerceAPI.API
 
         public String GetPublicPaymentOptions()
         {
-            var razorTempl = _dataObject.AppThemeView.GetTemplate("payment.cshtml");
+            var razorTempl = _dataObject.AppTheme.GetTemplate("payment.cshtml");
             if (razorTempl == "") razorTempl = _dataObject.AppThemeDefault.GetTemplate("payment.cshtml");
             if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CartData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);

@@ -38,7 +38,7 @@ namespace RocketEcommerceAPI.Components
         {
             _objCtrl = new DNNrocketController();
 
-            Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "ecom" + PortalId);
             if (Info == null)
             {
                 Info = _objCtrl.GetInfo(categoryId, CultureCode, TableName); // get existing record.
@@ -54,7 +54,7 @@ namespace RocketEcommerceAPI.Components
                 }
                 else
                 {
-                    CacheUtils.SetCache(_cacheKey, Info);
+                    CacheUtils.SetCache(_cacheKey, Info, "ecom" + PortalId);
                 }
                 Info.Lang = CultureCode; // reset langauge, for legacy record, without lang.
                 PortalId = Info.PortalId;

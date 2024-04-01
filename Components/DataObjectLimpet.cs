@@ -13,13 +13,15 @@ namespace RocketEcommerceAPI.Components
 {
     public class DataObjectLimpet
     {
-        private const string _systemkey = "rocketecommerceapi";
+        private const string _systemKey = "rocketecommerceapi";
         private Dictionary<string, object> _dataObjects;
         private Dictionary<string, string> _settings;
         private string _browserid;
         private string _cultureCode;
+        private SessionParams _sessionParams;
         public DataObjectLimpet(int portalid, string moduleRef, SessionParams sessionParams, bool editMode = true)
         {
+            _sessionParams = sessionParams;
             var cultureCode = sessionParams.CultureCodeEdit;
             if (!editMode) cultureCode = sessionParams.CultureCode;
             Populate(portalid, moduleRef, cultureCode, sessionParams.ModuleId, sessionParams.TabId, sessionParams.BrowserId);
@@ -34,13 +36,13 @@ namespace RocketEcommerceAPI.Components
             _cultureCode = cultureCode;
             _settings = new Dictionary<string, string>();
             _dataObjects = new Dictionary<string, object>();
-            var systemData = new SystemLimpet(_systemkey);
+            var systemData = new SystemLimpet(_systemKey);
             var portalShop = new PortalShopLimpet(portalid, cultureCode);
             var shopSettings = new ShopSettingsLimpet(portalid, cultureCode);
             var appTheme = new AppThemeLimpet(portalid, portalShop.AppThemeFolder, portalShop.AppThemeVersion, portalShop.ProjectName);
 
             SetDataObject("shopsettings", shopSettings);
-            SetDataObject("appthemesystem", new AppThemeSystemLimpet(portalid, _systemkey));
+            SetDataObject("appthemesystem", new AppThemeSystemLimpet(portalid, _systemKey));
             SetDataObject("portaldata", new PortalLimpet(portalid));
             SetDataObject("systemdata", systemData);
             SetDataObject("appthemeprojects", new AppThemeProjectLimpet());
@@ -54,7 +56,7 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("companydata", new CompanyLimpet(portalid, cultureCode));
             SetDataObject("countrydata", new CountryLimpet(portalid, cultureCode));
             SetDataObject("portalshop", portalShop);
-            SetDataObject("appthemedatalist", new AppThemeDataList(portalid, portalShop.ProjectName, _systemkey));
+            SetDataObject("appthemedatalist", new AppThemeDataList(portalid, portalShop.ProjectName, _systemKey));
             SetDataObject("notificationdata", new NotificationLimpet(portalid,cultureCode));
             SetDataObject("categorylist", new CategoryLimpetList(portalid, cultureCode, true));
             SetDataObject("propertylist", new PropertyLimpetList(portalid, cultureCode));
@@ -62,6 +64,15 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("cartdata", new CartLimpet(_browserid, cultureCode));
             SetDataObject("defaultcategory", new CategoryLimpet(portalid, shopSettings.DefaultCategoryId, cultureCode));
 
+            ProceesSessionParams();
+        }
+        public void ProceesSessionParams()
+        {
+            //RULE: Search text will search across ALL categories. 
+            if (_sessionParams.SearchText != "") _sessionParams.Set(UrlQueryCategoryKey(), "0");
+
+            // RULE: Clear search on category select.
+            if (_sessionParams.GetInt(UrlQueryCategoryKey()) > 0) _sessionParams.SearchText = "";
         }
         public void ReloadCart()
         {
@@ -91,12 +102,33 @@ namespace RocketEcommerceAPI.Components
         {
             return AppThemeProjects.List;
         }
+        public string UrlQueryCategoryKey()
+        {
+            return RocketEcommerceAPIUtils.UrlQueryCategoryKey(PortalData.PortalId, _systemKey);
+        }
+        public int SessionCatId()
+        {
+            return SessionParamsData.GetInt(RocketEcommerceAPIUtils.UrlQueryCategoryKey(PortalData.PortalId, _systemKey));
+        }
+        public string UrlQueryArticleKey()
+        {
+            return RocketEcommerceAPIUtils.UrlQueryArticleKey(PortalData.PortalId, _systemKey);
+        }
+        public int SessionArticleId()
+        {
+            return SessionParamsData.GetInt(RocketEcommerceAPIUtils.UrlQueryCategoryKey(PortalData.PortalId, _systemKey));
+        }
+        public string SystemKey { get { return _systemKey; } }
         public int PortalId { get { return PortalData.PortalId; } }
+        public string ModuleRef { get { return ModuleSettings.ModuleRef; } }
+        public int ModuleId { get { return ModuleSettings.ModuleId; } }
+        public int TabId { get { return ModuleSettings.TabId; } }
+        public string CultureCode { get { return PortalShop.CultureCode; } }
         public Dictionary<string, object> DataObjects { get { return _dataObjects; } }
         public ModuleContentLimpet ModuleSettings { get { return (ModuleContentLimpet)GetDataObject("modulesettings"); } }
         public AppThemeSystemLimpet AppThemeSystem { get { return (AppThemeSystemLimpet)GetDataObject("appthemesystem"); } }
         public AppThemeLimpet AppThemeDefault { get { return (AppThemeLimpet)GetDataObject("appthemedefault"); } }
-        public AppThemeLimpet AppThemeView { get { return (AppThemeLimpet)GetDataObject("appthemeview"); } set { SetDataObject("appthemeview", value); } }
+        public AppThemeLimpet AppTheme { get { return (AppThemeLimpet)GetDataObject("apptheme"); } set { SetDataObject("apptheme", value); } }
         public PortalLimpet PortalData { get { return (PortalLimpet)GetDataObject("portaldata"); } }
         public SystemLimpet SystemData { get { return (SystemLimpet)GetDataObject("systemdata"); } }
         public PortalShopLimpet PortalShop { get { return (PortalShopLimpet)GetDataObject("portalshop"); } }
@@ -107,6 +139,7 @@ namespace RocketEcommerceAPI.Components
         public CategoryLimpetList CategoryList { get { return (CategoryLimpetList)GetDataObject("categorylist"); } }
         public NotificationLimpet NotificationData { get { return (NotificationLimpet)GetDataObject("notificationdata"); } }        
         public Dictionary<string, string> Settings { get { return _settings; } }
+        public SessionParams SessionParamsData { get { return _sessionParams; } }
 
     }
 }

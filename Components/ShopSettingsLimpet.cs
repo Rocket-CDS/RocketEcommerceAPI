@@ -34,7 +34,7 @@ namespace RocketEcommerceAPI.Components
 
             _cacheKey = _entityTypeCode + portalId + "*" + cultureCode;
 
-            Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "ecom" + portalId);
             if (Info == null)
             {
                 Info = _objCtrl.GetByType(portalId, -1, _entityTypeCode, "", "", _tableName);
@@ -105,7 +105,7 @@ namespace RocketEcommerceAPI.Components
         public void Update()
         {
             Info = _objCtrl.SaveData(Info, _tableName);
-            CacheUtils.SetCache(_cacheKey, Info);
+            CacheUtils.SetCache(_cacheKey, Info, "ecom" + PortalId);
         }
         public void Delete()
         {

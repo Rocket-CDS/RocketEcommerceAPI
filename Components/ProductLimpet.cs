@@ -73,6 +73,13 @@ namespace RocketEcommerceAPI.Components
             CultureCode = cultureCode;
             this.systemKey = systemKey;
         }
+        public ProductLimpet(SimplisityInfo sInfo)
+        {
+            _objCtrl = new DNNrocketController();
+            Info = sInfo;
+            CultureCode = Info.Lang;
+            PortalShop = new PortalShopLimpet(PortalId, CultureCode);
+        }
 
         private void Populate(string cultureCode)
         {

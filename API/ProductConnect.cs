@@ -276,28 +276,8 @@ namespace RocketEcommerceAPI.API
         }
         public String GetPublicProductList()
         {
-            // assume we want a product page, if we have a productid
-            var productid = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
-            if (productid == 0) productid = _paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/productid");
-            if (productid > 0)
-            {
-                return GetPublicProductDetail();
-            }
-
-            // Do product list
-            var razorTempl = AssignRemoteTemplate();
-            if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppThemeView.AppThemeFolder;
-
-            var articleDataList = new ProductLimpetList(_sessionParams, _dataObject.PortalShop, _sessionParams.CultureCode, true, false, _dataObject.ShopSettings.DefaultCategoryId);
-            _dataObject.SetDataObject("productlist", articleDataList);
-
-            // Get page url from remote setting (populated in init method)
-            articleDataList.SessionParamData.PageDetailUrl = _sessionParams.PageDetailUrl;
-            articleDataList.SessionParamData.PageListUrl = _sessionParams.PageListUrl;
-
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, articleDataList.SessionParamData, _dataObject.PortalShop.DebugMode);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
+            var template = _paramInfo.GetXmlProperty("genxml/hidden/template");
+            return RocketEcommerceAPIUtils.DisplayView(_dataObject, _paramInfo, template);
         }
         public String GetPublicProductDetail()
         {
@@ -308,22 +288,13 @@ namespace RocketEcommerceAPI.API
             if (!articleData.Exists) return "404";
 
             var razorTempl = AssignRemoteTemplate();
-            if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppThemeView.AppThemeFolder;
+            if (razorTempl == "") return "No Razor Template.  Check engine server. Theme: '" + _dataObject.AppTheme.AppThemeFolder;
 
             _dataObject.SetDataObject("productdata", articleData);
 
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, _dataObject.PortalShop.DebugMode);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
-        }
-        public String GetPublicProductView()
-        {
-            var productid = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
-            if (productid == 0) productid = _paramInfo.GetXmlPropertyInt("genxml/remote/urlparams/productid");
-            if (productid == 0)
-                return GetPublicProductList();
-            else
-                return GetPublicProductDetail();
         }
         public String GetPublicArticleSEO()
         {

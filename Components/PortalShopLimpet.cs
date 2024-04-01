@@ -23,6 +23,7 @@ namespace RocketEcommerceAPI.Components
         private DNNrocketController _objCtrl;
         private int _portalId;
         private string _cacheKey;
+        private string _cacheGroup;
         public PortalShopLimpet(int portalId, string cultureCode)
         {
             Record = new SimplisityRecord();
@@ -46,7 +47,8 @@ namespace RocketEcommerceAPI.Components
             }
 
             _cacheKey = "PortalShop" + _portalId + "*" + cultureCode;
-            Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey, _portalId.ToString());
+            _cacheGroup = "ecom" + portalId.ToString();
+            Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey, _cacheGroup);
             if (Record == null)
             {
                 ReadRecord(portalId, cultureCode);
@@ -100,7 +102,7 @@ namespace RocketEcommerceAPI.Components
                 if (!sqlInject)
                 {
                     Record = _objCtrl.SaveRecord(Record, _tableName); // you must cache what comes back.  that is the copy of the DB.
-                    CacheUtils.SetCache(_cacheKey, Record, _portalId.ToString());
+                    CacheUtils.SetCache(_cacheKey, Record, _cacheGroup);
                 }
             }
             if (sqlInject)
@@ -211,7 +213,7 @@ namespace RocketEcommerceAPI.Components
                     if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath(_portalId))) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath(_portalId));
                 }
             }
-            CacheUtils.SetCache(_cacheKey, Record, portalId.ToString());
+            CacheUtils.SetCache(_cacheKey, Record, _cacheGroup);
         }
         public void Validate()
         {
@@ -230,7 +232,7 @@ namespace RocketEcommerceAPI.Components
         }
         public void RemoveCache()
         {
-            CacheUtils.RemoveCache(_cacheKey, _portalId.ToString());
+            CacheUtils.RemoveCache(_cacheKey, _cacheGroup);
         }
         private string SqlFilterProduct { get { return Record.GetXmlProperty("genxml/sqlfilterproduct"); } }
         private string GetFilterSQL(string SqlFilterTemplate, SimplisityInfo paramInfo)
@@ -285,7 +287,7 @@ namespace RocketEcommerceAPI.Components
         public List<PaymentInterface> GetAllPaymentMethods()
         {
             var cacheKey = "GetAllPaymentMethods" + _systemkey + _portalId;
-            var rtn = (List<PaymentInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var rtn = (List<PaymentInterface>)CacheUtils.GetCache(cacheKey, _cacheGroup);
             if (rtn != null) return rtn;
 
             var systemData = new SystemLimpet(_systemkey);
@@ -299,13 +301,13 @@ namespace RocketEcommerceAPI.Components
                     rtn.Add(bankprov);
                 }
             }
-            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _cacheGroup);
             return rtn;
         }
         public List<PaymentInterface> GetActivePaymentMethods()
         {
             var cacheKey = "GetActivePaymentMethods" + _systemkey + _portalId;
-            var rtn = (List<PaymentInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var rtn = (List<PaymentInterface>)CacheUtils.GetCache(cacheKey, _cacheGroup);
             if (rtn != null) return rtn;
 
             rtn = new List<PaymentInterface>();
@@ -313,7 +315,7 @@ namespace RocketEcommerceAPI.Components
             {
                 if (p.Active() && IsPaymentProviderActive(p.PaymentProvKey())) rtn.Add(p);
             }
-            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _cacheGroup);
             return rtn;
         }
         public bool IsShippingProviderActive(string interfaceKey)
@@ -325,7 +327,7 @@ namespace RocketEcommerceAPI.Components
         public List<ShippingInterface> GetAllShippingProviders()
         {
             var cacheKey = "GetAllShippingProviders" + _systemkey + _portalId;
-            var rtn = (List<ShippingInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var rtn = (List<ShippingInterface>)CacheUtils.GetCache(cacheKey, _cacheGroup);
             if (rtn != null) return rtn;
             var systemData = new SystemLimpet(_systemkey);
             rtn = new List<ShippingInterface>();
@@ -346,13 +348,13 @@ namespace RocketEcommerceAPI.Components
                     }
                 }
             }
-            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _cacheGroup);
             return rtn;
         }
         public List<ShippingInterface> GetActiveShippingProviders()
         {
             var cacheKey = "GetActiveShippingProviders" + _systemkey + _portalId;
-            var rtn = (List<ShippingInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var rtn = (List<ShippingInterface>)CacheUtils.GetCache(cacheKey, _cacheGroup);
             if (rtn != null) return rtn;
 
             rtn = new List<ShippingInterface>();
@@ -360,7 +362,7 @@ namespace RocketEcommerceAPI.Components
             {
                 if (p.Active() && IsShippingProviderActive(p.ShipProvKey())) rtn.Add(p);
             }
-            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _cacheGroup);
             return rtn;
         }
         public bool IsTaxProviderActive(string interfaceKey)
@@ -372,7 +374,7 @@ namespace RocketEcommerceAPI.Components
         public List<TaxInterface> GetAllTaxProviders(bool useCache = true)
         {
             var cacheKey = "GetAllTaxMethods" + _systemkey + _portalId;
-            var rtn = (List<TaxInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var rtn = (List<TaxInterface>)CacheUtils.GetCache(cacheKey, _cacheGroup);
             if (rtn != null && useCache) return rtn;
 
             var systemData = new SystemLimpet(_systemkey);
@@ -386,20 +388,20 @@ namespace RocketEcommerceAPI.Components
                     rtn.Add(prov);
                 }
             }
-            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _cacheGroup);
             return rtn;
         }
         public TaxInterface GetActiveTaxProvider()
         {
             var cacheKey = "GetActiveTaxProvider" + _systemkey + _portalId;
-            var rtn = (TaxInterface)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var rtn = (TaxInterface)CacheUtils.GetCache(cacheKey, _cacheGroup);
             if (rtn != null) return rtn;
 
             foreach (var p in GetAllTaxProviders())
             {
                 if (p.Active())
                 {
-                    CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+                    CacheUtils.SetCache(cacheKey, rtn, _cacheGroup);
                     return p; // Only 1 tax provider active.
                 }
             }
@@ -415,7 +417,7 @@ namespace RocketEcommerceAPI.Components
         public List<DiscountInterface> GetAllDiscountProviders(bool useCache = true)
         {
             var cacheKey = "GetAllDiscountMethods" + _systemkey + _portalId;
-            var rtn = (List<DiscountInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var rtn = (List<DiscountInterface>)CacheUtils.GetCache(cacheKey, _cacheGroup);
             if (rtn != null && useCache) return rtn;
 
             var systemData = new SystemLimpet(_systemkey);
@@ -429,13 +431,13 @@ namespace RocketEcommerceAPI.Components
                     rtn.Add(prov);
                 }
             }
-            CacheUtils.SetCache(cacheKey, rtn, _portalId.ToString());
+            CacheUtils.SetCache(cacheKey, rtn, _cacheGroup);
             return rtn;
         }
         public List<DiscountInterface> GetActiveDiscountProvider()
         {
             var cacheKey = "GetActiveDiscountProvider" + _systemkey + _portalId;
-            var rtn = (List<DiscountInterface>)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+            var rtn = (List<DiscountInterface>)CacheUtils.GetCache(cacheKey, _cacheGroup);
             if (rtn != null) return rtn;
 
             rtn = new List<DiscountInterface>();
@@ -537,12 +539,12 @@ namespace RocketEcommerceAPI.Components
             get
             {
                 var countInt = 0;
-                var cacheCount = CacheUtils.GetCache("ArticleCount" + _portalId, _portalId.ToString());
+                var cacheCount = CacheUtils.GetCache("ArticleCount" + _portalId, _cacheGroup);
                 if (cacheCount == null)
                 {
                     var l = _objCtrl.GetList(_portalId, -1, "ART", "", CultureCode, "", 0, 0, 0, 0, _tableName);
                     countInt = l.Count;
-                    CacheUtils.SetCache("ArticleCountCount" + _portalId, countInt.ToString(), _portalId.ToString());
+                    CacheUtils.SetCache("ArticleCountCount" + _portalId, countInt.ToString(), _cacheGroup);
                 }
                 else
                 {

@@ -23,8 +23,8 @@
         <div class="w3-margin-top" style="">
 
             <div class="w3-row w3-padding">
-                <div class="w3-button w3-theme-action simplisity_click " s-return="#optionsfieldreturn" s-cmd="productadmin_saveoptionsfield" s-list=".optionfieldlist" s-post="#optionsfieldcontainer" s-fields='{"productid":"@productOption.ProductId","optionkey":"@productOption.OptionKey"}' style="min-width:126px;">@ButtonText(ButtonTypes.save)</div>
-                <div class="w3-button w3-theme w3-padding-8 simplisity_click" s-cmd="productadmin_addoptionsfield" s-return="#optionsfieldreturn" s-fields='{"productid":"@productOption.ProductId","optionkey":"@productOption.OptionKey"}'>@ButtonIcon(ButtonTypes.add)</div>
+                <div class="w3-button w3-theme-action simplisity_click " s-return="#optionsfieldreturn" s-cmd="productadmin_saveoptionsfield" s-after="showaddoptionfield" s-list=".optionfieldlist" s-post="#optionsfieldcontainer" s-fields='{"productid":"@productOption.ProductId","optionkey":"@productOption.OptionKey"}' style="min-width:126px;">@ButtonText(ButtonTypes.save)</div>
+                <div class="w3-button w3-theme w3-padding-8 simplisity_click a-addoptionfield" s-cmd="productadmin_addoptionsfield" s-return="#optionsfieldreturn" s-after="hideaddoptionfield" s-fields='{"productid":"@productOption.ProductId","optionkey":"@productOption.OptionKey"}'>@ButtonIcon(ButtonTypes.add)</div>
                 <div class="w3-button w3-padding-8 simplisity_itemundo" s-recylebin="optionfieldlistbin" s-return="#optionfieldlistdata" s-removelist=".optionfieldlist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
             </div>
 
@@ -72,11 +72,16 @@
 
         $("#optionfieldlistdata").sortable();
         $("#optionfieldlistdata").disableSelection();
-
     });
 
     function clearoptionsfieldreturn() {
         $('#optionsfieldreturn').html('');
+    }
+    function hideaddoptionfield() {
+        $('.a-addoptionfield').hide();
+    }    
+    function showaddoptionfield() {
+        $('.a-addoptionfield').show();
     }
 </script>
 

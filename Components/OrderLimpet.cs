@@ -268,7 +268,17 @@ namespace RocketEcommerceAPI.Components
             // Shipping calc
             ShippingTotalCents = CartUtils.CalculateShippingCost(OrderId, CultureCode, PortalShop);
 
-            TotalCents = SubTotalCents + DiscountTotalCents + ShippingTotalCents + TaxTotalCents;
+            // Shipping calc
+            ShippingTotalCents = CartUtils.CalculateShippingCost(this, PortalShop);
+
+            //tax calc
+            var taxData = CartUtils.CalculateTaxCost(this, PortalShop);
+            TaxTotalCents = taxData.TotalCents;
+
+            //discount calc
+            DiscountTotalCents = CartUtils.CalculateDiscountCost(this, PortalShop);
+
+            TotalCents = SubTotalCents + DiscountTotalCents + ShippingTotalCents + taxData.TotalCentsAdd;
 
             Update();
         }

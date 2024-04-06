@@ -25,7 +25,7 @@
 <div class='w3-animate-opacity w3-padding'>
 
     <div class="w3-row w3-padding">
-        <div class="w3-button w3-theme-action langchangesave simplisity_click" s-cmd="company_save" s-post="#companydata" s-fields='{"sitekey":"@companyData.SiteKey"}'>@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-button w3-theme-action a-savebutton simplisity_click" s-cmd="company_save" s-return=".emptyreturn" s-post="#companydata" s-fields='{"sitekey":"@companyData.SiteKey"}'>@ButtonText(ButtonTypes.save)</div>
         <div class="w3-tiny w3-right w3-right-align">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@companyData.PortalId</div>
     </div>
 
@@ -33,14 +33,14 @@
 
         <div class="w3-row w3-padding">
             <div class="w3-col m2 w3-margin-right w3-margin-top w3-display-container" style="width:172px;">
-                <span onclick="$('#companyimageselect').show();" class="w3-button w3-display-topright">@ButtonIcon(ButtonTypes.photo)</span>
+                <span onclick="$('.a-savebutton').trigger('click');$('#companyimageselect').show();" class="w3-button w3-display-topright">@ButtonIcon(ButtonTypes.photo)</span>
                 @if (companyData.LogoRelPath != "")
                 {
-                    <img src="@ThumbnailImageUrl(companyData.LogoRelPath, 172, 172)" style="height:172px;width:172px;" class="w3-round" />
+                    <img src="@ImageUrl(companyData.LogoRelPath, 172, 172)" style="height:172px;width:172px;" class="w3-round" />
                 }
                 else
                 {
-                    <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 72, 72)" style="height:172px;width:172px;" class="w3-round" />
+                    <img src="@ImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 72, 72)" style="height:172px;width:172px;" class="w3-round" />
                 }
                 @HiddenField(info, "genxml/hidden/imagepathlogo")
                 @RenderTemplate("CompanyImageSelect.cshtml", appThemeSystem, Model, true)

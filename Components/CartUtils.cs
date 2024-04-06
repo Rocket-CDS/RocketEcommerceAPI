@@ -248,6 +248,33 @@ namespace RocketEcommerceAPI.Components
             if (discounttotal + cartData.SubTotalCents < 0) discounttotal = 0;
             return discounttotal;
         }
+        public static TaxData CalculateTaxCost(OrderLimpet orderData, PortalShopLimpet portalShop)
+        {
+            var taxProv = portalShop.GetActiveTaxProvider();
+            if (taxProv != null)
+            {
+                return taxProv.CalculateTaxCost(orderData);
+            }
+            TaxData taxData = new TaxData();
+            taxData.CartTotalCents = 0;
+            taxData.ShippingTotalCents = 0;
+            taxData.TotalCents = 0;
+            taxData.TotalCentsAdd = 0;
+            return taxData;
+        }
+        public static int CalculateDiscountCost(OrderLimpet orderData, PortalShopLimpet portalShop)
+        {
+            int discounttotal = 0;
+            var discountMethods = portalShop.GetActiveDiscountProvider();
+            if (discountMethods == null) return 0;
+            foreach (var prov in discountMethods)
+            {
+                var calc = prov.CalculateDiscountCost(orderData);
+                discounttotal += calc;
+            }
+            if (discounttotal + orderData.SubTotalCents < 0) discounttotal = 0;
+            return discounttotal;
+        }
         public static PaymentLimpet CartBankReturn(SimplisityInfo paramInfo)
         {
             var paymentData = new PaymentLimpet(PortalUtils.GetPortalId(), -1); // create new payment (not on DB until it is updated)

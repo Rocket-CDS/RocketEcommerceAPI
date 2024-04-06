@@ -144,7 +144,7 @@ namespace RocketEcommerceAPI.API
         }
         public String GetPublicCartPayment()
         {
-                var orderData = _dataObject.CartData.ConvertToOrder();                
+                var orderData = _dataObject.CartData.ConvertToOrder();
                 // create payment and link to order
                 var paymentData = new PaymentLimpet(_dataObject.PortalId, -1, _sessionParams.CultureCode);
                 paymentData.Load(orderData, _paramInfo.GetXmlProperty("genxml/hidden/providerkey"));

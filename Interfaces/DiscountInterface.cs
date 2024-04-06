@@ -27,7 +27,8 @@ namespace RocketEcommerceAPI.Interfaces
 
         #endregion
         public abstract int CalculateDiscountCost(CartLimpet  cartData);
-		public abstract bool Active();
+        public abstract int CalculateDiscountCost(OrderLimpet orderData);
+        public abstract bool Active();
 
     }
 }

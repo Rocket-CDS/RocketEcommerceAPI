@@ -63,6 +63,7 @@ namespace RocketEcommerceAPI.Components
             SetDataObject("portalstats", new PortalShopLimpetStats(portalShop));
             SetDataObject("cartdata", new CartLimpet(_browserid, cultureCode));
             SetDataObject("defaultcategory", new CategoryLimpet(portalid, shopSettings.DefaultCategoryId, cultureCode));
+            SetDataObject("appthemerocketapi", AppThemeUtils.AppThemeRocketApi(portalid));
 
             ProceesSessionParams();
         }

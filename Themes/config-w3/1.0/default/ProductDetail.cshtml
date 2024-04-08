@@ -3,11 +3,8 @@
 @using Simplisity;
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
-
+@using DNNrocketAPI.render;
 @AssigDataModel(Model)
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
 
 @{
     var productdetaailsdisplay = "display:none;";
@@ -90,7 +87,7 @@
                     </div>
                 </div>
                 <div class='w3-row w3-padding'>
-                    <label>@ResourceKey("RE.summary")</label>&nbsp;@EditFlag(sessionParams)
+                    <label>@ResourceKey("RE.summary")</label>&nbsp;@EditFlag(sessionParams)&nbsp;@ChatGPT("productsummary", "productname")
                     @TextArea(info, "genxml/lang/genxml/textbox/productsummary", " class='w3-input w3-border' autocomplete='off' rows='6' ", "", true, 0)
                 </div>
             </div>
@@ -188,7 +185,7 @@
             <div class='w3-col m12 w3-padding'>
                 <div class="w3-bar">
                     <div class="w3-bar-item">@EditFlag(sessionParams)</div>
-                    <div class="w3-bar-item" onclick="richtextsourceDialog();"><i class=" w3-button fas fa-code"></i></div>
+                    <div class="w3-bar-item">@ChatGPT("richtext", "productname")</div>
                 </div>
                 @CKEditor4(info, "genxml/lang/genxml/textbox/richtext",true)
             </div>

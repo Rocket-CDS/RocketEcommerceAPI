@@ -49,6 +49,7 @@ namespace RocketEcommerceAPI.Components
         public ProductLimpet productData;
         public CategoryLimpet defaultCategory;
         public ProductLimpetList productList;
+        public AppThemeRocketApiLimpet appThemeRocketApi;
 
         public string AssigDataModel(SimplisityRazor sModel)
         {
@@ -80,6 +81,7 @@ namespace RocketEcommerceAPI.Components
             productData = (ProductLimpet)sModel.GetDataObject("productdata");
             productList = (ProductLimpetList)sModel.GetDataObject("productlist");
             defaultCategory = (CategoryLimpet)sModel.GetDataObject("defaultcategory");
+            appThemeRocketApi = (AppThemeRocketApiLimpet)sModel.GetDataObject("appthemerocketapi");
 
             if (sessionParams == null) sessionParams = new SessionParams(new SimplisityInfo());
             info = new SimplisityInfo();
@@ -89,6 +91,7 @@ namespace RocketEcommerceAPI.Components
 
             AddProcessDataResx(appTheme, true);
             if (systemData != null) AddProcessData("resourcepath", systemData.SystemRelPath + "/App_LocalResources/");
+            AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/");
 
             // use return of "string", so we don;t get error with converting void to object.
             return "";
@@ -190,6 +193,78 @@ namespace RocketEcommerceAPI.Components
         {
             return new RawString("<span class='material-icons " + cssclass + "' " + attributes + ">" + iconname + "</span>");
         }
+        /// <summary>
+        /// Builds the List URL.
+        /// </summary>
+        /// <param name="listpageid">The listpageid.</param>
+        /// <param name="categoryId">The category identifier.</param>
+        /// <param name="categoryName">Name of the category.</param>
+        /// <returns></returns>
+        public IEncodedString ListUrl(int listpageid, CategoryLimpet categoryData, string[] urlparams = null)
+        {
+            if (urlparams == null) urlparams = new string[] { };
+            var listurl = "";
+            if (categoryData != null && categoryData.CategoryId > 0)
+            {
+                string[] urlparams2 = { RocketEcommerceAPIUtils.UrlQueryCategoryKey(categoryData.PortalId, "rocketecommmerceapi"), categoryData.CategoryId.ToString(), DNNrocketUtils.UrlFriendly(categoryData.Name) };
+                urlparams = urlparams.Concat(urlparams2).ToArray();
+                listurl = DNNrocketUtils.NavigateURL(listpageid, urlparams);
+            }
+            else
+            {
+                listurl = DNNrocketUtils.NavigateURL(listpageid, urlparams);
+            }
+            return new RawString(listurl);
+        }
+        /// <summary>
+        /// Builds the Detail URL.
+        /// </summary>
+        /// <param name="detailpageid">The detailpageid.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="eId">The row eId.</param>
+        /// <returns></returns>
+        public IEncodedString DetailUrl(int detailpageid, ProductLimpet articleData, CategoryLimpet categoryData, string[] urlparams = null)
+        {
+            if (urlparams == null) urlparams = new string[] { };
+            var detailurl = "";
+            var seotitle = DNNrocketUtils.UrlFriendly(articleData.Name);
+
+            var articleParamKey = "";
+            var categoryParamKey = "";
+            var paramidList = DNNrocketUtils.GetQueryKeys(articleData.PortalId);
+            foreach (var paramDict in paramidList)
+            {
+                if (articleData.SystemKey == paramDict.Value.systemkey && paramDict.Value.datatype == "article")
+                {
+                    articleParamKey = paramDict.Value.queryparam;
+                }
+                if (articleData.SystemKey == paramDict.Value.systemkey && paramDict.Value.datatype == "category")
+                {
+                    categoryParamKey = paramDict.Value.queryparam;
+                }
+            }
+
+            if (categoryData != null && categoryData.CategoryId > 0)
+            {
+                string[] urlparams2 = { articleParamKey, articleData.ProductId.ToString(), categoryParamKey, categoryData.CategoryId.ToString(), seotitle };
+                urlparams = urlparams.Concat(urlparams2).ToArray();
+                detailurl = DNNrocketUtils.NavigateURL(detailpageid, articleData.CultureCode, urlparams);
+            }
+            else
+            {
+                string[] urlparams2 = { articleParamKey, articleData.ProductId.ToString(), seotitle };
+                urlparams = urlparams.Concat(urlparams2).ToArray();
+                detailurl = DNNrocketUtils.NavigateURL(detailpageid, articleData.CultureCode, urlparams);
+            }
+            return new RawString(detailurl);
+        }
+        public IEncodedString ChatGPT(string textId, string sourceTextId = "")
+        {
+            var globalData = new SystemGlobalData();
+            if (String.IsNullOrEmpty(globalData.ChatGptKey)) return new RawString("");
+            return new RawString("<span class=\"material-icons\" title=\"AI\" style=\"cursor:pointer;\" onclick=\"$('#chatgptmodal').show();simplisity_setSessionField('chatgpttextid','" + textId + "');simplisity_setSessionField('chatgptcmd','rocketdirectoryapi_chatgpt');$('#chatgptquestion').val($('#" + sourceTextId + "').val());\">comment</span>");
+        }
+
 
     }
 }

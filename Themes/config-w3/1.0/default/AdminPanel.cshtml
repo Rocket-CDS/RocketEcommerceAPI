@@ -7,18 +7,10 @@
 @using RocketPortal.Components;
 @using Rocket.AppThemes.Components;
 @using System.Web;
+@AssigDataModel(Model)
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources")
-
-@{
-    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
-    var appThemeSystem = new AppThemeSystemLimpet(systemData.SystemKey);
-    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
-    var appThemeDirectory = (AppThemeSystemLimpet)Model.GetDataObject("appthemedirectory");
-    var sessionParams = Model.SessionParamsData;
-    var articleid = Model.SessionParamsData.GetInt("articleid");
-}
 
 <!-- Sidebar/Menu -->
 <div id="sidebarplaceholder">
@@ -42,12 +34,16 @@
     </div>
 </div>
 
+@{
+    Model.SetSetting("chatgptcmd", "rocketecommerceapi_chatgpt");
+}
+@RenderTemplate("ChatGptForm.cshtml", appThemeRocketApi, Model, true)
+
 <script>
     $(document).ready(function () {
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketecommerceapi', tabid: '@(sessionParams.TabId)', debug: false });
 
         simplisity_setParamField("reload", true);  // This will flag that a reload is done.  The Server side code will get the last command tracked.
-        simplisity_setParamField("articleid", '@(articleid)'); // Pass articleid to server for direct edit without using list.
         simplisity_sessionremove(); // clear the sessions vars on load.  These needs to be reset for the admin panel to work and not use any front office selections.
         $('.simplisity_loader').show();
     });

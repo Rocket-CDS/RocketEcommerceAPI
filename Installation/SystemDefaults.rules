@@ -740,6 +740,10 @@
 		  <cmd>rocketecommerceapi_savesettings</cmd>
 		  <action>false</action>
 	  </command>
+	  <command>
+		  <cmd>rocketecommerceapi_chatgpt</cmd>
+		  <action>false</action>
+	  </command>
 	  
 
   </commands>

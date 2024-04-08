@@ -528,6 +528,9 @@ namespace RocketEcommerceAPI.API
                 case "rocketecommerceapi_savesettings":
                     strOut = SaveSettings();
                     break;
+                case "rocketecommerceapi_chatgpt":
+                    strOut = ChatGptReturn();
+                    break;
 
 
                 case "remote_publicview":

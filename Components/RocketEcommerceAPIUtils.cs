@@ -143,7 +143,8 @@ namespace RocketEcommerceAPI.Components
             var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, sessionParam.ModuleId, sessionParam.TabId);
             if (moduleSettings.DisableHeader) return "";
 
-            var articleId = sessionParam.GetInt("pid");
+            var urlKey = RocketEcommerceAPIUtils.UrlQueryArticleKey(portalId, systemKey);
+            var articleId = sessionParam.GetInt(urlKey);
             var cacheKey = moduleRef + "*" + articleId + "*" + template;
             var rtn = (string)CacheFileUtils.GetCache(portalId, cacheKey, "ecom" + portalId);
             if (rtn != null && !moduleSettings.DisableCache) return rtn;

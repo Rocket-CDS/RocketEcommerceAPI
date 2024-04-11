@@ -32,10 +32,6 @@
         <a href="@userParams.Get("adminpanelurl")" target="_blank" class="viewedit-button" title="@ResourceKey("DNNrocket.edit")">
             <img src="/DesktopModules/DNNrocket/API/images/dataset.svg" alt="@ResourceKey("DNNrocket.edit")" />
         </a>
-        <a href="?action=clearcache" class="viewedit-button" title="@ResourceKey("RCT.clearcache")">
-            <img src="/DesktopModules/DNNrocket/API/images/clear_cache.svg" alt="@ResourceKey("RCT.clearcache")" />
-        </a>
-
         @if (UserUtils.IsAdministrator())
         {
             <a href="@userParams.Get("settingsurl")" class="viewedit-button" title="@ResourceKey("DNNrocket.settings")">
@@ -50,8 +46,14 @@
             }
 
         }
-
-        <span onclick="$('#a-editbuttons-@(moduleData.ModuleId)').hide();$('#a-editbuttons-@(moduleData.ModuleId)').addClass('w3-hide');" class="viewedit-button">
+        @{
+            var disbledCache = "";
+            if (moduleData.DisableCache)
+            {
+                disbledCache = " 	background-color:#FF6347; ";
+            }
+        }
+        <span onclick="$('#a-editbuttons-@(moduleData.ModuleId)').hide();$('#a-editbuttons-@(moduleData.ModuleId)').addClass('w3-hide');" style="@(disbledCache)" class="viewedit-button">
             <img src="/DesktopModules/DNNrocket/API/images/close.svg" alt="close" />
         </span>
 

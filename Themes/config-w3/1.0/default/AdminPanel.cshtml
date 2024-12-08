@@ -12,6 +12,59 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources")
 
+
+
+<!-- Page Content -->
+<div class="w3-top w3-bar w3-theme-dark " style="height:41px;">
+    <div class="w3-bar-item" style="padding: 8px 4px;">
+        <img src="/DesktopModules/DNNrocket/API/images/nevoweb-icon.png" class="w3-round w3-white" style="height:29px;" />
+    </div>
+
+    <div onclick="$('.simplisity_loader').show();returnToWebsite()" class="w3-right w3-bar-item" style="cursor: pointer;" title="@ResourceKey("DNNrocket.return")">
+        <img src="/DesktopModules/DNNrocket/API/images/exit_to_appwhite.svg" />
+    </div>
+    <div class="w3-right w3-bar-item" style="cursor:pointer;">
+        <div class="w3-small" onclick="$('#accountdropdown').toggle();">
+            <img src="/DesktopModules/DNNrocket/API/images/manage_accountswhite.svg" class="w3-round" style="height:29px;" />
+            @UserUtils.GetCurrentUserName()
+        </div>
+    </div>
+    <div class="w3-right w3-bar-item w3-hide-small w3-hide-medium w3-border-right">
+        <span>@appTheme.Name</span>
+    </div>
+
+    <div class="w3-bar-item">
+        @foreach (var l in enabledlanguages)
+        {
+            var selectedcolor = "";
+            if (sessionParams.CultureCodeEdit == l)
+            {
+                selectedcolor = "w3-border-bottom";
+            }
+            <div id="language-@(l)" class="a-langaugebuttons w3-button w3-padding-small w3-hover-black w3-left @(selectedcolor) " onclick="changeEditLanguage('@l');" style="height:29px;"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" style="width:24px;" class="w3-round" /></div>
+        }
+    </div>
+
+</div>
+
+<div id="accountdropdown" class="w3-theme-dark w3-dropdown-content w3-card w3-padding w3-top" style="top:41px; width:320px;left:calc(100vw - 320px)!important;">
+    <div>
+        @UserUtils.GetCurrentUserEmail()
+    </div>
+    <hr />
+    <div class="w3-button w3-theme-action2 w3-right simplisity_click" s-cmd="login_signout" s-reload="true">@ResourceKey("DNNrocket.signout")</div>
+    @if (UserUtils.IsSuperUser())
+    {
+        <div class="w3-row w3-small">
+            <div class="simplisity_click w3-hover-text-theme" s-reload="true" s-cmd="rocketapi_recycleapppool" style="cursor:pointer;">@ResourceKey("DNNrocket.recycleapppool")</div>
+        </div>
+        <div class="w3-row w3-small">
+            <a href="//@PortalUtils.DefaultPortalAlias()" class=" w3-text-white w3-hover-text-theme" style="text-decoration:none;">@PortalUtils.DefaultPortalAlias()</a>
+        </div>
+    }
+</div>
+
+
 <!-- Sidebar/Menu -->
 <div id="sidebarplaceholder">
     @RenderTemplate("SideMenu.cshtml", appThemeSystem, Model, true)

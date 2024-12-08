@@ -2,7 +2,7 @@
 	<packages>
     
 		<package name="RocketEcommerceAPI" type="Library" version="2.0.5">
-			<friendlyName>RocketEcommerceAPI</friendlyName>
+			<friendlyName>RocketEcommerceAPI by Nevoweb</friendlyName>
 			<DefinitionName>RocketEcommerceAPI</DefinitionName>
 			<description>RocketEcommerceAPI</description>
       <iconFile></iconFile>

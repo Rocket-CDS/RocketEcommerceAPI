@@ -277,15 +277,15 @@ namespace RocketEcommerceAPI.Components
         public string ImageListName { get { return "imagecategorylist"; } }
         public string ArticleListName { get { return "articlelist"; } }
         public PortalShopLimpet PortalShop { get; set; }
-        public string Ref { get { return Info.GetXmlProperty(RefXPath); } }
-        public string RefXPath { get { return "genxml/textbox/ref"; } }
-        public string RichText { get { return Info.GetXmlProperty(RichTextXPath); } }
+        public string Ref { get { return Info.GetXmlProperty(RefXPath); } set { Info.SetXmlProperty(RefXPath, value.ToString()); } }
+        public string RefXPath { get { return "genxml/textbox/ref"; } set { Info.SetXmlProperty("genxml/textbox/ref", value.ToString()); } }
+        public string RichText { get { return Info.GetXmlProperty(RichTextXPath); } set { Info.SetXmlProperty(RichTextXPath, value.ToString()); } }
         public string RichTextXPath { get { return "genxml/lang/genxml/textbox/categoryrichtext"; } }
-        public string Name { get { return Info.GetXmlProperty(NameXPath); } }
+        public string Name { get { return Info.GetXmlProperty(NameXPath); } set { Info.SetXmlProperty(NameXPath, value.ToString()); } }
         public string NameXPath { get { return "genxml/lang/genxml/textbox/name"; } }
-        public string Summary { get { return Info.GetXmlProperty(SummaryXPath); } }
+        public string Summary { get { return Info.GetXmlProperty(SummaryXPath); } set { Info.SetXmlProperty(SummaryXPath, value.ToString()); } }
         public string SummaryXPath { get { return "genxml/lang/genxml/textbox/summary"; } }
-        public string Keywords { get { return Info.GetXmlProperty(KeywordsXPath); } }
+        public string Keywords { get { return Info.GetXmlProperty(KeywordsXPath); } set { Info.SetXmlProperty(KeywordsXPath, value.ToString()); } }
         public string KeywordsXPath { get { return "genxml/lang/genxml/textbox/categorykeywords"; } }
         public bool Hidden { get { return Info.GetXmlPropertyBool("genxml/checkbox/hidden"); } }
         public bool HiddenByCulture { get { return Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hidden"); } }

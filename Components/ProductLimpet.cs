@@ -277,6 +277,17 @@ namespace RocketEcommerceAPI.Components
         }
         public void Validate()
         {
+            var imgList = GetImages();
+            var lp = 1;
+            foreach (var articleImage in imgList)
+            {
+                var imgRel = PortalShop.ImageFolderRel.TrimEnd('/') + "/" + Path.GetFileName(articleImage.RelPath).Trim('\\');
+                if (articleImage.RelPath != imgRel)
+                {
+                    Info.SetXmlProperty("genxml/imagelist/genxml[" + lp + "]/hidden/imagepathproductimage", imgRel);                    
+                }
+                lp += 1;
+            }
         }
 
         public int DefaultCategory()

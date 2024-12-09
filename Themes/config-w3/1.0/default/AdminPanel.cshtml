@@ -74,6 +74,11 @@
     </div>
 </div>
 
+@{
+    Model.SetSetting("chatgptcmd", "rocketecommerceapi_chatgpt");
+}
+@RenderTemplate("ChatGptForm.cshtml", appThemeRocketApi, Model, true)
+
 <script>
     $(document).ready(function () {
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketecommerceapi', tabid: '@(sessionParams.TabId)', debug: false });

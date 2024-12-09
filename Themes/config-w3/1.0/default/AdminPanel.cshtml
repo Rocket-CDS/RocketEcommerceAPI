@@ -32,19 +32,6 @@
     <div class="w3-right w3-bar-item w3-hide-small w3-hide-medium w3-border-right">
         <span>@appTheme.Name</span>
     </div>
-
-    <div class="w3-bar-item">
-        @foreach (var l in enabledlanguages)
-        {
-            var selectedcolor = "";
-            if (sessionParams.CultureCodeEdit == l)
-            {
-                selectedcolor = "w3-border-bottom";
-            }
-            <div id="language-@(l)" class="a-langaugebuttons w3-button w3-padding-small w3-hover-black w3-left @(selectedcolor) " onclick="changeEditLanguage('@l');" style="height:29px;"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" style="width:24px;" class="w3-round" /></div>
-        }
-    </div>
-
 </div>
 
 <div id="accountdropdown" class="w3-theme-dark w3-dropdown-content w3-card w3-padding w3-top" style="top:41px; width:320px;left:calc(100vw - 320px)!important;">
@@ -86,11 +73,6 @@
         </div>
     </div>
 </div>
-
-@{
-    Model.SetSetting("chatgptcmd", "rocketecommerceapi_chatgpt");
-}
-@RenderTemplate("ChatGptForm.cshtml", appThemeRocketApi, Model, true)
 
 <script>
     $(document).ready(function () {

@@ -67,7 +67,7 @@
             </div>
             <div class="w3-row w3-padding-small">
                 <label>@ResourceKey("RE.address1", sessionParams.CultureCode)</label>
-                @TextBox(info, "genxml/billaddress/billaddress1", " class='w3-input w3-border billaddress' autocomplete='off' ")
+                @TextBox(info, "genxml/billaddress/billaddress1", " class='w3-input w3-border billaddress' name='billaddress1' required autocomplete='off' ")
             </div>
             <div class="w3-row w3-padding-small">
                 <label>@ResourceKey("RE.address2", sessionParams.CultureCode)</label>
@@ -76,11 +76,11 @@
             <div class="w3-row">
                 <div class="w3-half w3-padding-small">
                     <label>@ResourceKey("RE.city", sessionParams.CultureCode)</label>
-                    @TextBox(info, "genxml/billaddress/billcity", " class='w3-input w3-border billaddress' autocomplete='off' ")
+                    @TextBox(info, "genxml/billaddress/billcity", " class='w3-input w3-border billaddress'  name='billcity' required autocomplete='off' ")
                 </div>
                 <div class="w3-half w3-padding-small">
                     <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)</label>
-                    @TextBox(info, "genxml/billaddress/billpostcode", " class='w3-input w3-border billaddress' autocomplete='off' ")
+                    @TextBox(info, "genxml/billaddress/billpostcode", " class='w3-input w3-border billaddress' name='billpostcode' required autocomplete='off' ")
                 </div>
             </div>
             <div class="w3-row">

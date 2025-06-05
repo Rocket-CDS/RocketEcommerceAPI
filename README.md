@@ -1,4 +1,4 @@
-# RocketEcommerceAPI  v2.0.6
+# RocketEcommerceAPI  v2.0.7
 
 
 **Post Build command (Example)**

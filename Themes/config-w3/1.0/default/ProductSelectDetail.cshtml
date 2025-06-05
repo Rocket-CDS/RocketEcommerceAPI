@@ -16,11 +16,11 @@
 
             @if (productData.GetImage(0) != null && productData.GetImage(0).RelPath != "")
             {
-                <img src="@ThumbnailImageUrl(productData.GetImage(0).RelPath, 172, 172)" style="height: 172px; width: 172px;" class="w3-round" />
+                <img src="@ImageUrl(productData.GetImage(0).RelPath, 172, 172)" style="height: 172px; width: 172px;" class="w3-round" />
             }
             else
             {
-                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 172, 172)" style="height: 172px; width: 172px;" class="w3-round" />
+                <img src="@ImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 172, 172)" style="height: 172px; width: 172px;" class="w3-round" />
             }
         </div>
         <div class="w3-col m10 articledetails">

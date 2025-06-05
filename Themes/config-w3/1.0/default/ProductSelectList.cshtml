@@ -54,11 +54,11 @@
                         <td style="width:42px;">
                             @if (productData.GetImage(0) != null && productData.GetImage(0).RelPath != "")
                             {
-                                <img src="@ThumbnailImageUrl(productData.GetImage(0).RelPath, 32, 32)" style="height:32px;width:32px;" class="w3-round" />
+                                <img src="@ImageUrl(productData.GetImage(0).RelPath, 32, 32)" style="height:32px;width:32px;" class="w3-round" />
                             }
                             else
                             {
-                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 32, 32)" style="height:32px;width:32px;" class="w3-round" />
+                                <img src="@ImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 32, 32)" style="height:32px;width:32px;" class="w3-round" />
                             }
 
                         </td>

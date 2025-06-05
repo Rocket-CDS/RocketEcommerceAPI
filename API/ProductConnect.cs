@@ -77,7 +77,7 @@ namespace RocketEcommerceAPI.API
             {
                 var productData = GetActiveProduct(productId);
                 productData.Save(_postInfo);
-                var imgList = ImgUtils.MoveImageToFolder(_postInfo, productData.PortalShop.ImageFolderMapPath);
+                var imgList = RocketUtils.ImgUtils.MoveImageToFolder(UserUtils.GetCurrentUserId(), _postInfo, _dataObject.PortalShop.ImageFolderMapPath, PortalUtils.TempDirectoryMapPath());
                 foreach (var nam in imgList)
                 {
                     productData.AddImage(nam);
@@ -112,7 +112,7 @@ namespace RocketEcommerceAPI.API
                         imageFile.Flush();
                     }
 
-                    var imgList = ImgUtils.MoveImageToFolder(sInfo, productData.PortalShop.ImageFolderMapPath);
+                    var imgList = RocketUtils.ImgUtils.MoveImageToFolder(UserUtils.GetCurrentUserId(), _postInfo, _dataObject.PortalShop.ImageFolderMapPath, PortalUtils.TempDirectoryMapPath());
                     foreach (var nam in imgList)
                     {
                         productData.AddImage(nam);

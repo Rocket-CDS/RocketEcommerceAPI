@@ -41,11 +41,11 @@
                         <div class="w3-col m2 w3-padding-small" style="width:56px;">
                             @if (articleImage.RelPath != "")
                             {
-                                <img src="@ThumbnailImageUrl(articleImage.RelPath, 48, 48)" style="height: 48px;width: 48px;" class="w3-round" />
+                                <img src="@ImageUrl(articleImage.RelPath, 48, 48)" style="height: 48px;width: 48px;" class="w3-round" />
                             }
                             else
                             {
-                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 48, 48)" style="height:48px;width:48px;" class="w3-round" />
+                                <img src="@ImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 48, 48)" style="height:48px;width:48px;" class="w3-round" />
                             }
                         </div>
                         <div class="w3-col w3-padding m8 w3-hide-small">

@@ -24,7 +24,7 @@ namespace RocketEcommerceAPI.API
         }
         public string AddCompanyImage()
         {
-            var imgList = ImgUtils.MoveImageToFolder(_postInfo, _dataObject.PortalShop.ImageFolderMapPath, 1);
+            var imgList = RocketUtils.ImgUtils.MoveImageToFolder(UserUtils.GetCurrentUserId(), _postInfo, _dataObject.PortalShop.ImageFolderMapPath, PortalUtils.TempDirectoryMapPath());
             foreach (var nam in imgList)
             {
                 _dataObject.CompanyData.Info.SetXmlProperty("genxml/hidden/imagepathlogo", _dataObject.PortalShop.ImageFolderRel.TrimEnd('/') + "/" +  nam);

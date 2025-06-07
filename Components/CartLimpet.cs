@@ -199,6 +199,9 @@ namespace RocketEcommerceAPI.Components
                 Record.SetXmlProperty("genxml/billaddress/billemail", Record.GetXmlProperty("genxml/textbox/email"));
                 Record.SetXmlProperty("genxml/billaddress/billphone", Record.GetXmlProperty("genxml/textbox/phone"));
                 Record.SetXmlProperty("genxml/billaddress/billcompany", Record.GetXmlProperty("genxml/textbox/company"));
+                Record.SetXmlProperty("genxml/billaddress/billcity", Record.GetXmlProperty("genxml/textbox/city"));
+                Record.SetXmlProperty("genxml/billaddress/billpostcode", Record.GetXmlProperty("genxml/textbox/postcode"));
+                Record.SetXmlProperty("genxml/billaddress/billaddress1", Record.GetXmlProperty("genxml/textbox/address1"));
             }
         }
         private void CopyBillToContact()
@@ -210,6 +213,9 @@ namespace RocketEcommerceAPI.Components
                 if (Record.GetXmlProperty("genxml/textbox/email") == "") Record.SetXmlProperty("genxml/textbox/email", Record.GetXmlProperty("genxml/billaddress/billemail"));
                 if (Record.GetXmlProperty("genxml/textbox/phone") == "") Record.SetXmlProperty("genxml/textbox/phone", Record.GetXmlProperty("genxml/billaddress/billphone"));
                 if (Record.GetXmlProperty("genxml/textbox/company") == "") Record.SetXmlProperty("genxml/textbox/company", Record.GetXmlProperty("genxml/billaddress/billcompany"));
+                if (Record.GetXmlProperty("genxml/textbox/city") == "") Record.SetXmlProperty("genxml/textbox/city", Record.GetXmlProperty("genxml/billaddress/billcity"));
+                if (Record.GetXmlProperty("genxml/textbox/postcode") == "") Record.SetXmlProperty("genxml/textbox/postcode", Record.GetXmlProperty("genxml/billaddress/billpostcode"));
+                if (Record.GetXmlProperty("genxml/textbox/address1") == "") Record.SetXmlProperty("genxml/textbox/address1", Record.GetXmlProperty("genxml/billaddress/billaddress1"));
             }
         }
         public int OrderId { get { return Record.XrefItemId; } set { Record.XrefItemId = value; } }

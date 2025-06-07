@@ -56,6 +56,18 @@
         <label>@ResourceKey("RE.company", sessionParams.CultureCode)&nbsp;(@ResourceKey("RE.optional", sessionParams.CultureCode))</label>
         @TextBox(info, "genxml/textbox/company", " class='w3-input w3-border' ")
     </div>
+    <div class="w3-margin-bottom">
+        <label>@ResourceKey("RE.address1", sessionParams.CultureCode)</label>
+        @TextBox(info, "genxml/textbox/address1", " class='w3-input w3-border' name='address1' required autocomplete='off' ")
+    </div>
+    <div class="w3-margin-bottom">
+        <label>@ResourceKey("RE.city", sessionParams.CultureCode)</label>
+        @TextBox(info, "genxml/textbox/city", " class='w3-input w3-border'  name='city' required autocomplete='off' ")
+    </div>
+    <div class="w3-margin-bottom">
+        <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)</label>
+        @TextBox(info, "genxml/textbox/postcode", " class='w3-input w3-border ' name='postcode' required autocomplete='off' ")
+    </div>
 
 </div>
 

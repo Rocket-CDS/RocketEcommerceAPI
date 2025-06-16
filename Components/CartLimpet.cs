@@ -202,6 +202,8 @@ namespace RocketEcommerceAPI.Components
                 Record.SetXmlProperty("genxml/billaddress/billcity", Record.GetXmlProperty("genxml/textbox/city"));
                 Record.SetXmlProperty("genxml/billaddress/billpostcode", Record.GetXmlProperty("genxml/textbox/postcode"));
                 Record.SetXmlProperty("genxml/billaddress/billaddress1", Record.GetXmlProperty("genxml/textbox/address1"));
+                Record.SetXmlProperty("genxml/billaddress/billcountry", Record.GetXmlProperty("genxml/textbox/country"));
+                Record.SetXmlProperty("genxml/billaddress/billregion", Record.GetXmlProperty("genxml/textbox/region"));
             }
         }
         private void CopyBillToContact()
@@ -216,6 +218,8 @@ namespace RocketEcommerceAPI.Components
                 if (Record.GetXmlProperty("genxml/textbox/city") == "") Record.SetXmlProperty("genxml/textbox/city", Record.GetXmlProperty("genxml/billaddress/billcity"));
                 if (Record.GetXmlProperty("genxml/textbox/postcode") == "") Record.SetXmlProperty("genxml/textbox/postcode", Record.GetXmlProperty("genxml/billaddress/billpostcode"));
                 if (Record.GetXmlProperty("genxml/textbox/address1") == "") Record.SetXmlProperty("genxml/textbox/address1", Record.GetXmlProperty("genxml/billaddress/billaddress1"));
+                if (Record.GetXmlProperty("genxml/textbox/country") == "") Record.SetXmlProperty("genxml/textbox/country", Record.GetXmlProperty("genxml/billaddress/billcountry"));
+                if (Record.GetXmlProperty("genxml/textbox/region") == "") Record.SetXmlProperty("genxml/textbox/region", Record.GetXmlProperty("genxml/billaddress/billregion"));
             }
         }
         public int OrderId { get { return Record.XrefItemId; } set { Record.XrefItemId = value; } }

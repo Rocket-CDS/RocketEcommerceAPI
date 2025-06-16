@@ -18,10 +18,12 @@
     {
         info = new SimplisityInfo(cartData.Record);
     }
+    var countryData = new CountryLimpet(PortalUtils.GetPortalId());
     var sessionParams = (SessionParams)Model.SessionParamsData;
     var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
     var companyData = (CompanyLimpet)Model.GetDataObject("companydata");
     var appTheme = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var moduleSettings = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
 }
 @AddProcessDataResx(appTheme, true)
 
@@ -60,14 +62,32 @@
         <label>@ResourceKey("RE.address1", sessionParams.CultureCode)</label>
         @TextBox(info, "genxml/textbox/address1", " class='w3-input w3-border' name='address1' required autocomplete='off' ")
     </div>
-    <div class="w3-margin-bottom">
-        <label>@ResourceKey("RE.city", sessionParams.CultureCode)</label>
-        @TextBox(info, "genxml/textbox/city", " class='w3-input w3-border'  name='city' required autocomplete='off' ")
+    <div class="w3-row">
+        <div class="w3-half w3-padding-small">
+            <label>@ResourceKey("RE.city", sessionParams.CultureCode)</label>
+            @TextBox(info, "genxml/textbox/city", " class='w3-input w3-border'  name='city' required autocomplete='off' ")
+        </div>
+        <div class="w3-half w3-padding-small">
+            <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)</label>
+            @TextBox(info, "genxml/textbox/postcode", " class='w3-input w3-border ' name='postcode' required autocomplete='off' ")
+        </div>
     </div>
-    <div class="w3-margin-bottom">
-        <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)</label>
-        @TextBox(info, "genxml/textbox/postcode", " class='w3-input w3-border ' name='postcode' required autocomplete='off' ")
+    <div class="w3-row">
+        <div class="w3-half w3-padding-small">
+            <label>@ResourceKey("RE.country", sessionParams.CultureCode)</label>
+            @DropDownList(info, "genxml/textbox/country", countryData.GetSelectedDictCountries(), "class='w3-input w3-border simplisity_change' s-dropdownlist='#region' s-cmd='settingcountry_getregion' s-fields='{\"moduleref\":\"" + moduleSettings.ModuleRef + "\"}' ")
+        </div>
+        <div class="w3-half w3-padding-small">
+            <label>@ResourceKey("RE.region", sessionParams.CultureCode)</label>
+            @{
+                var countrycodeC = info.GetXmlProperty("genxml/textbox/country");
+                if (countrycodeC == "")
+                {
+                    countrycodeC = countryData.GetPrimaryCountry();
+                }
+            }
+            @DropDownList(info, "genxml/textbox/region", countryData.RegionDictionary(countrycodeC), "class='w3-input w3-border ' ")
+        </div>
     </div>
-
 </div>
 

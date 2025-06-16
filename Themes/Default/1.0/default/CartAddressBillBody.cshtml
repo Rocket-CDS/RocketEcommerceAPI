@@ -41,22 +41,22 @@
 
             <div class="w3-row">
                 <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.firstname", sessionParams.CultureCode)</label>
-                    @TextBox(info, "genxml/billaddress/billfirstname", " class='w3-input w3-border billaddress '  ", info.GetXmlProperty("genxml/textbox/firstname"))
+                    <label>@ResourceKey("RE.firstname", sessionParams.CultureCode)&nbsp;*</label>
+                    @TextBox(info, "genxml/billaddress/billfirstname", " class='w3-input w3-border billaddress ' name='billfirstname' required  ", info.GetXmlProperty("genxml/textbox/firstname"))
                 </div>
                 <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.lastname", sessionParams.CultureCode)</label>
-                    @TextBox(info, "genxml/billaddress/billlastname", " class='w3-input w3-border billaddress '   ", info.GetXmlProperty("genxml/textbox/lastname"))
+                    <label>@ResourceKey("RE.lastname", sessionParams.CultureCode)&nbsp;*</label>
+                    @TextBox(info, "genxml/billaddress/billlastname", " class='w3-input w3-border billaddress ' name='billlastname' required   ", info.GetXmlProperty("genxml/textbox/lastname"))
                 </div>
             </div>
             <div class="w3-row">
                 <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.email", sessionParams.CultureCode)</label>
+                    <label>@ResourceKey("RE.email", sessionParams.CultureCode)&nbsp;*</label>
                     @TextBox(info, "genxml/billaddress/billemail", " class='w3-input w3-border billaddress ' name='billemail' required email  ", info.GetXmlProperty("genxml/textbox/email"))
                 </div>
                 <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.phone", sessionParams.CultureCode)</label>
-                    @TextBox(info, "genxml/billaddress/billphone", " class='w3-input w3-border billaddress '  ", info.GetXmlProperty("genxml/textbox/phone"))
+                    <label>@ResourceKey("RE.phone", sessionParams.CultureCode)&nbsp;*</label>
+                    @TextBox(info, "genxml/billaddress/billphone", " class='w3-input w3-border billaddress ' name='billphone' required  ", info.GetXmlProperty("genxml/textbox/phone"))
                 </div>
             </div>
 
@@ -66,7 +66,7 @@
                 @TextBox(info, "genxml/billaddress/billcompany", " class='w3-input w3-border billaddress' autocomplete='off' ")
             </div>
             <div class="w3-row w3-padding-small">
-                <label>@ResourceKey("RE.address1", sessionParams.CultureCode)</label>
+                <label>@ResourceKey("RE.address1", sessionParams.CultureCode)&nbsp;*</label>
                 @TextBox(info, "genxml/billaddress/billaddress1", " class='w3-input w3-border billaddress' name='billaddress1' required autocomplete='off' ")
             </div>
             <div class="w3-row w3-padding-small">
@@ -75,11 +75,11 @@
             </div>
             <div class="w3-row">
                 <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.city", sessionParams.CultureCode)</label>
+                    <label>@ResourceKey("RE.city", sessionParams.CultureCode)&nbsp;*</label>
                     @TextBox(info, "genxml/billaddress/billcity", " class='w3-input w3-border billaddress'  name='billcity' required autocomplete='off' ")
                 </div>
                 <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)</label>
+                    <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)&nbsp;*</label>
                     @TextBox(info, "genxml/billaddress/billpostcode", " class='w3-input w3-border billaddress' name='billpostcode' required autocomplete='off' ")
                 </div>
             </div>

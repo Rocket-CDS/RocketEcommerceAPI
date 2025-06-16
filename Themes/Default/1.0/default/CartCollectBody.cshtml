@@ -38,37 +38,37 @@
         </span>
     </div>
 
-    <div class="w3-margin-bottom">
-        <label>@ResourceKey("RE.firstname", sessionParams.CultureCode)</label>
-        @TextBox(info, "genxml/textbox/firstname", " class='w3-input w3-border' ")
+    <div class="w3-margin-bottom w3-padding-small">
+        <label>@ResourceKey("RE.firstname", sessionParams.CultureCode)&nbsp;*</label>
+        @TextBox(info, "genxml/textbox/firstname", " class='w3-input w3-border' name='firstname' required ")
     </div>
-    <div class="w3-margin-bottom">
-        <label>@ResourceKey("RE.lastname", sessionParams.CultureCode)</label>
-        @TextBox(info, "genxml/textbox/lastname", " class='w3-input w3-border'  ")
+    <div class="w3-margin-bottom w3-padding-small">
+        <label>@ResourceKey("RE.lastname", sessionParams.CultureCode)&nbsp;*</label>
+        @TextBox(info, "genxml/textbox/lastname", " class='w3-input w3-border' name='lastname' required  ")
     </div>
-    <div class="w3-margin-bottom">
+    <div class="w3-margin-bottom w3-padding-small">
         <label>@ResourceKey("RE.email", sessionParams.CultureCode)&nbsp;*</label>
         @TextBox(info, "genxml/textbox/email", " class='w3-input w3-border' name='email' required email ")
     </div>
-    <div class="w3-margin-bottom">
-        <label>@ResourceKey("RE.phone", sessionParams.CultureCode)</label>
-        @TextBox(info, "genxml/textbox/phone", " class='w3-input w3-border' ")
+    <div class="w3-margin-bottom w3-padding-small">
+        <label>@ResourceKey("RE.phone", sessionParams.CultureCode)&nbsp;*</label>
+        @TextBox(info, "genxml/textbox/phone", " class='w3-input w3-border' name='phone' required ")
     </div>
-    <div class="w3-margin-bottom">
+    <div class="w3-margin-bottom w3-padding-small">
         <label>@ResourceKey("RE.company", sessionParams.CultureCode)&nbsp;(@ResourceKey("RE.optional", sessionParams.CultureCode))</label>
         @TextBox(info, "genxml/textbox/company", " class='w3-input w3-border' ")
     </div>
-    <div class="w3-margin-bottom">
-        <label>@ResourceKey("RE.address1", sessionParams.CultureCode)</label>
+    <div class="w3-margin-bottom w3-padding-small">
+        <label>@ResourceKey("RE.address1", sessionParams.CultureCode)&nbsp;*</label>
         @TextBox(info, "genxml/textbox/address1", " class='w3-input w3-border' name='address1' required autocomplete='off' ")
     </div>
     <div class="w3-row">
         <div class="w3-half w3-padding-small">
-            <label>@ResourceKey("RE.city", sessionParams.CultureCode)</label>
+            <label>@ResourceKey("RE.city", sessionParams.CultureCode)&nbsp;*</label>
             @TextBox(info, "genxml/textbox/city", " class='w3-input w3-border'  name='city' required autocomplete='off' ")
         </div>
         <div class="w3-half w3-padding-small">
-            <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)</label>
+            <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)&nbsp;*</label>
             @TextBox(info, "genxml/textbox/postcode", " class='w3-input w3-border ' name='postcode' required autocomplete='off' ")
         </div>
     </div>

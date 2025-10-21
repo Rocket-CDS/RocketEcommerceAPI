@@ -27,7 +27,7 @@ namespace RocketEcommerceAPI.API
             var imgList = RocketUtils.ImgUtils.MoveImageToFolder(UserUtils.GetCurrentUserId(), _postInfo, _dataObject.PortalShop.ImageFolderMapPath, PortalUtils.TempDirectoryMapPath());
             foreach (var nam in imgList)
             {
-                _dataObject.CompanyData.Info.SetXmlProperty("genxml/hidden/imagepathlogo", _dataObject.PortalShop.ImageFolderRel.TrimEnd('/') + "/" +  nam);
+                _dataObject.CompanyData.Info.SetXmlProperty("genxml/hidden/imagepathlogo", DNNrocketUtils.MapPathReverse(nam));
             }
             _dataObject.CompanyData.Update();
             return CompanyEdit();

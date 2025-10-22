@@ -64,6 +64,7 @@ namespace RocketEcommerceAPI.Components
             _catid = sessionParams.GetInt("catid");
             _catidurl = _catid;
             if (_catid == 0) _catid = defaultCategoryId;
+            _searchcategoryid = _catid;
 
             if (sessionParams.OrderByRef == "" && _catid == 0) sessionParams.OrderByRef = "sqlorderby-product-name";
 

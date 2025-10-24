@@ -119,7 +119,7 @@ namespace RocketEcommerceAPI.API
                 categoryData.RemoveImageList();
                 foreach (var nam in imgList)
                 {
-                    categoryData.AddImage(_dataObject.PortalShop.ImageFolderRel, nam);
+                    categoryData.AddImage(_dataObject.PortalShop.ImageFolderRel, Path.GetFileName(nam));
                 }
                 return GetCategory(categoryData.CategoryId);
             }

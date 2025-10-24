@@ -80,7 +80,7 @@ namespace RocketEcommerceAPI.API
                 var imgList = RocketUtils.ImgUtils.MoveImageToFolder(UserUtils.GetCurrentUserId(), _postInfo, _dataObject.PortalShop.ImageFolderMapPath, PortalUtils.TempDirectoryMapPath());
                 foreach (var nam in imgList)
                 {
-                    productData.AddImage(nam);
+                    productData.AddImage(Path.GetFileName(nam));
                 }
                 return GetProduct(productData.ProductId);
             }
@@ -115,7 +115,7 @@ namespace RocketEcommerceAPI.API
                     var imgList = RocketUtils.ImgUtils.MoveImageToFolder(UserUtils.GetCurrentUserId(), _postInfo, _dataObject.PortalShop.ImageFolderMapPath, PortalUtils.TempDirectoryMapPath());
                     foreach (var nam in imgList)
                     {
-                        productData.AddImage(nam);
+                        productData.AddImage(Path.GetFileName(nam));
                     }
                     return GetProduct(productData.ProductId);
                 }

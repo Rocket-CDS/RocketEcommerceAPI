@@ -233,12 +233,47 @@ namespace RocketEcommerceAPI.Components
         }
         public void Validate()
         {
+            var imageList = new List<ArticleImage>();
             var list = GetAllArticlesForShopPortal();
             foreach (var pInfo in list)
             {
                 var productData = new ProductLimpet(PortalShop.PortalId, pInfo.ItemID, _langRequired);
                 productData.ValidateAndUpdate();
+                foreach (var ai in productData.GetImages())
+                {
+                    imageList.Add(ai);
+                }
             }
+
+            // Removed unused images
+            DNNrocketUtils.ClearThumbnailLock();
+
+            // Get images in DB
+            var imgDbList = new List<string>();
+            foreach (ArticleImage img in imageList)
+            {
+                imgDbList.Add(Path.GetFileNameWithoutExtension(img.MapPath));
+            }
+            // Get images on File
+            var imgDir = PortalShop.ImageFolderMapPath;
+            if (Directory.Exists(imgDir))
+            {
+                foreach (var imgF in Directory.GetFiles(imgDir))
+                {
+                    if (!imgDbList.Contains(Path.GetFileNameWithoutExtension(imgF)))
+                    {
+                        try
+                        {
+                            File.Delete(imgF);
+                        }
+                        catch (Exception)
+                        {
+                            // ignore
+                        }
+                    }
+                }
+            }
+
         }
 
         public string PagingUrl(int page)

@@ -117,32 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="cascade.Text" xml:space="preserve">
-    <value>Ajouter aussi aux catégories parentes</value>
+  <data name="collectinstore.Text" xml:space="preserve">
+    <value>Retrait sur place</value>
   </data>
-  <data name="grams.Text" xml:space="preserve">
-    <value>grammes</value>
+  <data name="smtpfromemail.Text" xml:space="preserve">
+    <value>Noreply e-mail (SMTP)</value>
   </data>
-  <data name="managementpanel.Text" xml:space="preserve">
-    <value>Tableau de gestion</value>
-  </data>
-  <data name="importopenstore3.Text" xml:space="preserve">
-    <value>Importer des fichiers depuis OpenStore 3 ?</value>
-  </data>
-  <data name="category.Text" xml:space="preserve">
-    <value>Catégorie</value>
-  </data>
-  <data name="product.Text" xml:space="preserve">
-    <value>Produit</value>
-  </data>
-  <data name="weight.Text" xml:space="preserve">
-    <value>Poids</value>
-  </data>
-  <data name="all.Text" xml:space="preserve">
-    <value>Tout</value>
-  </data>
-  <data name="securitykey.Help" xml:space="preserve">
-    <value>    </value>
+  <data name="uilanguage.Text" xml:space="preserve">
+    <value>Interface utilisateur</value>
   </data>
   <data name="orderstatus160.Text" xml:space="preserve">
     <value>Acompte</value>
@@ -152,9 +134,6 @@
   </data>
   <data name="collectionon.Text" xml:space="preserve">
     <value>Activer l’option choix de date et heure.</value>
-  </data>
-  <data name="emailon.Text" xml:space="preserve">
-    <value>Activer les notifications</value>
   </data>
   <data name="categoryadmin.Text" xml:space="preserve">
     <value>Catégories</value>
@@ -207,11 +186,11 @@
   <data name="postbox.Text" xml:space="preserve">
     <value>Boîte postale</value>
   </data>
-  <data name="activeportal.Text" xml:space="preserve">
-    <value>Boutique active</value>
-  </data>
   <data name="portalshops.Text" xml:space="preserve">
     <value>Boutiques</value>
+  </data>
+  <data name="activeportal.Text" xml:space="preserve">
+    <value>Boutique active</value>
   </data>
   <data name="hidden.Text" xml:space="preserve">
     <value>Cachés</value>
@@ -228,9 +207,6 @@
   <data name="imageupload.Msg" xml:space="preserve">
     <value>Chargez vos images ici, avec un glisser / déposer ou en utilisant le bouton de chargement.</value>
   </data>
-  <data name="securitykey.Text" xml:space="preserve">
-    <value>Clé de sécurité du portail</value>
-  </data>
   <data name="validportalkeys.Text" xml:space="preserve">
     <value>Clés du portail distant</value>
   </data>
@@ -242,9 +218,6 @@
   </data>
   <data name="discountcode.Text" xml:space="preserve">
     <value>Code de réduction</value>
-  </data>
-  <data name="securitycode.Text" xml:space="preserve">
-    <value>Code de sécurité</value>
   </data>
   <data name="currencycode.Text" xml:space="preserve">
     <value>Code Devise</value>
@@ -336,10 +309,10 @@
   <data name="orderstatus150.Text" xml:space="preserve">
     <value>Echec du paiement</value>
   </data>
-  <data name="email.Text" xml:space="preserve">
+  <data name="contactemail.Text" xml:space="preserve">
     <value>E-mail</value>
   </data>
-  <data name="contactemail.Text" xml:space="preserve">
+  <data name="email.Text" xml:space="preserve">
     <value>E-mail</value>
   </data>
   <data name="manageremail.Text" xml:space="preserve">
@@ -417,9 +390,6 @@
   <data name="opentimes.Text" xml:space="preserve">
     <value>Horaires ouverts</value>
   </data>
-  <data name="validportalkeys.Help" xml:space="preserve">
-    <value>Il s’agit d’une liste de clés de portail à distance valides. Si l’API du site Web est appelée par un site Web à distance. Le module à distance doit passer une clé de portail.  Cette touche doit correspondre à 1 des valeurs de cette liste, sinon l’appel sera rejeté. (Une longueur minimale de 8 caractères est requise) **</value>
-  </data>
   <data name="due.Text" xml:space="preserve">
     <value>Impayé</value>
   </data>
@@ -431,9 +401,6 @@
   </data>
   <data name="orderstatus0.Text" xml:space="preserve">
     <value>Inconnu</value>
-  </data>
-  <data name="uilanguage.Text" xml:space="preserve">
-    <value>Interface utilisateur</value>
   </data>
   <data name="day.Text" xml:space="preserve">
     <value>Jour</value>
@@ -456,9 +423,6 @@
   <data name="preferedculturecode.Text" xml:space="preserve">
     <value>Langue par défaut</value>
   </data>
-  <data name="securitycode.Help" xml:space="preserve">
-    <value>Le code sécurisé est utilisé pour enregistrer un client API.  Ce code doit être envoyé par le système client pour accéder à ce système.  Une mauvaise utilisation de ce code peut entraîner un refus de service.</value>
-  </data>
   <data name="sqlfilter.Help" xml:space="preserve">
     <value>Le filtre SQL est une section de SQL qui interagit avec la base de donn&amp;#233;es SPROC pour effectuer une s&amp;#233;lection. Il s’agit presque toujours d’une recherche de texte, mais il peut &amp;#234;tre d&amp;#233;fini &amp;#224; ce que vous souhaitez.  L’id&amp;#233;e de base est d’obtenir le texte de recherche des utilisateurs, puis faire un appel SPROC avec ce filtre.  Les jetons dans &amp;quot;{&amp;#160;&amp;#187; &amp;quot;}&amp;#160;&amp;#187; seront remplac&amp;#233;s par le nom du champ SessionParam. </value>
   </data>
@@ -479,12 +443,6 @@
   </data>
   <data name="productlimit.Text" xml:space="preserve">
     <value>Limite de produit</value>
-  </data>
-  <data name="productdocumentlimit.Text" xml:space="preserve">
-    <value>Limite des documents par produit</value>
-  </data>
-  <data name="productimagelimit.Text" xml:space="preserve">
-    <value>Limite des images par produit</value>
   </data>
   <data name="productmodellimit.Text" xml:space="preserve">
     <value>Limite des modèles par produit</value>
@@ -567,9 +525,6 @@
   <data name="cartlimit.Help" xml:space="preserve">
     <value>Nombre de paniers qui peuvent être conservé dans la base de données. Une fois la limite atteinte, les paniers dont la durée dépasse 1 heure seront automatiquement supprimés, quel que soit le paramètre de conservation du panier.</value>
   </data>
-  <data name="smtpfromemail.Text" xml:space="preserve">
-    <value>Noreply e-mail (SMTP)</value>
-  </data>
   <data name="emailmessage.Text" xml:space="preserve">
     <value>Note pour le destinataire</value>
   </data>
@@ -621,9 +576,6 @@
   <data name="open.Text" xml:space="preserve">
     <value>Ouvert</value>
   </data>
-  <data name="pageandlinks.Text" xml:space="preserve">
-    <value>Pages et liens</value>
-  </data>
   <data name="payment.Text" xml:space="preserve">
     <value>Paiement</value>
   </data>
@@ -645,10 +597,10 @@
   <data name="payments.Text" xml:space="preserve">
     <value>Paiements</value>
   </data>
-  <data name="cart.Text" xml:space="preserve">
+  <data name="orderstatus10.Text" xml:space="preserve">
     <value>Panier</value>
   </data>
-  <data name="orderstatus10.Text" xml:space="preserve">
+  <data name="cart.Text" xml:space="preserve">
     <value>Panier</value>
   </data>
   <data name="settings.Text" xml:space="preserve">
@@ -669,10 +621,10 @@
   <data name="paymentproviders.Text" xml:space="preserve">
     <value>Passerelles de paiement</value>
   </data>
-  <data name="paid.Text" xml:space="preserve">
+  <data name="orderstatus200.Text" xml:space="preserve">
     <value>Payée</value>
   </data>
-  <data name="orderstatus200.Text" xml:space="preserve">
+  <data name="paid.Text" xml:space="preserve">
     <value>Payée</value>
   </data>
   <data name="buy.Text" xml:space="preserve">
@@ -705,16 +657,16 @@
   <data name="close.Text" xml:space="preserve">
     <value>Proche</value>
   </data>
-  <data name="products.Text" xml:space="preserve">
-    <value>Produits</value>
-  </data>
   <data name="productadmin.Text" xml:space="preserve">
     <value>Produits</value>
   </data>
-  <data name="propertiesadmin.Text" xml:space="preserve">
-    <value>Propriétés</value>
+  <data name="products.Text" xml:space="preserve">
+    <value>Produits</value>
   </data>
   <data name="properties.Text" xml:space="preserve">
+    <value>Propriétés</value>
+  </data>
+  <data name="propertiesadmin.Text" xml:space="preserve">
     <value>Propriétés</value>
   </data>
   <data name="protocol.Text" xml:space="preserve">
@@ -755,9 +707,6 @@
   </data>
   <data name="summary.Text" xml:space="preserve">
     <value>Résumé</value>
-  </data>
-  <data name="collectinstore.Text" xml:space="preserve">
-    <value>Retrait sur place</value>
   </data>
   <data name="rocketecommerceapi.Text" xml:space="preserve">
     <value>Rocket E-commerce</value>
@@ -822,11 +771,11 @@
   <data name="orderstatus110.Text" xml:space="preserve">
     <value>Terminée</value>
   </data>
+  <data name="validportalkeys.Help" xml:space="preserve">
+    <value>Il s’agit d’une liste de clés de portail à distance valides. Si l’API du site Web est appelée par un site Web à distance. Le module à distance doit passer une clé de portail.  Cette touche doit correspondre à 1 des valeurs de cette liste, sinon l’appel sera rejeté. (Une longueur minimale de 8 caractères est requise) **</value>
+  </data>
   <data name="total.Text" xml:space="preserve">
     <value>Total</value>
-  </data>
-  <data name="allproducts.Text" xml:space="preserve">
-    <value>Tous les articles</value>
   </data>
   <data name="orderstatusall.Text" xml:space="preserve">
     <value>Tous les statuts</value>
@@ -885,34 +834,212 @@
   <data name="productlimit.Msg" xml:space="preserve">
     <value>Votre limite de produit ne permettra pas d’ajouter d’autres produits.  Contactez votre webmaster pour augmenter votre limite de produit.</value>
   </data>
-  <data name="productdocumentlimit.Msg" xml:space="preserve">
-    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de document. Contactez nous pour modifier cette limite.</value>
-  </data>
   <data name="productmodellimit.Msg" xml:space="preserve">
     <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de modèle. Contactez nous pour modifier cette limite.</value>
   </data>
   <data name="productoptionlimit.Msg" xml:space="preserve">
     <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de produit. Contactez nous pour modifier cette limite.</value>
   </data>
-  <data name="productimagelimit.Msg" xml:space="preserve">
-    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter d'image. Contactez nous pour modifier cette limite.</value>
+  <data name="all.Text" xml:space="preserve">
+    <value>Tout</value>
   </data>
-  <data name="brand.Text" xml:space="preserve">
-    <value>Marque</value>
+  <data name="product.Text" xml:space="preserve">
+    <value>Produit</value>
+  </data>
+  <data name="category.Text" xml:space="preserve">
+    <value>Catégorie</value>
+  </data>
+  <data name="managementpanel.Text" xml:space="preserve">
+    <value>Tableau de gestion</value>
+  </data>
+  <data name="grams.Text" xml:space="preserve">
+    <value>grammes</value>
+  </data>
+  <data name="weight.Text" xml:space="preserve">
+    <value>Poids</value>
+  </data>
+  <data name="cascade.Text" xml:space="preserve">
+    <value>Ajouter aussi aux catégories parentes</value>
+  </data>
+  <data name="allproducts.Text" xml:space="preserve">
+    <value>Tous les articles</value>
   </data>
   <data name="saleprice.Text" xml:space="preserve">
     <value>Prix soldé</value>
   </data>
+  <data name="brand.Text" xml:space="preserve">
+    <value>Marque</value>
+  </data>
   <data name="copy.Text" xml:space="preserve">
     <value>Copie</value>
-  </data>
-  <data name="yourcontactdetails.Text" xml:space="preserve">
-    <value>Vos coordonnées de contact</value>
   </data>
   <data name="deliverymsg.Text" xml:space="preserve">
     <value>Livraison à domicile</value>
   </data>
   <data name="shippingquestion.Text" xml:space="preserve">
     <value>Comment souhaitez vous recevoir votre commande ?</value>
+  </data>
+  <data name="yourcontactdetails.Text" xml:space="preserve">
+    <value>Vos coordonnées de contact</value>
+  </data>
+  <data name="securitykey.Text" xml:space="preserve">
+    <value>Clé de sécurité du portail</value>
+  </data>
+  <data name="productdocumentlimit.Text" xml:space="preserve">
+    <value>Limite des documents par produit</value>
+  </data>
+  <data name="productimagelimit.Text" xml:space="preserve">
+    <value>Limite des images par produit</value>
+  </data>
+  <data name="importopenstore3.Text" xml:space="preserve">
+    <value>Importer des fichiers depuis OpenStore 3 ?</value>
+  </data>
+  <data name="securitykey.Help" xml:space="preserve">
+    <value>    </value>
+  </data>
+  <data name="emailon.Text" xml:space="preserve">
+    <value>Activer les notifications</value>
+  </data>
+  <data name="securitycode.Text" xml:space="preserve">
+    <value>Code de sécurité</value>
+  </data>
+  <data name="securitycode.Help" xml:space="preserve">
+    <value>Le code sécurisé est utilisé pour enregistrer un client API.  Ce code doit être envoyé par le système client pour accéder à ce système.  Une mauvaise utilisation de ce code peut entraîner un refus de service.</value>
+  </data>
+  <data name="pageandlinks.Text" xml:space="preserve">
+    <value>Pages et liens</value>
+  </data>
+  <data name="productdocumentlimit.Msg" xml:space="preserve">
+    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de document. Contactez nous pour modifier cette limite.</value>
+  </data>
+  <data name="productimagelimit.Msg" xml:space="preserve">
+    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter d'image. Contactez nous pour modifier cette limite.</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="apply.Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="extra.Text" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="htmltext.Text" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="url.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="parentcategory.Text" xml:space="preserve">
+    <value>Catégorie de parents</value>
+  </data>
+  <data name="invalidsetup.Text" xml:space="preserve">
+    <value>L'installation n'est pas terminée.</value>
+  </data>
+  <data name="viewapptheme.Text" xml:space="preserve">
+    <value>Afficher le thème de l'application</value>
+  </data>
+  <data name="paymentstatus.Text" xml:space="preserve">
+    <value>État des paiements</value>
+  </data>
+  <data name="checkouttypetext.Text" xml:space="preserve">
+    <value>Livraison + enlèvement,Livraison,enlèvement,sur mesure</value>
+  </data>
+  <data name="checkouttype.Text" xml:space="preserve">
+    <value>Type de paiement</value>
+  </data>
+  <data name="delivery.Text" xml:space="preserve">
+    <value>Livraison</value>
+  </data>
+  <data name="optional.Text" xml:space="preserve">
+    <value>En option</value>
+  </data>
+  <data name="manualcategoryorderby.Text" xml:space="preserve">
+    <value>Catégorie manuelle Commander par</value>
+  </data>
+  <data name="defaultcategory.Text" xml:space="preserve">
+    <value>Catégorie par défaut</value>
+  </data>
+  <data name="propertygroups.Text" xml:space="preserve">
+    <value>Groupes de propriété</value>
+  </data>
+  <data name="staticlist.Text" xml:space="preserve">
+    <value>Liste statique</value>
+  </data>
+  <data name="detailpageurl.Text" xml:space="preserve">
+    <value>URL de la page de détail</value>
+  </data>
+  <data name="listpageurl.Text" xml:space="preserve">
+    <value>URL de la page de liste</value>
+  </data>
+  <data name="incategoryfilter.Text" xml:space="preserve">
+    <value>Dans la catégorie Filtre</value>
+  </data>
+  <data name="searchpageurl.Text" xml:space="preserve">
+    <value>URL de la page de recherche</value>
+  </data>
+  <data name="calcstats.Text" xml:space="preserve">
+    <value>Calculer les statistiques</value>
+  </data>
+  <data name="client.Text" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="clients.Text" xml:space="preserve">
+    <value>Clients</value>
+  </data>
+  <data name="settingsadmin.Text" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="appthemeprojectname.Text" xml:space="preserve">
+    <value>Projet AppTheme</value>
+  </data>
+  <data name="property.Text" xml:space="preserve">
+    <value>Étiquette</value>
+  </data>
+  <data name="sortorder.Text" xml:space="preserve">
+    <value>Ordre de tri</value>
+  </data>
+  <data name="incategoryfilter.Help" xml:space="preserve">
+    <value>Lors du filtrage, la recherche ne porte que sur la catégorie sélectionnée.  Si la case n'est pas cochée, les filtres s'appliqueront à tous les produits.</value>
+  </data>
+  <data name="manualcategoryorderby.Help" xml:space="preserve">
+    <value>Cette option permet de trier la liste des produits selon un ordre de tri manuel.  Chaque catégorie peut avoir un ordre de tri pour les produits.</value>
+  </data>
+  <data name="manualorderby.Help" xml:space="preserve">
+    <value>Utiliser un ordre de tri manuel par défaut pour les produits.  Cette fonction utilise le champ "Ordre de tri" du produit.</value>
+  </data>
+  <data name="manualorderby.Text" xml:space="preserve">
+    <value>Ordre de tri manuel par défaut</value>
+  </data>
+  <data name="eventname.Text" xml:space="preserve">
+    <value>Nom de l'événement</value>
+  </data>
+  <data name="eventlist.Text" xml:space="preserve">
+    <value>Liste des événements</value>
+  </data>
+  <data name="detailpage.Text" xml:space="preserve">
+    <value>Page de détail</value>
+  </data>
+  <data name="listpage.Text" xml:space="preserve">
+    <value>Page de liste</value>
+  </data>
+  <data name="checkout.Text" xml:space="preserve">
+    <value>Sortie de caisse</value>
+  </data>
+  <data name="required.Text" xml:space="preserve">
+    <value>Exigée</value>
+  </data>
+  <data name="addprice.Text" xml:space="preserve">
+    <value>Ajouter un prix</value>
+  </data>
+  <data name="showorderby.Text" xml:space="preserve">
+    <value>Afficher OrderBy</value>
+  </data>
+  <data name="showpagesize.Text" xml:space="preserve">
+    <value>Afficher la taille de la page</value>
+  </data>
+  <data name="showsearchtext.Text" xml:space="preserve">
+    <value>Afficher le texte de la recherche</value>
+  </data>
+  <data name="apply.Text" xml:space="preserve">
+    <value>Appliquer</value>
   </data>
 </root>

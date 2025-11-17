@@ -1011,4 +1011,7 @@
   <data name="showsearchtext.Text" xml:space="preserve">
     <value>Show Search Text</value>
   </data>
+  <data name="apply.Text" xml:space="preserve">
+    <value>Apply</value>
+  </data>
 </root>

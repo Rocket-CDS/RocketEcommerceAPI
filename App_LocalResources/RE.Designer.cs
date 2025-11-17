@@ -214,6 +214,15 @@ namespace RocketEcommerceAPI.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        internal static string apply_Text {
+            get {
+                return ResourceManager.GetString("apply.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AppTheme Project.
         /// </summary>
         internal static string appthemeprojectname_Text {

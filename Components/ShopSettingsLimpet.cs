@@ -69,6 +69,7 @@ namespace RocketEcommerceAPI.Components
             foreach (var g in postInfo.GetList("grouplist"))
             {
                 g.SetXmlProperty("genxml/textbox/ref", g.GetXmlProperty("genxml/textbox/ref").Replace(" ", "-").Trim());
+                g.SetXmlProperty("genxml/textbox/name", g.GetXmlProperty("genxml/lang/genxml/textbox/name").Trim());
                 var groupRef = g.GetXmlProperty("genxml/textbox/ref");
                 if (groupRef != "") AddGroup(g);
             }

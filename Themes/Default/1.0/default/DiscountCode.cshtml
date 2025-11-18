@@ -20,7 +20,7 @@
                 <div class="w3-col s12 m8 l9">
                     <div class="w3-row">
                         <div class="w3-col s8 m9">
-                            @TextBox(info, "genxml/textbox/discountcode", " class='w3-input w3-border w3-white w3-round' placeholder='Enter discount code'")
+                            @TextBox(new SimplisityInfo(), "genxml/textbox/discountcode", " class='w3-input w3-border w3-white w3-round' placeholder='Enter discount code'")
                         </div>
                         <div class="w3-col s4 m3 w3-padding">
                             <button type="button" class="w3-button w3-green w3-round w3-margin-left w3-block" onclick="$('.a-dovalidate').trigger('click');">@ResourceKey("RE.apply")</button>

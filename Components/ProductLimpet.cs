@@ -32,10 +32,12 @@ namespace RocketEcommerceAPI.Components
 
         public ProductLimpet()
         {
+            _objCtrl = new DNNrocketController();
             Info = new SimplisityInfo();
         }
         public ProductLimpet(string xmlExportItem, string langRequired = "")
         {
+            _objCtrl = new DNNrocketController();
             Info = new SimplisityInfo();
             Info.FromXmlItem(xmlExportItem);
             CultureCode = langRequired;
@@ -52,6 +54,7 @@ namespace RocketEcommerceAPI.Components
         /// <param name="langRequired"></param>
         public ProductLimpet(int portalId, int productId, string langRequired = "")
         {
+            _objCtrl = new DNNrocketController();
             if (productId <= 0) productId = -1;  // create new record.
             _productId = productId;
             PortalId = portalId;
@@ -67,6 +70,7 @@ namespace RocketEcommerceAPI.Components
 
         public ProductLimpet(SessionParams sessionParam, int portalId, int aticleId, string cultureCode, string systemKey)
         {
+            _objCtrl = new DNNrocketController();
             this.sessionParam = sessionParam;
             PortalId = portalId;
             this.aticleId = aticleId;
@@ -89,7 +93,6 @@ namespace RocketEcommerceAPI.Components
 
             PortalShop = new PortalShopLimpet(PortalId, CultureCode);
 
-            _objCtrl = new DNNrocketController();
             if (CultureCode == "") CultureCode = DNNrocketUtils.GetEditCulture();
 
             var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey, "ecom" + PortalId);

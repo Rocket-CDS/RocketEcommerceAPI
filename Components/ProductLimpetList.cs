@@ -108,12 +108,12 @@ namespace RocketEcommerceAPI.Components
             else
                 _orderby = PortalShop.OrderByProductSQL(SessionParamData.OrderByRef);
 
-            if (showHidden)
+            if (showHidden && _searchcategoryid <= 0 && SessionParamData.OrderByRef == "")
             {
                 // Assume admin if showhidden.
                 _orderby = PortalShop.OrderByProductSQL(PortalShop.Info.GetXmlProperty("genxml/hidden/adminorderbyref"));
             }
-            if (_orderby == "") _orderby = " order by articlename.GUIDKey ";
+            // Do NOT add a default for orderby.  It may not exist and will cause a SQL error.
 
             SessionParamData.RowCount = _objCtrl.GetListCount(PortalShop.PortalId, -1, _entityTypeCode, _searchFilter, _langRequired, _tableName);
             RecordCount = SessionParamData.RowCount; 

@@ -93,7 +93,7 @@
                 <div class="w3-row">
                     <div class="w3-half w3-padding-small">
                         <label>@ResourceKey("RE.country", sessionParams.CultureCode)</label>
-                        @DropDownList(info, "genxml/shipaddress/shipcountry", countryData.GetSelectedDictCountries(), "class='w3-input w3-border shipaddress simplisity_change' disabled s-dropdownlist='#shipregion' s-cmd='settingcountry_getregion' s-fields='{\"moduleref\":\"" + moduleSettings.ModuleRef + "\"}' ")
+                        @DropDownList(info, "genxml/shipaddress/shipcountry", countryData.GetSelectedDictCountries(), "class='w3-input w3-border shipaddress simplisity_change' disabled s-dropdownlist='#shipregion' s-cmd='settingcountry_getregion' " + SFields("moduleref", moduleSettings.ModuleRef, "systemkey", "rocketecommerceapi").ToString() + " ")
                     </div>
                     <div class="w3-half w3-padding-small">
                         <label>@ResourceKey("RE.region", sessionParams.CultureCode)</label>

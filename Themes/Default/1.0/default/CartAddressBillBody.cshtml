@@ -37,69 +37,72 @@
             </span>
         </div>
 
-        <div class="w3-container w3-border w3-padding-32">
+        <div id="billingaddressinput">
+            <div class="w3-container w3-border w3-padding-32">
 
-            <div class="w3-row">
-                <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.firstname", sessionParams.CultureCode)&nbsp;*</label>
-                    @TextBox(info, "genxml/billaddress/billfirstname", " class='w3-input w3-border billaddress ' name='billfirstname' required  ", info.GetXmlProperty("genxml/textbox/firstname"))
+                <div class="w3-row">
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.firstname", sessionParams.CultureCode)&nbsp;*</label>
+                        @TextBox(info, "genxml/billaddress/billfirstname", " class='w3-input w3-border billaddress ' name='billfirstname' required  ", info.GetXmlProperty("genxml/textbox/firstname"))
+                    </div>
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.lastname", sessionParams.CultureCode)&nbsp;*</label>
+                        @TextBox(info, "genxml/billaddress/billlastname", " class='w3-input w3-border billaddress ' name='billlastname' required   ", info.GetXmlProperty("genxml/textbox/lastname"))
+                    </div>
                 </div>
-                <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.lastname", sessionParams.CultureCode)&nbsp;*</label>
-                    @TextBox(info, "genxml/billaddress/billlastname", " class='w3-input w3-border billaddress ' name='billlastname' required   ", info.GetXmlProperty("genxml/textbox/lastname"))
+                <div class="w3-row">
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.email", sessionParams.CultureCode)&nbsp;*</label>
+                        @TextBox(info, "genxml/billaddress/billemail", " class='w3-input w3-border billaddress ' name='billemail' required email  ", info.GetXmlProperty("genxml/textbox/email"))
+                    </div>
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.phone", sessionParams.CultureCode)&nbsp;*</label>
+                        @TextBox(info, "genxml/billaddress/billphone", " class='w3-input w3-border billaddress ' name='billphone' required  ", info.GetXmlProperty("genxml/textbox/phone"))
+                    </div>
                 </div>
-            </div>
-            <div class="w3-row">
-                <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.email", sessionParams.CultureCode)&nbsp;*</label>
-                    @TextBox(info, "genxml/billaddress/billemail", " class='w3-input w3-border billaddress ' name='billemail' required email  ", info.GetXmlProperty("genxml/textbox/email"))
-                </div>
-                <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.phone", sessionParams.CultureCode)&nbsp;*</label>
-                    @TextBox(info, "genxml/billaddress/billphone", " class='w3-input w3-border billaddress ' name='billphone' required  ", info.GetXmlProperty("genxml/textbox/phone"))
-                </div>
-            </div>
 
 
-            <div class="w3-row w3-padding-small">
-                <label>@ResourceKey("RE.company", sessionParams.CultureCode)</label>
-                @TextBox(info, "genxml/billaddress/billcompany", " class='w3-input w3-border billaddress' autocomplete='off' ")
-            </div>
-            <div class="w3-row w3-padding-small">
-                <label>@ResourceKey("RE.address1", sessionParams.CultureCode)&nbsp;*</label>
-                @TextBox(info, "genxml/billaddress/billaddress1", " class='w3-input w3-border billaddress' name='billaddress1' required autocomplete='off' ")
-            </div>
-            <div class="w3-row w3-padding-small">
-                <label>@ResourceKey("RE.address2", sessionParams.CultureCode)</label>
-                @TextBox(info, "genxml/billaddress/billaddress2", " class='w3-input w3-border billaddress' autocomplete='off' ")
-            </div>
-            <div class="w3-row">
-                <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.city", sessionParams.CultureCode)&nbsp;*</label>
-                    @TextBox(info, "genxml/billaddress/billcity", " class='w3-input w3-border billaddress'  name='billcity' required autocomplete='off' ")
+                <div class="w3-row w3-padding-small">
+                    <label>@ResourceKey("RE.company", sessionParams.CultureCode)</label>
+                    @TextBox(info, "genxml/billaddress/billcompany", " class='w3-input w3-border billaddress' autocomplete='off' ")
                 </div>
-                <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)&nbsp;*</label>
-                    @TextBox(info, "genxml/billaddress/billpostcode", " class='w3-input w3-border billaddress' name='billpostcode' required autocomplete='off' ")
+                <div class="w3-row w3-padding-small">
+                    <label>@ResourceKey("RE.address1", sessionParams.CultureCode)&nbsp;*</label>
+                    @TextBox(info, "genxml/billaddress/billaddress1", " class='w3-input w3-border billaddress' name='billaddress1' required autocomplete='off' ")
                 </div>
-            </div>
-            <div class="w3-row">
-                <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.country", sessionParams.CultureCode)</label>
-                    @DropDownList(info, "genxml/billaddress/billcountry", countryData.GetSelectedDictCountries(), "class='w3-input w3-border simplisity_change' s-dropdownlist='#billregion' s-cmd='settingcountry_getregion' s-fields='{\"moduleref\":\"" + moduleSettings.ModuleRef + "\"}' ")
+                <div class="w3-row w3-padding-small">
+                    <label>@ResourceKey("RE.address2", sessionParams.CultureCode)</label>
+                    @TextBox(info, "genxml/billaddress/billaddress2", " class='w3-input w3-border billaddress' autocomplete='off' ")
                 </div>
-                <div class="w3-half w3-padding-small">
-                    <label>@ResourceKey("RE.region", sessionParams.CultureCode)</label>
-                    @{
-                        var countrycode2 = info.GetXmlProperty("genxml/billaddress/billcountry");
-                        if (countrycode2 == "")
-                        {
-                            countrycode2 = countryData.GetPrimaryCountry();
+                <div class="w3-row">
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.city", sessionParams.CultureCode)&nbsp;*</label>
+                        @TextBox(info, "genxml/billaddress/billcity", " class='w3-input w3-border billaddress'  name='billcity' required autocomplete='off' ")
+                    </div>
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.postcode", sessionParams.CultureCode)&nbsp;*</label>
+                        @TextBox(info, "genxml/billaddress/billpostcode", " class='w3-input w3-border billaddress' name='billpostcode' required autocomplete='off' ")
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.country", sessionParams.CultureCode)</label>
+                        @DropDownList(info, "genxml/billaddress/billcountry", countryData.GetSelectedDictCountries(), "class='w3-input w3-border simplisity_change' s-dropdownlist='#billregion' s-cmd='settingcountry_getregion' s-fields='{\"moduleref\":\"" + moduleSettings.ModuleRef + "\"}' ")
+                    </div>
+                    <div class="w3-half w3-padding-small">
+                        <label>@ResourceKey("RE.region", sessionParams.CultureCode)</label>
+                        @{
+                            var countrycode2 = info.GetXmlProperty("genxml/billaddress/billcountry");
+                            if (countrycode2 == "")
+                            {
+                                countrycode2 = countryData.GetPrimaryCountry();
+                            }
                         }
-                    }
-                    @DropDownList(info, "genxml/billaddress/billregion", countryData.RegionDictionary(countrycode2), "class='w3-input w3-border ' ")
+                        @DropDownList(info, "genxml/billaddress/billregion", countryData.RegionDictionary(countrycode2), "class='w3-input w3-border ' ")
+                    </div>
                 </div>
             </div>
+
         </div>
 
     </div>

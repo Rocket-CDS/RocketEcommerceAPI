@@ -3,6 +3,7 @@
 @using Simplisity;
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Interfaces;
 
 
 
@@ -71,6 +72,13 @@
                             <h4>@ResourceKey("RE.shippingaddress", sessionParams.CultureCode)</h4>
                         </div>
                         @HtmlOf(cartData.ShipAddressHtml)
+
+
+                        foreach (ShippingInterface si in portalShop.GetActiveShippingProviders())
+                        {
+                            <div id="shippingproviders">@HtmlOf(si.RenderTemplate("CartSummary.cshtml", Model))</div>
+                        }
+
                     }
                 </div>
             </div>

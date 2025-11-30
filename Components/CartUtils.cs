@@ -105,6 +105,10 @@ namespace RocketEcommerceAPI.Components
                     }
                     pRec.SetXmlProperty("genxml/key", key);
                     pRec.SetXmlProperty("genxml/qty", (pRec.GetXmlPropertyDouble("genxml/qty") + qty).ToString(), TypeCode.Double);
+
+                    var modelData = productData.GetModel(modelkey);
+                    pRec.SetXmlProperty("genxml/weight", modelData.Weight.ToString());
+                    
                     pRec.SetXmlProperty("genxml/productid", productId.ToString());
                     pRec.SetXmlProperty("genxml/modelid", modelkey);
                     foreach (var o in optionpostArray)

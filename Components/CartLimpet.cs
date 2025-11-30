@@ -51,6 +51,7 @@ namespace RocketEcommerceAPI.Components
                 Record.PortalId = PortalUtils.GetCurrentPortalId();
                 Record.UserId = UserUtils.GetCurrentUserId();
                 Record.Lang = CultureCode;
+                if (!String.IsNullOrEmpty(_browserid)) Record.ItemID = _objCtrl.Update(Record, _tableName); // save so we do not create multiple cart records
             }
             PortalShop = new PortalShopLimpet(PortalId, CultureCode);
             CartItemList = CartUtils.GetCartItemList(Record, CultureCode);

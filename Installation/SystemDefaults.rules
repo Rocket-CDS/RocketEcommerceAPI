@@ -287,8 +287,13 @@
 		  <cmd>categoryadmin_assigndefault</cmd>
 		  <action>true</action>
 	  </command>
-
+	  <command>
+		  <cmd>categoryadmin_movearticle</cmd>
+		  <action>true</action>
+	  </command>
 	  
+
+
 	  <command>
 		  <cmd>propertyadmin_add</cmd>
 		  <action>true</action>

@@ -167,6 +167,20 @@ namespace RocketEcommerceAPI.Components
                 return PortalShop.CurrencyDisplay(PortalShop.CurrencyCentsToDollars(TotalCents));
             }
         }
+        public double TotalWeight
+        {
+            get
+            {
+                return Weight * Record.GetXmlPropertyDouble("genxml/qty");
+            }
+        }
+        public double Weight
+        {
+            get
+            {
+                return Record.GetXmlPropertyDouble("genxml/weight");
+            }
+        }
 
 
         public bool Valid { set; get; }

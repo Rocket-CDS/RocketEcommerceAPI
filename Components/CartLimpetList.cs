@@ -46,7 +46,7 @@ namespace RocketEcommerceAPI.Components
             _cartList = new List<CartLimpet>();
             foreach (var o in CartList)
             {
-                _cartList.Add(new CartLimpet(o.ItemID));
+                _cartList.Add(new CartLimpet(o.GUIDKey, o.Lang));
             }
             return _cartList;
         }

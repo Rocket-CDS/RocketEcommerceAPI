@@ -3,6 +3,7 @@
 @using Simplisity;
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Interfaces;
 
 
 
@@ -24,6 +25,7 @@
     var portalShop = (PortalShopLimpet)Model.GetDataObject("portalshop");
     var appTheme = (AppThemeLimpet)Model.GetDataObject("appthemeview");
     var moduleSettings = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
 }
 @AddProcessDataResx(appTheme, true)
 
@@ -108,7 +110,15 @@
             </div>
         </div>
 
+    
+    
     </div>
+
+    @foreach (ShippingInterface si in portalShop.GetActiveShippingProviders())
+    {
+        <div id="shippingproviders">@HtmlOf(si.RenderTemplate("CartAddress.cshtml", Model))</div>
+    }
+
 
 </div>
 

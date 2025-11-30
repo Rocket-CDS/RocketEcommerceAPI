@@ -58,6 +58,7 @@ namespace RocketEcommerceAPI.Components
             _emailData.CultureCode = CultureCode;
             _emailData.AppTheme = appThemeDefault;
             _emailData.AppSystemTheme = (AppThemeSystemLimpet)_model.GetDataObject("appthemesystem");
+            _emailData.PortalId = portalShop.PortalId;
 
             if (appThemeDefault == null) ErrorMessage += " : Email AppTheme is NULL";
 

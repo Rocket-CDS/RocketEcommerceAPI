@@ -33,6 +33,7 @@ namespace RocketEcommerceAPI.Interfaces
 		public abstract string SelectText();
 		public abstract string Msg();
 		public abstract string ShipProvKey();
+        public abstract string RenderTemplate(string templateName, SimplisityRazor Model);
 
-	}
+    }
 }

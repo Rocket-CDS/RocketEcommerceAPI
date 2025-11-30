@@ -145,7 +145,12 @@ namespace RocketEcommerceAPI.Components
         }
         public void Delete()
         {
-            if (Record.ItemID > 0) _objCtrl.Delete(Record.ItemID, _tableName);
+            if (Record.ItemID > 0)
+            {
+                _objCtrl.Delete(Record.ItemID, _tableName);
+                Record = null;
+                populate();
+            }
         }
         public OrderLimpet ConvertToOrder()
         {

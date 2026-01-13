@@ -336,7 +336,14 @@ namespace RocketEcommerceAPI.Components
                 Record.Lang = CultureCode; // set to current language, so currency if calculated correctly.
 
                 if (AmountCents <= 0) AmountCents = AmountPayCents;
-                if (AmountPayCents != 0) AmountPaidCents += AmountPayCents;
+
+                // [WORKAROUND: We are turning off overpaid amount.]]
+                // if (AmountPayCents != 0) AmountPaidCents += AmountPayCents;
+                if (AmountPayCents != 0) AmountPaidCents = AmountPayCents; 
+                // I think this is due to a race condition with the return.  
+                // Overpayment should never happen in this system.
+                // If at anytime they do need to work, this will need to be solved for each payment gateway.
+
                 if (AmountPaidCents < AmountCents)
                 {
                     if (verified)
@@ -346,7 +353,7 @@ namespace RocketEcommerceAPI.Components
                 }
                 else
                 {
-                    if (AmountPaid == Amount)
+                    if (AmountPaidCents == AmountCents)
                     {
                         if (verified)
                             ChangeStaus(PaymentStatus.PaymentOK);

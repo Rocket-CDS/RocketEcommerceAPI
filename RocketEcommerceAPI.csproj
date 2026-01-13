@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Razor;Comp All;CompAll</Configurations>
-    <AssemblyVersion>2.0.8</AssemblyVersion>
-    <FileVersion>2.0.8</FileVersion>
-    <Version>2.0.8</Version>
+    <AssemblyVersion>2.0.9</AssemblyVersion>
+    <FileVersion>2.0.9</FileVersion>
+    <Version>2.0.9</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Razor|AnyCPU'">
@@ -14,10 +14,13 @@
 
   <ItemGroup>
     <Compile Remove="AppThemeBase\**" />
+    <Compile Remove="images\**" />
     <Compile Remove="Providers\**" />
     <EmbeddedResource Remove="AppThemeBase\**" />
+    <EmbeddedResource Remove="images\**" />
     <EmbeddedResource Remove="Providers\**" />
     <None Remove="AppThemeBase\**" />
+    <None Remove="images\**" />
     <None Remove="Providers\**" />
   </ItemGroup>
 
@@ -33,7 +36,7 @@
       <HintPath>..\..\DNNrocket\API\_external\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RazorEngine">
-      <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
+      <HintPath>..\..\DNNrocket\RocketEndInstall\_external\RazorEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -76,10 +79,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>RE.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="images\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

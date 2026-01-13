@@ -133,7 +133,7 @@
     <value>Société</value>
   </data>
   <data name="discountmethods.Text" xml:space="preserve">
-    <value>Types de remises</value>
+    <value>Remises au panier</value>
   </data>
   <data name="notification.Text" xml:space="preserve">
     <value>Notification</value>

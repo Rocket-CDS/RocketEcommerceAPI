@@ -25,6 +25,7 @@ namespace RocketEcommerceAPI.API
         public string GetPropertyList()
         {
             var propertyDataList = new PropertyLimpetList(PortalUtils.GetCurrentPortalId(), _sessionParams.CultureCodeEdit);
+            _dataObject.SetDataObject("propertylist", new PropertyLimpetList(PortalUtils.GetCurrentPortalId(), _sessionParams.CultureCodeEdit));
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("PropertyList.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, propertyDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.ErrorMsg != "") return pr.ErrorMsg;
@@ -56,6 +57,8 @@ namespace RocketEcommerceAPI.API
             {
                 var propertyData = GetActiveProperty(propertyid);
                 propertyData.Delete();
+                var propertyDataList = new PropertyLimpetList(PortalUtils.GetCurrentPortalId(), _sessionParams.CultureCodeEdit);
+                propertyDataList.ClearCache();
             }
             return GetPropertyList();
         }

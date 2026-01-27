@@ -667,7 +667,7 @@ namespace RocketEcommerceAPI.API
             if (_dataObject.PortalShop.PortalId != 0 && !_dataObject.PortalShop.Active) return "";
             if (paramCmd.StartsWith("remote_public")) return paramCmd;
 
-            var securityData = new SecurityLimpet(portalid, _systemkey, _rocketInterface, -1, -1);
+            var securityData = SecuritySingleton.Instance(portalid, _systemkey, _rocketInterface, -1, -1);
             paramCmd = securityData.HasSecurityAccess(paramCmd, "rocketecommerceapi_login");
             return paramCmd;
         }

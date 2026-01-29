@@ -61,7 +61,6 @@ namespace RocketEcommerceAPI.Components
         }
         public void Update()
         {
-            ValidateCart();
             _objCtrl.Update(Record, _tableName);
         }
         public void AddProduct(SimplisityInfo postInfo)

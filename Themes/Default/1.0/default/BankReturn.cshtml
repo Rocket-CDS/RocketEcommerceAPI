@@ -40,10 +40,31 @@
 
             @if (paymentData.BankAction != PaymentAction.BankReturn && (!paymentData.IsPaymentCompleted || !paymentData.Exists))
             {
+    if (paymentData.PaymentProvider.ToLower() == "manualpay")
+    {
+                        <table class="w3-table w3-bordered">
+                            <tr class="">
+                                <td>@ResourceKey("RE.amount")</td>
+                                <td class="w3-right-align w3-xlarge">
+                                    <b>
+                                        @paymentData.AmountDisplay
+                                    </b>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p>
+                            @BreakOf(notificationData.Message_WaitingForPayment)
+                        </p>
+    }
+    else
+    {
+
                 <div class="w3-panel w3-center w3-card-4 w3-xlarge w3-round w3-red w3-padding-large">
                     @ResourceKey("RE.orderstatus" + paymentData.StatusCode)
                 </div>
                 <h1>ERROR: NO PAYMENT FOUND</h1>
+    }
             }
             else
             {

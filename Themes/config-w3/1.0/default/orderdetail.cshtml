@@ -3,6 +3,7 @@
 @using Simplisity;
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
+@using RocketEcommerceAPI.Interfaces;
 
 @AddProcessData("resourcepath", "/DesktopModules/RocketThemes/dnnrocketmodule/Rocket_HtmlContent/1.0/resx/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
@@ -207,9 +208,16 @@
                             <h4><b>@ResourceKey("RE.shippingaddress")</b>&nbsp;<i class="w3-button" onclick="showAddressship();" style="cursor: pointer;">@ButtonIcon(ButtonTypes.edit)</i></h4>
                             <div>
                                 @HtmlOf(orderData.ShipAddressHtml)
+                    
+                                @foreach (ShippingInterface si in portalShop.GetActiveShippingProviders())
+                                {
+                                    <div id="shippingproviders">@HtmlOf(si.RenderTemplate("OrderSummary.cshtml", Model))</div>
+                                }
+
                             </div>
                         </div>
                     </div>
+
 
 
 

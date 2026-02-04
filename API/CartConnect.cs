@@ -136,6 +136,8 @@ namespace RocketEcommerceAPI.API
         }
         public String GetPublicCartSummary()
         {
+            _dataObject.SetDataObject("cartdata", new CartLimpet(_sessionParams.BrowserId, _sessionParams.CultureCode)); // reload, for discount changes.
+
             var razorTempl = AssignRemoteTemplate();
             if (razorTempl == "") return "No Razor Template for Cart List.  Check the remoteParams class that has been past.";
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.CartData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);

@@ -4,6 +4,7 @@
 @using RocketEcommerceAPI.Components;
 @using DNNrocketAPI.Components;
 @using System.Globalization;
+@using RocketEcommerceAPI.Interfaces;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerceAPI/App_LocalResources/")
@@ -311,6 +312,12 @@
                         {
                             <h4>@ResourceKey("RE.shippingaddress", orderData.CultureCode)</h4>
                             @HtmlOf(orderData.ShipAddressHtml)
+
+                            foreach (ShippingInterface si in portalShop.GetActiveShippingProviders())
+                            {
+                                <div id="shippingproviders">@HtmlOf(si.RenderTemplate("OrderSummary.cshtml", Model))</div>
+                            }
+
                         }
                         else
                         {

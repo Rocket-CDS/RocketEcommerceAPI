@@ -667,6 +667,10 @@ namespace RocketEcommerceAPI.API
             if (_dataObject.PortalShop.PortalId != 0 && !_dataObject.PortalShop.Active) return "";
             if (paramCmd.StartsWith("remote_public")) return paramCmd;
 
+            // Temp fix for security 
+            // [TODO: Understand why Manager role has acceess and then after a period of time access is removed, by securityData.HasSecurityAccess()]
+            if (UserUtils.IsManager()) return paramCmd; 
+
             var securityData = SecuritySingleton.Instance(portalid, _systemkey, _rocketInterface, -1, -1);
             paramCmd = securityData.HasSecurityAccess(paramCmd, "rocketecommerceapi_login");
             return paramCmd;

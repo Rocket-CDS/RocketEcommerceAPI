@@ -381,6 +381,72 @@ namespace RocketEcommerceAPI.Components
         {
             return UrlQueryKey(portalId, systemKey, "article");
         }
+        public static String DetailUrl(int detailpageid, ProductLimpet articleData, CategoryLimpet categoryData, string[] urlparams = null)
+        {
+            if (urlparams == null) urlparams = new string[] { };
+            var detailurl = "";
+            var seotitle = DNNrocketUtils.UrlFriendly(articleData.Name);
+
+            var urlparamKeys = UrlParamKeys(articleData);
+
+            if (categoryData != null && categoryData.CategoryId > 0)
+            {
+                string[] urlparams2 = { urlparamKeys.ArtcileUrlKey, articleData.ProductId.ToString(), urlparamKeys.CategoryUrlKey, categoryData.CategoryId.ToString(), seotitle };
+                urlparams = urlparams.Concat(urlparams2).ToArray();
+                detailurl = DNNrocketUtils.NavigateURL(detailpageid, articleData.CultureCode, urlparams);
+            }
+            else
+            {
+                string[] urlparams2 = { urlparamKeys.ArtcileUrlKey, articleData.ProductId.ToString(), seotitle };
+                urlparams = urlparams.Concat(urlparams2).ToArray();
+                detailurl = DNNrocketUtils.NavigateURL(detailpageid, articleData.CultureCode, urlparams);
+            }
+            return detailurl;
+        }
+        public static UrlParamKey UrlParamKeys(ProductLimpet articleData)
+        {
+            var categoryParamKey = "";
+            var articleParamKey = "";
+            var paramidList = DNNrocketUtils.GetQueryKeys(articleData.PortalId);
+            foreach (var paramDict in paramidList)
+            {
+                if (articleData.SystemKey == paramDict.Value.systemkey && paramDict.Value.datatype == "article")
+                {
+                    articleParamKey = paramDict.Value.queryparam;
+                }
+                if (articleData.SystemKey == paramDict.Value.systemkey && paramDict.Value.datatype == "category")
+                {
+                    categoryParamKey = paramDict.Value.queryparam;
+                }
+            }
+            var urlParamKey = new UrlParamKey();
+            urlParamKey.ArtcileUrlKey = articleParamKey;
+            urlParamKey.CategoryUrlKey = categoryParamKey;
+            return urlParamKey;
+        }
+
+        public static String ListUrl(int listpageid, string[] urlparams = null)
+        {
+            if (urlparams == null) urlparams = new string[] { };
+            var listurl = DNNrocketUtils.NavigateURL(listpageid, urlparams);
+            return listurl;
+        }
+        public static String ListUrl(int listpageid, CategoryLimpet categoryData, string[] urlparams = null)
+        {
+            if (urlparams == null) urlparams = new string[] { };
+            var listurl = "";
+            if (categoryData != null && categoryData.CategoryId > 0)
+            {
+                string[] urlparams2 = { RocketEcommerceAPIUtils.UrlQueryCategoryKey(categoryData.PortalId, "rocketecommerceapi"), categoryData.CategoryId.ToString(), DNNrocketUtils.UrlFriendly(categoryData.Name) };
+                urlparams = urlparams.Concat(urlparams2).ToArray();
+                listurl = DNNrocketUtils.NavigateURL(listpageid, urlparams);
+            }
+            else
+            {
+                listurl = DNNrocketUtils.NavigateURL(listpageid, urlparams);
+            }
+            return listurl;
+        }
 
 
     }

@@ -57,4 +57,10 @@ namespace RocketEcommerceAPI.Components
         Extra = 8,
         SEO = 9
     }
+    public class UrlParamKey
+    {
+        public string ArtcileUrlKey { get; set; }
+        public string CategoryUrlKey { get; set; }
+    }
+
 }

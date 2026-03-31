@@ -29,18 +29,14 @@
         <div class="" style="">
             <div class="w3-container">
 
-                <h2>@ResourceKey("DNNrocket.imageupload")</h2>
-
                 @if (productData.GetImages().Count < portalShop.ProductImageLimit)
                 {
+                    <h2>@ResourceKey("DNNrocket.imageupload")</h2>
+                    <p>@ResourceKey("DNNrocket.imageupload", "", "Msg")</p>
 
-                    <input id="imagefileupload" class="simplisity_fileupload" s-before="saveRichText" s-maxchunksize="10000000" s-reload="false" s-cmd="productadmin_addimage" s-post="#datasection" s-list=".modellist,.imagelist,.optionlist,.documentlist,.linklist" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"productid":"@productData.ProductId"}' type="file" name="files[]" multiple style="display:none;">
-                    <div id="dropimagediv" contenteditable="true" class="w3-hide w3-display-container w3-col m12 w3-white w3-margin-bottom w3-border w3-light-grey" style="height:100px;">
-                        <p><i>&nbsp;@ResourceKey("DNNrocket.dropimage")...</i></p>
-                    </div>
-
+                    <input id="imagefileupload" class="simplisity_base64upload" s-reload="false" s-cmd="productadmin_addimage" s-post="#datasection" s-return="#imgs" s-list=".modellist,.imagelist,.optionlist,.documentlist,.linklist" @SFields("productid",@productData.ProductId.ToString()) type="file" name="file[]" multiple style="display:none;">
                     <div class="w3-row w3-margin-bottom">
-                        <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#imagefileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
+                        <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#productimageselect').hide();$('#imagefileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
                     </div>
 
                     <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:grey">
@@ -65,34 +61,6 @@
 </div>
 
 <script>
-
     $(document).ready(function () {
-
-        $("#dropimagediv").off('paste');
-        $("#dropimagediv").on("paste", function (e) {
-            // access the clipboard using the api
-            var orgEvent = e.originalEvent;
-            for (var i = 0; i < orgEvent.clipboardData.items.length; i++) {
-                if (orgEvent.clipboardData.items[i].kind == "file" && orgEvent.clipboardData.items[i].type == "image/png") {
-                    var imageFile = orgEvent.clipboardData.items[i].getAsFile();
-                    var fileReader = new FileReader();
-                    fileReader.onloadend = function () {
-                        $('#base64image').html(fileReader.result);
-                    }
-                    fileReader.readAsDataURL(imageFile); break;
-                }
-            }
-            $('#productimageselect').hide();
-
-            setTimeout(function () { $('#base64post').trigger('click'); }, 500); // delay so, the code is entered into the field correctly.
-            
-        });
-
-        $("#dropimagediv").off('keyup');
-        $("#dropimagediv").keyup(function () {
-            $(this).html('<p><i>&nbsp;@ResourceKey("DNNrocket.dropimage")...</i></p>');
-        });
-
     });
-
 </script>

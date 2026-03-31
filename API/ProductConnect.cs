@@ -73,18 +73,31 @@ namespace RocketEcommerceAPI.API
         public string AddArticleImage()
         {
             var productId = _paramInfo.GetXmlPropertyInt("genxml/hidden/productid");
-            if (productId > 0)
+            var productData = GetActiveProduct(productId);
+            productData.Save(_postInfo);
+
+            // Add new image if found in postInfo
+            var fileuploadlist = _postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            var fileuploadbase64 = _postInfo.GetXmlProperty("genxml/hidden/fileuploadbase64");
+            if (fileuploadbase64 != "")
             {
-                var productData = GetActiveProduct(productId);
-                productData.Save(_postInfo);
-                var imgList = RocketUtils.ImgUtils.MoveImageToFolder(UserUtils.GetCurrentUserId(), _postInfo, _dataObject.PortalShop.ImageFolderMapPath, PortalUtils.TempDirectoryMapPath());
-                foreach (var nam in imgList)
+                var filenameList = fileuploadlist.Split('*');
+                var filebase64List = fileuploadbase64.Split('*');
+                var baseFileMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + GeneralUtils.GetGuidKey();
+                var imgsize = _postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
+                if (imgsize == 0) imgsize = _dataObject.PortalShop.ImageResize;
+                var destDir = _dataObject.PortalShop.ImageFolderMapPath;
+                if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
+                var imgList = RocketUtils.ImgUtils.UploadBase64Image(filenameList, filebase64List, baseFileMapPath, destDir, imgsize);
+                foreach (var imgFileMapPath in imgList)
                 {
-                    productData.AddImage(Path.GetFileName(nam));
+                    productData.AddImage(Path.GetFileName(imgFileMapPath));
                 }
-                return GetProduct(productData.ProductId);
             }
-            return "ERROR: Invalid ItemId";
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("productimages.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, productData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.ErrorMsg != "") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         public string AddArticleImage64()
         {

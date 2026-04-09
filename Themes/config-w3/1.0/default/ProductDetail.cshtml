@@ -93,11 +93,6 @@
             </div>
         </div>
 
-        <div class='w3-row w3-padding'>
-            <label>@ResourceKey("RE.keywords")</label>&nbsp;@EditFlag(sessionParams)
-            @TextArea(info, "genxml/lang/genxml/textbox/productkeywords", "class='w3-input w3-border' style='height:60px;' ", "", true)
-        </div>
-
         <!-- Put category select here, so we pass back the cascade option with the srticle data -->
         @RenderTemplate("ProductCategorySelect.cshtml", appThemeSystem, Model, false)
 
@@ -109,6 +104,10 @@
             @if (portalShop.IsProductDataSectionOn(ProductDataSection.Models))
             {
                 <div class="w3-bar-item w3-button tablink modelstabtablink" onclick="openSection('modelstab')">@ResourceKey("RE.models")</div>
+            }
+            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Html))
+            {
+                <div class="w3-bar-item w3-button tablink htmltexttablink" onclick="openSection('htmltext')">@ResourceKey("DNNrocket.description")</div>
             }
             @if (portalShop.IsProductDataSectionOn(ProductDataSection.Images))
             {
@@ -133,10 +132,6 @@
             @if (portalShop.IsProductDataSectionOn(ProductDataSection.Links))
             {
                 <div class="w3-bar-item w3-button tablink linkstablink" onclick="openSection('links')">@ResourceKey("DNNrocket.links")</div>
-            }
-            @if (portalShop.IsProductDataSectionOn(ProductDataSection.Html))
-            {
-                <div class="w3-bar-item w3-button tablink htmltexttablink" onclick="openSection('htmltext')">@ResourceKey("RE.htmltext")</div>
             }
             @if (portalShop.IsProductDataSectionOn(ProductDataSection.Extra))
             {
@@ -192,6 +187,8 @@
         </div>
         <div id="other" class='w3-row sectionname' style="display:none">
             <div class='w3-col m12 w3-padding'>
+                <label>@ResourceKey("DNNrocket.video")</label>
+                @TextArea(info, "genxml/textbox/video", " class='w3-input w3-border' autocomplete='off' rows='6' ", "", true, 0)
             </div>
         </div>
 
@@ -257,6 +254,7 @@
 
     function saveRichText() {
         $('#datasection').append($('#richtext')); // we need to move the richtext to the save data area.
+        $('#datasection').append($('#video')); // we need to move the richtext to the save data area.
     }
 
 </script>

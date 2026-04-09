@@ -193,7 +193,7 @@
     <value>Boutique active</value>
   </data>
   <data name="hidden.Text" xml:space="preserve">
-    <value>Cachés</value>
+    <value>Caché</value>
   </data>
   <data name="catalog.Text" xml:space="preserve">
     <value>Catalogue</value>
@@ -873,52 +873,6 @@
   <data name="copy.Text" xml:space="preserve">
     <value>Copie</value>
   </data>
-  <data name="deliverymsg.Text" xml:space="preserve">
-    <value>Livraison à domicile</value>
-  </data>
-  <data name="shippingquestion.Text" xml:space="preserve">
-    <value>Comment souhaitez vous recevoir votre commande ?</value>
-  </data>
-  <data name="yourcontactdetails.Text" xml:space="preserve">
-    <value>Vos coordonnées de contact</value>
-  </data>
-  <data name="securitykey.Text" xml:space="preserve">
-    <value>Clé de sécurité du portail</value>
-  </data>
-  <data name="productdocumentlimit.Text" xml:space="preserve">
-    <value>Limite des documents par produit</value>
-  </data>
-  <data name="productimagelimit.Text" xml:space="preserve">
-    <value>Limite des images par produit</value>
-  </data>
-  <data name="importopenstore3.Text" xml:space="preserve">
-    <value>Importer des fichiers depuis OpenStore 3 ?</value>
-  </data>
-  <data name="securitykey.Help" xml:space="preserve">
-    <value>    </value>
-  </data>
-  <data name="emailon.Text" xml:space="preserve">
-    <value>Activer les notifications</value>
-  </data>
-  <data name="securitycode.Text" xml:space="preserve">
-    <value>Code de sécurité</value>
-  </data>
-  <data name="securitycode.Help" xml:space="preserve">
-    <value>Le code sécurisé est utilisé pour enregistrer un client API.  Ce code doit être envoyé par le système client pour accéder à ce système.  Une mauvaise utilisation de ce code peut entraîner un refus de service.</value>
-  </data>
-  <data name="pageandlinks.Text" xml:space="preserve">
-    <value>Pages et liens</value>
-  </data>
-  <data name="productdocumentlimit.Msg" xml:space="preserve">
-    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de document. Contactez nous pour modifier cette limite.</value>
-  </data>
-  <data name="productimagelimit.Msg" xml:space="preserve">
-    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter d'image. Contactez nous pour modifier cette limite.</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="apply.Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="extra.Text" xml:space="preserve">
     <value>Extra</value>
   </data>
@@ -949,8 +903,17 @@
   <data name="delivery.Text" xml:space="preserve">
     <value>Livraison</value>
   </data>
+  <data name="deliverymsg.Text" xml:space="preserve">
+    <value>Livraison à domicile</value>
+  </data>
+  <data name="shippingquestion.Text" xml:space="preserve">
+    <value>Comment souhaitez vous recevoir votre commande ?</value>
+  </data>
   <data name="optional.Text" xml:space="preserve">
     <value>En option</value>
+  </data>
+  <data name="yourcontactdetails.Text" xml:space="preserve">
+    <value>Vos coordonnées de contact</value>
   </data>
   <data name="manualcategoryorderby.Text" xml:space="preserve">
     <value>Catégorie manuelle Commander par</value>
@@ -1009,11 +972,20 @@
   <data name="manualorderby.Text" xml:space="preserve">
     <value>Ordre de tri manuel par défaut</value>
   </data>
+  <data name="securitykey.Text" xml:space="preserve">
+    <value>Clé de sécurité du portail</value>
+  </data>
   <data name="eventname.Text" xml:space="preserve">
     <value>Nom de l'événement</value>
   </data>
   <data name="eventlist.Text" xml:space="preserve">
     <value>Liste des événements</value>
+  </data>
+  <data name="productdocumentlimit.Text" xml:space="preserve">
+    <value>Limite des documents par produit</value>
+  </data>
+  <data name="productimagelimit.Text" xml:space="preserve">
+    <value>Limite des images par produit</value>
   </data>
   <data name="detailpage.Text" xml:space="preserve">
     <value>Page de détail</value>
@@ -1041,5 +1013,29 @@
   </data>
   <data name="apply.Text" xml:space="preserve">
     <value>Appliquer</value>
+  </data>
+  <data name="importopenstore3.Text" xml:space="preserve">
+    <value>Importer des fichiers depuis OpenStore 3 ?</value>
+  </data>
+  <data name="securitykey.Help" xml:space="preserve">
+    <value>    </value>
+  </data>
+  <data name="emailon.Text" xml:space="preserve">
+    <value>Activer les notifications</value>
+  </data>
+  <data name="securitycode.Text" xml:space="preserve">
+    <value>Code de sécurité</value>
+  </data>
+  <data name="securitycode.Help" xml:space="preserve">
+    <value>Le code sécurisé est utilisé pour enregistrer un client API.  Ce code doit être envoyé par le système client pour accéder à ce système.  Une mauvaise utilisation de ce code peut entraîner un refus de service.</value>
+  </data>
+  <data name="pageandlinks.Text" xml:space="preserve">
+    <value>Pages et liens</value>
+  </data>
+  <data name="productdocumentlimit.Msg" xml:space="preserve">
+    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter de document. Contactez nous pour modifier cette limite.</value>
+  </data>
+  <data name="productimagelimit.Msg" xml:space="preserve">
+    <value>Vous avez atteint la limite de votre forfait et ne pouvez pas ajouter d'image. Contactez nous pour modifier cette limite.</value>
   </data>
 </root>
